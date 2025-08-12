@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Node 버전 고정 (권장)
+[build.environment]
+  NODE_VERSION = "20"
+
+# SPA 리다이렉트 (위 _redirects 대신 이 방식도 가능)
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 200
