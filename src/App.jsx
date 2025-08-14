@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  * {border: 1px solid black;}
 `;
 
 const Layout = () => {
@@ -18,7 +19,6 @@ const Layout = () => {
     <>
       <Wrapper>
         <Outlet />
-        <h1>LOFO frontend</h1>
       </Wrapper>
     </>
   );
