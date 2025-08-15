@@ -4,6 +4,7 @@ import startYouth from "../../../assets/startYouth.svg";
 import startNopo from "../../../assets/startNopo.svg";
 import logo from "../../../assets/logo.svg";
 import Vector1 from "../../../assets/Vector1.svg";
+import mouse from "../../../assets/mouse.svg";
 
 const Topnav = styled.div`
     display: flex;
@@ -50,8 +51,19 @@ const VectorImg = styled.img`
   width: 100%;
   position: absolute;
   z-index: -1; /* 가장 뒤로 */
-  top: 500px;
-
+  top: 450px;
+`
+const MouseInfo = styled.span`
+  align-self: stretch;
+  color: #8B6FD4;
+  text-align: center;
+  /* body/001 */
+  font-family: "Pretendard Variable";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 10px;
 `
 
 function Scroll1() {
@@ -65,6 +77,8 @@ function Scroll1() {
         <img src={startNopo} alt="상인으로 시작하기" />
       </ButtonContainer>
       <VectorImg src={Vector1} alt="벡터" /> {/*position 속성 관련 위치 수정 필요*/}
+      <MouseInfo>마우스를 내려주세요</MouseInfo>
+      <img src={mouse} alt="마우스" />
     </Section>
   );
 };
