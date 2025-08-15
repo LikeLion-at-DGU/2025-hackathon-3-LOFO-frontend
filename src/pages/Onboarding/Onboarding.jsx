@@ -1,14 +1,49 @@
 import { styled } from "styled-components";
+import Scroll1 from "../Onboarding/components/Scroll1";
 
-const Title = styled.h1`
-    color: blue;
-`
+const Container = styled.div`
+  height: 400vh; //100vh?
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  /* 스크롤바 전체 영역 숨기기 */
+  &::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+  }
+`;
+
+const Section = styled.section`
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
+  font-size: 2rem;
+  &::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+`;
+
+
 function Onboarding() {
   return (
     <>
-      <Title>온보딩 페이지</Title>
+      <Container>
+      <Scroll1/>
+      <Section style={{ background: "#ccffcc" }}>Page 2</Section>
+      <Section style={{ background: "#ccccff" }}>Page 3</Section>
+      <Section style={{ background: "#ffffcc" }}>Page 4</Section>
+    </Container>
     </>
   );
 };
 
 export default Onboarding;
+
+
+
+
+
