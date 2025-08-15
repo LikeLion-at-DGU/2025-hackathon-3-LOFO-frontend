@@ -1,66 +1,116 @@
 import { styled } from "styled-components";
 import Section from "./Section";
+import Scroll2Emoticon from "../../../assets/Scroll2Emoticon.png";
 
-const Topnav = styled.div`
-    display: flex;
+
+const Container = styled.div`
     width: 100%;
-    height: 88px;
-    padding: 29px 32px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    border-bottom: 1px solid var(--line-001, #BABABA);
-    position: absolute;
-    top: 0;
-    left: 0;
+    gap: 40px;
+`
+const ContextContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    align-items: center;
+    gap: 50px;
+    text-align: center;
+    position: relative;
 `
 const Title = styled.div`
+    align-self: stretch;
+    color: #000;
     text-align: center;
     font-family: "Pretendard Variable";
-    font-size: 96px;
+    font-size: 64px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 500;
     line-height: normal;
-    background: linear-gradient(90deg, #A37BFF 0%, #7342E5 106.7%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-top: 120px;
 `
-const Context = styled.p`
-    color: var(--sub-004, #5A5A5A);
+const Context = styled.div`
+    color: #000;
     font-family: "Pretendard Variable";
-    font-size: 28px;
+    font-size: 32px;
     font-style: normal;
     font-weight: 400;
-    line-height: 40px;
-    margin-bottom: 50px;
-    text-align: center;
-
+    line-height: normal;
 `
-const ButtonContainer = styled.div`
-    display: inline-flex;
+const Em = styled.span`
+    color:#F19A20; 
+`
+const Emoticon = styled.img`
+    position: absolute;
+    top: 40px;
+    right: 500px;
+`
+const StepContainer = styled.div`
+    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 100px;
-    margin-bottom: 202px;
+    gap: 220px;
 `
-const VectorImg = styled.img`
-  width: 100%;
-  position: absolute;
-  z-index: -1; /* 가장 뒤로 */
-  top: 480px;
-
+const Step = styled.div`
+    display: flex;
+    width: 526px;
+    height: 425px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+`
+const StepNumber = styled.div`
+    align-self: stretch;
+    opacity: 0.5;
+    color: #FFDDAC;
+    font-family: "Pretendard Variable";
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+`
+const StepImg = styled.img`
+    width: 526px;
+    height: 223px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    background: #D9D9D9;
+`
+const StepInfo = styled.div`
+    color: #000;
+    /* h2/001 */
+    font-family: "Pretendard Variable";
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
 `
 
 function Scroll2() {
   return (
-    <Section style={{ position: "relative" }}>
-      <Topnav><img src={logo} alt="로고"/></Topnav>
-      <Title>청년과 상인을 잇는 <br/> 새로운 방법</Title>
-      <Context><b>청년은 포트폴리오를, 상인은 가게 홍보를,</b> <br/> LOFO에서 함께 참여하고 연결되는 경험을 시작하세요.</Context>
-      <ButtonContainer>
-        <img src={startYouth} alt="청년으로 시작하기" />
-        <img src={startNopo} alt="상인으로 시작하기" />
-      </ButtonContainer>
-      <VectorImg src={Vector1} alt="벡터" /> {/*position 속성 관련 위치 수정 필요*/}
+    <Section style={{ padding: "120px 309px 94px 309px" }}>
+        <Container>
+            <ContextContainer>
+                <Title><b>식당 운영하고 계신가요?</b><br/>그러면 꼭 필요할 거예요</Title>
+                <Context><Em>젊은 손님</Em>을 움직이기 위해선<br/>색다른 홍보가 필요할 거예요<br/><br/>저희 서비스에서 가게 홍보를 도와드릴게요!</Context>
+                <Emoticon src={Scroll2Emoticon} alt="이모티콘"/>
+            </ContextContainer>
+            <StepContainer>
+                <Step>
+                    <StepNumber>0<Em>1</Em></StepNumber>
+                    <StepImg />
+                    <StepInfo>내 가게에 <Em>필요한<br/>요청</Em>을 직접 입력해요</StepInfo>
+                </Step>
+                <Step>
+                    <StepNumber>0<Em>2</Em></StepNumber>
+                    <StepImg />
+                    <StepInfo>청년들이 만든<br/>작업물을 확인하고 활용해요</StepInfo>
+                </Step>
+
+            </StepContainer>
+        </Container>
     </Section>
   );
 };

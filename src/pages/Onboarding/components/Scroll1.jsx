@@ -50,7 +50,7 @@ const VectorImg = styled.img`
   width: 100%;
   position: absolute;
   z-index: -1; /* 가장 뒤로 */
-  top: 480px;
+  top: 500px;
 
 `
 

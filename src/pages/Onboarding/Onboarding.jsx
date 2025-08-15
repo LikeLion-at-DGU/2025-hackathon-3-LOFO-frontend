@@ -1,8 +1,10 @@
 import { styled } from "styled-components";
 import Scroll1 from "../Onboarding/components/Scroll1";
+import Scroll2 from "../Onboarding/components/Scroll2";
+import Scroll3 from "../Onboarding/components/Scroll3";
 
 const Container = styled.div`
-  height: 400vh; //100vh?
+  height: 500vh; //100vh?
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
   /* 스크롤바 전체 영역 숨기기 */
@@ -33,9 +35,10 @@ function Onboarding() {
     <>
       <Container>
       <Scroll1/>
-      <Section style={{ background: "#ccffcc" }}>Page 2</Section>
-      <Section style={{ background: "#ccccff" }}>Page 3</Section>
+      <Scroll2/>
+      <Scroll3/>
       <Section style={{ background: "#ffffcc" }}>Page 4</Section>
+      <Section style={{ background: "#4156b6ff" }}>Page 5</Section>
     </Container>
     </>
   );
