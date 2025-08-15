@@ -11,10 +11,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  * {border: 1px solid black;}
+  //* {border: 1px solid black;}
 `;
 
-const Layout = () => {
+// named export
+export const Layout = () => {
   return (
     <>
       <Wrapper>
@@ -24,12 +25,7 @@ const Layout = () => {
   );
 };
 
-function App() {
-  return (
-    <>
-      <Layout />
-    </>
-  );
+// 기본 export
+export default function App() {
+  return <div>App 컴포넌트</div>;
 }
-
-export default App;
