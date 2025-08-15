@@ -4,6 +4,9 @@ body {
   align-items: center;
   height: 100vh;
 }
+* {
+  box-sizing: border-box;
+}
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent;
