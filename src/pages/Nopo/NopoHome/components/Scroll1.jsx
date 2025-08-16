@@ -24,11 +24,11 @@ const Subtitle = styled.p`
 `;
 
 const Button = styled.button`
-  background-color: #8b72ff;
+  background-color: rgba(139, 111, 212, 1);
   color: #fff;
   border: none;
-  padding: 12px 32px;
-  border-radius: 24px;
+  padding: 30px 100px;
+  border-radius: 100px;
   font-size: 1rem;
   cursor: pointer;
 `;
@@ -36,11 +36,7 @@ const Button = styled.button`
 const Scroll1 = () => {
   return (
     <Wrapper>
-      <Title>
-        내 가게를 더욱 빛내줄
-        <br />
-        청년들의 작업물을 선택해보세요
-      </Title>
+      <Title>내 가게를 더욱 빛내줄 청년들의 작업물을 선택해보세요</Title>
       <Subtitle>내 가게에 대한 요청을 입력하고 도움을 얻을 수 있어요</Subtitle>
       <Button>요청 쓰러가기</Button>
     </Wrapper>
