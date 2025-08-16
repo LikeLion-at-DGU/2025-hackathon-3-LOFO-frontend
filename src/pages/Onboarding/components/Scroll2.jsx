@@ -90,7 +90,7 @@ const StepInfo = styled.div`
 
 function Scroll2() {
   return (
-    <Section style={{ padding: "120px 309px 94px 309px" }}>
+    <Section style={{ padding: "120px 20px 94px 20px" }}>
         <Container>
             <div>
             <ContextContainer>

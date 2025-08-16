@@ -44,14 +44,16 @@ const Context = styled.p`
 const ButtonContainer = styled.div`
     display: inline-flex;
     align-items: center;
+    width: 100%;
+    justify-content: center;
     gap: 100px;
     margin-bottom: 202px;
+    position: relative;
 `
 const VectorImg = styled.img`
-  width: 100%;
+  width: 100vw;
   position: absolute;
   z-index: -1; /* 가장 뒤로 */
-  top: 450px;
 `
 const MouseInfo = styled.span`
   align-self: stretch;
@@ -65,18 +67,25 @@ const MouseInfo = styled.span`
   line-height: normal;
   margin-bottom: 10px;
 `
+const Div = styled.div`
+  display: flex;
+  
+`
 
 function Scroll1() {
   return (
-    <Section style={{ position: "relative" }}>
+    <Section style={{position: "relative"}}>
+      <div>
       <Topnav><img src={logo} alt="로고"/></Topnav>
       <Title>청년과 상인을 잇는 <br/> 새로운 방법</Title>
       <Context><b>청년은 포트폴리오를, 상인은 가게 홍보를,</b> <br/> LOFO에서 함께 참여하고 연결되는 경험을 시작하세요.</Context>
       <ButtonContainer>
         <img src={startYouth} alt="청년으로 시작하기" />
         <img src={startNopo} alt="상인으로 시작하기" />
+        <VectorImg src={Vector1} alt="벡터" /> {/*position 속성 관련 위치 수정 필요*/}
       </ButtonContainer>
-      <VectorImg src={Vector1} alt="벡터" /> {/*position 속성 관련 위치 수정 필요*/}
+      </div>
+
       <MouseInfo>마우스를 내려주세요</MouseInfo>
       <img src={mouse} alt="마우스" />
     </Section>
