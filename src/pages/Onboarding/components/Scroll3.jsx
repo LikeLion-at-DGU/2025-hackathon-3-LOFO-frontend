@@ -82,12 +82,13 @@ const Comment = styled.span`
 
 function Scroll3() {
   return (
-    <Section style={{ padding: "120px 309px 94px 309px" }}>
+    <Section style={{ padding: "120px 20px 94px 20px" }}>
         <Container>
+            <div>
             <ContextContainer>
                 <Title><b>대한민국 청년</b>이라면<br/>이런 고민 해보셨죠?</Title>
                 <Emoticon src={Scroll3Emoticon} alt="이모티콘"/>
-            </ContextContainer>
+            </ContextContainer></div>
             <ExContainer>
                 <Example>
                     <ExampleTitle><span style={{fontSize: "48px", fontWeight: "600"}}>포트폴리오</span><br/>쌓아야 하는데 기회가 없어</ExampleTitle>
