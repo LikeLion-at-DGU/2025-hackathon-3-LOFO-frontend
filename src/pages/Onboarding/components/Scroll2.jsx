@@ -45,7 +45,7 @@ const Em = styled.span`
 const Emoticon = styled.img`
     position: absolute;
     top: 40px;
-    right: 500px;
+    right: 670px;
 `
 const StepContainer = styled.div`
     display: flex;
@@ -90,13 +90,15 @@ const StepInfo = styled.div`
 
 function Scroll2() {
   return (
-    <Section style={{ padding: "120px 309px 94px 309px" }}>
+    <Section style={{ padding: "120px 20px 94px 20px" }}>
         <Container>
+            <div>
             <ContextContainer>
                 <Title><b>식당 운영하고 계신가요?</b><br/>그러면 꼭 필요할 거예요</Title>
                 <Context><Em>젊은 손님</Em>을 움직이기 위해선<br/>색다른 홍보가 필요할 거예요<br/><br/>저희 서비스에서 가게 홍보를 도와드릴게요!</Context>
                 <Emoticon src={Scroll2Emoticon} alt="이모티콘"/>
             </ContextContainer>
+            </div>
             <StepContainer>
                 <Step>
                     <StepNumber>0<Em>1</Em></StepNumber>

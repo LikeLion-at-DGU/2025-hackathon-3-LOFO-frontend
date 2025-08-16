@@ -2,6 +2,8 @@ import { styled } from "styled-components";
 import Scroll1 from "../Onboarding/components/Scroll1";
 import Scroll2 from "../Onboarding/components/Scroll2";
 import Scroll3 from "../Onboarding/components/Scroll3";
+import Scroll4 from "../Onboarding/components/Scroll4";
+import Scroll5 from "../Onboarding/components/Scroll5";
 
 const Container = styled.div`
   height: 500vh; //100vh?
@@ -37,8 +39,8 @@ function Onboarding() {
       <Scroll1/>
       <Scroll2/>
       <Scroll3/>
-      <Section style={{ background: "#ffffcc" }}>Page 4</Section>
-      <Section style={{ background: "#4156b6ff" }}>Page 5</Section>
+      <Scroll4/>
+      <Scroll5/>
     </Container>
     </>
   );
