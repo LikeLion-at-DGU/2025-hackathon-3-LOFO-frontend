@@ -38,15 +38,12 @@ const Emoticon = styled.img`
 `
 const ExContainer = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 400px;
-    align-self: stretch;
+    width: 1210px;
 `
 const Example = styled.div`
     display: flex;
-    /*width: 410px; auto??*/
-    /*height: 385px;*/
     flex-direction: column;
     align-items: flex-start;
     gap: 50px;
