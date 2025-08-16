@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState } from "react";
 import { styled, ThemeProvider } from "styled-components";
 import { Outlet } from "react-router-dom";
-import './App.css'
+import "./App.css";
 
 const Wrapper = styled.div`
   //border: 1px solid black;
