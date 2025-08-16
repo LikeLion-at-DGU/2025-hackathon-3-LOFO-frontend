@@ -8,7 +8,7 @@ import mouse from "../../../assets/mouse.svg";
 
 const Topnav = styled.div`
     display: flex;
-    width: 100%;
+    width: 100vw;
     height: 88px;
     padding: 29px 32px;
     align-items: center;
@@ -20,7 +20,7 @@ const Topnav = styled.div`
 const Title = styled.div`
     text-align: center;
     font-family: "Pretendard Variable";
-    font-size: 96px;
+    font-size: 64px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -47,7 +47,6 @@ const ButtonContainer = styled.div`
     width: 100%;
     justify-content: center;
     gap: 100px;
-    margin-bottom: 202px;
     position: relative;
 `
 const VectorImg = styled.img`
@@ -74,7 +73,7 @@ const Div = styled.div`
 
 function Scroll1() {
   return (
-    <Section style={{position: "relative"}}>
+    <Section style={{position: "relative", width: "100vw"}}>
       <div>
       <Topnav><img src={logo} alt="로고"/></Topnav>
       <Title>청년과 상인을 잇는 <br/> 새로운 방법</Title>

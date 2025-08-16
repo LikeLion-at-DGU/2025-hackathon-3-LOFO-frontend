@@ -5,7 +5,7 @@ import './App.css'
 
 const Wrapper = styled.div`
   //border: 1px solid black;
-  width: 100vw;
+  width: 1440px;
   height: 100vh;
   display: flex;
   flex-direction: column;
