@@ -1,4 +1,6 @@
 import { styled } from "styled-components";
+import { Link } from "react-router-dom";
+
 import Section from "./Section";
 import startYouth from "../../../assets/startYouth.svg";
 import startNopo from "../../../assets/startNopo.svg";
@@ -23,14 +25,24 @@ const ButtonContainer = styled.div`
     gap: 100px;
     margin-top: 100px;
 `
+const Button = styled.img`
+  cursor: pointer;
+  &:hover{
+opacity: 0.8;
+  }
+`
 
 function Scroll5() {
   return (
     <Section>
       <Title>LOFO에서<br/>내 이야기가 지역을 움직이는 경험을 해보세요</Title>
       <ButtonContainer>
-        <img src={startYouth} alt="청년으로 시작하기" />
-        <img src={startNopo} alt="상인으로 시작하기" />
+        <Link to="/auth/login-youth">
+          <Button src={startYouth} alt="청년으로 시작하기" />
+        </Link>
+        <Link to="/auth/login-youth">
+          <Button src={startNopo} alt="상인으로 시작하기" />
+        </Link>
       </ButtonContainer>
     </Section>
   );

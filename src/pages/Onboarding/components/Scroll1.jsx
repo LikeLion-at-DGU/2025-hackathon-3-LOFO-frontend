@@ -1,4 +1,6 @@
 import { styled } from "styled-components";
+import { Link } from "react-router-dom";
+
 import Section from "./Section";
 import startYouth from "../../../assets/startYouth.svg";
 import startNopo from "../../../assets/startNopo.svg";
@@ -9,11 +11,12 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
 `
 const Title = styled.div`
     text-align: center;
     font-family: "Pretendard Variable";
-    font-size: 48px;
+    font-size: 54px;
     font-style: normal;
     font-weight: 700;
     line-height: 68px;
@@ -30,7 +33,7 @@ const Context = styled.p`
     font-weight: 400;
     line-height: 40px;
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 60px;
 `
 const ButtonContainer = styled.div`
     display: inline-flex;
@@ -39,6 +42,14 @@ const ButtonContainer = styled.div`
     gap: 70px;
     position: relative;
     margin-bottom: 30px;
+`
+const Button = styled.img`
+//border-radius: 60px;
+//box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.50);
+  cursor: pointer;
+  &:hover{
+  opacity: 0.8;
+  }
 `
 const VectorImg = styled.img`
   width: 100vw;
@@ -61,13 +72,17 @@ function Scroll1() {
   return (
     <Section style={{position: "relative", width: "100vw"}}>
       <Wrapper>
-      <Title>청년과 상인을 잇는 <br/> 새로운 방법</Title>
-      <Context><b>청년은 포트폴리오를, 상인은 가게 홍보를,</b> <br/> LOFO에서 함께 참여하고 연결되는 경험을 시작하세요.</Context>
+        <Title>청년과 상인을 잇는 새로운 방법</Title>
+        <Context><b>청년은 포트폴리오를, 상인은 가게 홍보를,</b> <br/> LOFO에서 함께 참여하고 연결되는 경험을 시작하세요.</Context>
       </Wrapper>
       <Wrapper>
       <ButtonContainer>
-        <img src={startYouth} alt="청년으로 시작하기" />
-        <img src={startNopo} alt="상인으로 시작하기" />
+        <Link to="/auth/login-youth">
+          <Button src={startYouth} alt="청년으로 시작하기" />
+        </Link>
+        <Link to="/auth/login-youth">
+          <Button src={startNopo} alt="상인으로 시작하기" />
+        </Link>
         <VectorImg src={Vector1} alt="벡터" /> {/*position 속성 관련 위치 수정 필요*/}
       </ButtonContainer>
       <MouseInfo>마우스를 내려주세요</MouseInfo>

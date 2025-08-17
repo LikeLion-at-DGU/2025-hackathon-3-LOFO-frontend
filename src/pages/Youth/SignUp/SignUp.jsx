@@ -1,4 +1,6 @@
 import { styled } from "styled-components";
+import { Link } from "react-router-dom";
+
 import Topnav from "../../../components/Topnav/Topnav";
 import InputField from "../../../components/Input/InputField";
 import InputButton from "../../../components/Input/InputButton";
@@ -94,6 +96,7 @@ function SignUp() {
           <Input>
             <InputField placeholder="01012345678"/>
             <InputButton button="청년으로 시작하기" />
+            <Link to="/auth/login-youth/nickname" style={{ cursor: "pointer", textDecoration: "none"}}>임시버튼</Link>
           </Input>
           <SubDescription>이미 LOFO 사용자이신가요?<br/>가입하신 전화번호로 이용할 수 있어요.</SubDescription>
         </InputContainer>
