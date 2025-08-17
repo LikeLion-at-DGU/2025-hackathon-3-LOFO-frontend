@@ -17,21 +17,6 @@ const Container = styled.div`
   }
 `;
 
-const Section = styled.section`
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  scroll-snap-align: start;
-  font-size: 2rem;
-  &::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
-}
-`;
-
 
 function Onboarding() {
   return (
