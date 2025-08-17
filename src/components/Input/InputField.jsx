@@ -17,6 +17,7 @@ function InputField(props) {
     <Field>
       <input type="text" placeholder={props.placeholder} style={{color: '#999', fontSize: '22px',
     fontStyle: 'normal',
+    fontSize: '20px',
     fontWeight: '400',
     lineHeight: 'normal',
     border: 'none',

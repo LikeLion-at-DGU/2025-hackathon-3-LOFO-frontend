@@ -12,6 +12,7 @@ const Section = styled.section`
   width: 0px;
   background: transparent;
 }
+  background-color: var(--BG-001, #ffffff);
 `;
 
 export default Section;

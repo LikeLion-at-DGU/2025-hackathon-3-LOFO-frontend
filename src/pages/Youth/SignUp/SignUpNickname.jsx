@@ -20,7 +20,7 @@ const Title = styled.div`
   color: var(--sub-003, #59418F);
   text-align: center;
   font-family: "Pretendard Variable";
-  font-size: 45px;
+  font-size: 43px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -30,8 +30,8 @@ const Title = styled.div`
 //Input 외부 레이아웃//
 const InputContainer = styled.div`
   display: flex;
-  width: 620px;
-  padding: 80px 50px;
+  width: 600px;
+  padding: 80px 60px;
   flex-direction: column;
   justify-content: center;
   gap: 3rem;
@@ -67,7 +67,7 @@ const Input = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2rem;
+  gap: 1.8rem;
   align-self: stretch;
 `
 
