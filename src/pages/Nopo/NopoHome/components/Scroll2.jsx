@@ -73,12 +73,13 @@ const CardStatus = styled.span`
 
 const Button = styled.button`
   display: block;
+  width: 404px;
+  height: 103px;
   margin: 32px auto 0;
-  padding: 12px 32px;
-  border-radius: 24px;
-  background: linear-gradient(90deg, #8b72ff, #d9c5ff);
+  padding: 30px 100px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 1);
   border: none;
-  color: #fff;
   font-weight: bold;
   cursor: pointer;
 `;
