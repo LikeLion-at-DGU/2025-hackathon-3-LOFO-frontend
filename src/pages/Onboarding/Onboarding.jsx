@@ -12,7 +12,8 @@ const Container = styled.div`
   /* 스크롤바 전체 영역 숨기기 */
   &::-webkit-scrollbar {
   width: 0px;
-  background: transparent;
+  background: var(--BG-001, #ffffff);
+  z-index: -10;
   }
 `;
 

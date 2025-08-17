@@ -9,7 +9,7 @@ const Div = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 40px;
+  gap: 80px;
   align-items: center;
 `
 
@@ -37,6 +37,7 @@ const InputContainer = styled.div`
   border-radius: 60px;
   background: var(--white, #FFF);
   box-shadow: 0 2px 48px -8px rgba(0, 0, 0, 0.20);
+  margin: 0 auto;
 `
 //텍스트
 const Info = styled.div`
@@ -68,34 +69,21 @@ const Input = styled.div`
   align-self: stretch;
 `
 
-//하단 안내 문구
-const SubDescription = styled.span`
-  color: var(--main-003, #8B6FD4);
-text-align: center;
-font-family: "Pretendard Variable";
-font-size: 16px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
-`
-
-
-function SignUp() {
+function SignUpNickname() {
   return (
     <>
       <Topnav/>
       <Div>
-        <Title>안녕하세요, LOFO와 함께<br/>포트폴리오를 쌓는 경험을 해봐요</Title>
+        <Title>닉네임을 정하고 미션을 시작하세요!</Title>
         <InputContainer>
           <Info>
-          <InputTitle>전화번호 입력</InputTitle>
-          <InputDescription>1분만에 가입하고 포트폴리오 미션을 시작하세요!</InputDescription>
+          <InputTitle>닉네임 입력</InputTitle>
+          <InputDescription>LOFO에서 사용할 닉네임을 설정해주세요</InputDescription>
           </Info>
           <Input>
-            <InputField placeholder="01012345678"/>
-            <InputButton button="청년으로 시작하기" />
+            <InputField placeholder="김로포"/>
+            <InputButton button="가입 완료"/>
           </Input>
-          <SubDescription>이미 LOFO 사용자이신가요?<br/>가입하신 전화번호로 이용할 수 있어요.</SubDescription>
         </InputContainer>
       </Div>
       
@@ -103,4 +91,4 @@ function SignUp() {
   );
 };
 
-export default SignUp;
+export default SignUpNickname;
