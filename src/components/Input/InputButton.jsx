@@ -13,7 +13,7 @@ border-radius: 20px;
 background: var(--main-001, #368FEF);
 color: var(--white, #FFF);
 font-family: "Pretendard Variable";
-font-size: 28px;
+font-size: 22px;
 font-style: normal;
 font-weight: 600;
 line-height: normal;

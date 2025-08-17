@@ -9,16 +9,13 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 100px;
+    gap: 80px;
 `
 const ContextContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin: 0 auto;
-    align-items: center;
-    gap: 50px;
-    text-align: center;
+    gap: 1.5rem;
     position: relative;
 `
 const Title = styled.div`
@@ -26,60 +23,62 @@ const Title = styled.div`
     color: #000;
     text-align: center;
     font-family: "Pretendard Variable";
-    font-size: 64px;
+    font-size: 52px;
     font-style: normal;
     font-weight: 500;
-    line-height: normal;
+    line-height: 66px;
 `
 const Emoticon = styled.img`
     position: absolute;
     top: 40px;
-    left: 550px;
+    left: -120px;
+    width: 25%;
 `
 const ExContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 1210px;
+    width: 1050px;
 `
 const Example = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 50px;
+    gap: 1.7rem;
 `
 const ExampleTitle = styled.div`
     align-self: stretch;
     color: #000;
     font-family: "Pretendard Variable";
-    font-size: 40px;
+    font-size: 35px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    margin-bottom: 1rem;
 `
 const ExampleTag = styled.div`
     display: flex;
-    padding: 12px 20px;
+    padding: 9px 18px;
     align-items: center;
-    gap: 10px;
     border-radius: 100px;
     background: #EAEAEA;
+    font-size: 25px;
+    font-weight: 580;
 `
 const Comment = styled.span`
     color: var(--text-001, #333);
     text-align: center;
     font-family: "Pretendard Variable";
-    font-size: 32px;
+    font-size: 26px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     align-self: stretch;
-    margin-top: 10px;
 `
 
 function Scroll3() {
   return (
-    <Section style={{ padding: "120px 20px 94px 20px" }}>
+    <Section>
         <Container>
             <div>
             <ContextContainer>
@@ -88,13 +87,13 @@ function Scroll3() {
             </ContextContainer></div>
             <ExContainer>
                 <Example>
-                    <ExampleTitle><span style={{fontSize: "48px", fontWeight: "600"}}>포트폴리오</span><br/>쌓아야 하는데 기회가 없어</ExampleTitle>
+                    <ExampleTitle><span style={{fontSize: "43px", fontWeight: "600"}}>포트폴리오</span><br/>쌓아야 하는데 기회가 없어</ExampleTitle>
                     <ExampleTag style={{background: "var(--main-001, #368FEF)", color: "white"}}>#압축 실무 경험</ExampleTag>
                     <ExampleTag>#상인과 소통하면서</ExampleTag>
                     <ExampleTag>#실질적인 포폴 쌓기</ExampleTag>
                 </Example>
                 <Example>
-                    <ExampleTitle><span style={{fontSize: "48px", fontWeight: "600"}}>실패 경험</span><br/>때문에 도전하기가 두려워</ExampleTitle>
+                    <ExampleTitle><span style={{fontSize: "43px", fontWeight: "600"}}>실패 경험</span><br/>때문에 도전하기가 두려워</ExampleTitle>
                     <ExampleTag style={{background: "var(--main-001, #368FEF)", color: "white"}}>#느려도 괜찮아</ExampleTag>
                     <ExampleTag>#AI 맞춤 계획 설계</ExampleTag>
                     <ExampleTag>#AI 피드백</ExampleTag>

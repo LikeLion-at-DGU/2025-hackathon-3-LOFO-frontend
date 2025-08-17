@@ -8,7 +8,7 @@ import startNopo from "../../../assets/startNopo.svg";
 const Title = styled.div`
     text-align: center;
 font-family: "Pretendard Variable";
-font-size: 80px;
+font-size: 54px;
 font-style: normal;
 font-weight: 700;
 line-height: normal;
