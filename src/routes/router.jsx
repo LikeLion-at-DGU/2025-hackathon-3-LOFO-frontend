@@ -6,7 +6,9 @@ import Onboarding from "../pages/Onboarding/Onboarding";
 import SignUp from "../pages/Youth/SignUp/SignUp";
 import SignUpNickname from "../pages/Youth/SignUp/SignUpNickname";
 import Home from "../pages/Youth/Home/Home";
-import NopoHome from "../pages/Nopo/NopoHome";
+import NopoHome from "../pages/Nopo/Home/NopoHome";
+import RequestCreate from "../pages/Nopo/Request/RequestCreate";
+import RequestEdit from "../pages/Nopo/Request/RequestEdit";
 
 const router = createBrowserRouter([
   {
@@ -21,8 +23,10 @@ const router = createBrowserRouter([
       //{ path: "youth/mission/plan", element: <Plan /> },
       //{ path: "youth/mission/plan/perform", element: <Perform /> },
       //{ path: "youth/mypage", element: <MyPage /> },
-      
-      { path: "nopo", element: <NopoHome /> },
+
+      { path: "nopo/home", element: <NopoHome /> },
+      { path: "nopo/request/create", element: <RequestCreate /> },
+      { path: "nopo/request/edit", element: <RequestEdit /> },
     ],
   },
 ]);
