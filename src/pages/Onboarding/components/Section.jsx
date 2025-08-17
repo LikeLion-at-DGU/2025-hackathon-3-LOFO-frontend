@@ -13,6 +13,7 @@ const Section = styled.section`
   background: transparent;
 }
   background-color: var(--BG-001, #ffffff);
+  z-index: -10
 `;
 
 export default Section;
