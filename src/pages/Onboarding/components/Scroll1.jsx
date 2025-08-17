@@ -2,21 +2,9 @@ import { styled } from "styled-components";
 import Section from "./Section";
 import startYouth from "../../../assets/startYouth.svg";
 import startNopo from "../../../assets/startNopo.svg";
-import logo from "../../../assets/logo.svg";
 import Vector1 from "../../../assets/Vector1.svg";
 import mouse from "../../../assets/mouse.svg";
 
-/*const Topnav = styled.div`
-    display: flex;
-    width: 100vw;
-    height: 88px;
-    padding: 29px 32px;
-    align-items: center;
-    border-bottom: 1px solid var(--line-001, #BABABA);
-    position: absolute;
-    top: 0;
-    left: 0;
-`*/
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
