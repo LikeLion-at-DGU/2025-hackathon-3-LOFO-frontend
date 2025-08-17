@@ -2,9 +2,16 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  min-height: 100vh;
-  padding: 40px 20px;
-  background: #f9f9ff;
+  /* min-height: 100vh; */
+  padding: 23px 70px;
+  margin-top: 88px;
+  /* background: #f9f9ff; */
+  width: 1440px;
+  height: 1024px;
+  top: 1024px;
+  angle: 0 deg;
+  opacity: 1;
+  gap: 10px;
 `;
 
 const StatusBar = styled.div`
