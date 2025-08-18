@@ -214,7 +214,8 @@ const RequestCreate = () => {
       <HeadingContainer>
         <Title>가게 고민을 청년과 함께 해결해보세요</Title>
         <Subtitle>
-          요청은 청년이 지원하기 전까지만 수정할 수 있습니다. <br />
+          요청은 청년이 지원하기 전까지만 수정할 수 있습니다.
+          <br />
           지원이 시작되면 수정과 중단은 불가능합니다.
         </Subtitle>
       </HeadingContainer>
