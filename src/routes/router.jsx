@@ -9,6 +9,7 @@ import Home from "../pages/Youth/Home/Home";
 import NopoHome from "../pages/Nopo/Home/NopoHome";
 import RequestCreate from "../pages/Nopo/Request/RequestCreate";
 import RequestEdit from "../pages/Nopo/Request/RequestEdit";
+import ReceivedFeedback from "../pages/Nopo/Received/ReceivedFeedback";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "nopo/home", element: <NopoHome /> },
       { path: "nopo/request/create", element: <RequestCreate /> },
       { path: "nopo/request/edit", element: <RequestEdit /> },
+      { path: "nopo/received/feedback", element: <ReceivedFeedback /> },
     ],
   },
 ]);
