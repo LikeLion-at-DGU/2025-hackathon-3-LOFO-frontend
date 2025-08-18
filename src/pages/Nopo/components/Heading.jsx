@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const HeadingContainer = styled.div`
   display: flex;
-  padding: 100px 100px 80px 100px;
+  padding: 50px 60px 50px 60px;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
