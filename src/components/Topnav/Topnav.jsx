@@ -18,7 +18,7 @@ const Nav = styled.div`
 function Topnav() {
   return (
     <Nav>
-      <img src={logo} alt="로고"/>
+      <img src={logo} alt="로고-purple"/>
     </Nav>
   );
 };
