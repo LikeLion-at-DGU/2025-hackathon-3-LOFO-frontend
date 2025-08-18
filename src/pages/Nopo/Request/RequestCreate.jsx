@@ -84,7 +84,7 @@ const FormGroup = styled.div`
 const Label = styled.label`
   font-family: Pretendard Variable;
   font-weight: 700;
-  font-size: 48px;
+  font-size: 30px;
   line-height: 100%;
   margin-bottom: 16px;
 `;
@@ -147,11 +147,11 @@ const CategoryBox = styled.div`
 
 const CategoryButton = styled.button`
   width: 150px;
-height: 99px;
-opacity: 1;
-gap: 10px;
-border-radius: 20px;
-border-width: 1px;
+  height: 99px;
+  opacity: 1;
+  gap: 10px;
+  border-radius: 20px;
+  border-width: 1px;
 
   padding: 16px 32px;
   border: 1px solid rgba(186, 186, 186, 1);
@@ -169,8 +169,6 @@ border-width: 1px;
   &:hover {
     background-color: ${({ selected }) =>
       selected ? "rgba(225, 149, 67, 1)" : "#f5f5f5"};
-  }
-
   }
 `;
 
