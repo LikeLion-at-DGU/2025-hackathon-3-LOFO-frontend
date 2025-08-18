@@ -1,9 +1,47 @@
 //
 
 import React, { useState } from "react";
+import styled from "styled-components";
 import * as S from "../components/Styled";
 import Topnav from "../../../components/Topnav/Topnav";
 import { HeadingContainer, Title, Subtitle } from "../components/Heading";
+
+const CategoryBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 800px;
+  height: 225px;
+  opacity: 1;
+  gap: 5px;
+`;
+
+const CategoryButton = styled.button`
+  width: 150px;
+  height: 99px;
+  opacity: 1;
+  gap: 10px;
+  border-radius: 20px;
+  border-width: 1px;
+
+  padding: 16px 20px;
+  border: 1px solid rgba(186, 186, 186, 1);
+  border-radius: 16px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: ${({ selected }) =>
+    selected ? "rgba(225, 149, 67, 1)" : "#fff"};
+  color: ${({ selected }) => (selected ? "#fff" : "#333")};
+  font-weight: ${({ selected }) => (selected ? "700" : "500")};
+  box-shadow: ${({ selected }) =>
+    selected ? "0px 2px 8px rgba(0, 0, 0, 0.25)" : "none"};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: ${({ selected }) =>
+      selected ? "rgba(225, 149, 67, 1)" : "#f5f5f5"};
+  }
+`;
 
 const ReceivedFeedback = () => {
   // 질문별 state 분리
@@ -57,7 +95,7 @@ const ReceivedFeedback = () => {
         </Subtitle>
       </HeadingContainer>
 
-      <form
+      <S.Form
         onSubmit={handleSubmit}
         style={{ width: "800px", marginTop: "40px" }}
       >
@@ -66,18 +104,18 @@ const ReceivedFeedback = () => {
           <S.Label>
             작업물 전반적으로 만족하시나요?<S.Required>*</S.Required>
           </S.Label>
-          <S.CategoryBox>
+          <CategoryBox>
             {satisfactionOptions.map((option) => (
-              <S.CategoryButton
+              <CategoryButton
                 key={option}
                 type="button"
                 onClick={() => setSatisfaction(option)}
                 selected={satisfaction === option}
               >
                 {option}
-              </S.CategoryButton>
+              </CategoryButton>
             ))}
-          </S.CategoryBox>
+          </CategoryBox>
         </S.FormGroup>
 
         {/* 2. 요청 반영도 */}
@@ -85,18 +123,18 @@ const ReceivedFeedback = () => {
           <S.Label>
             요청하신 내용이 잘 반영되었나요?<S.Required>*</S.Required>
           </S.Label>
-          <S.CategoryBox>
+          <CategoryBox>
             {reflectionOptions.map((option) => (
-              <S.CategoryButton
+              <CategoryButton
                 key={option}
                 type="button"
                 onClick={() => setReflection(option)}
                 selected={reflection === option}
               >
                 {option}
-              </S.CategoryButton>
+              </CategoryButton>
             ))}
-          </S.CategoryBox>
+          </CategoryBox>
         </S.FormGroup>
 
         {/* 3. 활용 가능성 */}
@@ -104,18 +142,18 @@ const ReceivedFeedback = () => {
           <S.Label>
             결과물을 실제로 활용할 수 있을 것 같나요?<S.Required>*</S.Required>
           </S.Label>
-          <S.CategoryBox>
+          <CategoryBox>
             {usabilityOptions.map((option) => (
-              <S.CategoryButton
+              <CategoryButton
                 key={option}
                 type="button"
                 onClick={() => setUsability(option)}
                 selected={usability === option}
               >
                 {option}
-              </S.CategoryButton>
+              </CategoryButton>
             ))}
-          </S.CategoryBox>
+          </CategoryBox>
         </S.FormGroup>
 
         {/* 4. 자유 후기 */}
@@ -134,7 +172,7 @@ const ReceivedFeedback = () => {
 
         {/* 전송 버튼 */}
         <S.SubmitButton type="submit">전송하기</S.SubmitButton>
-      </form>
+      </S.Form>
     </S.Wrapper>
   );
 };
