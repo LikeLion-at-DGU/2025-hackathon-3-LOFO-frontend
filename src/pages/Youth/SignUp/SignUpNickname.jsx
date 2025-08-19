@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import Topnav from "../../../components/Topnav/Topnav";
 import InputField from "../../../components/Input/InputField";
-import InputButton from "../../../components/Input/InputButton";
+import SubmitButton from "../../../components/Input/SubmitButton";
 
 //-----Div-----//
 const Div = styled.div`
@@ -84,7 +84,7 @@ function SignUpNickname() {
           </Info>
           <Input>
             <InputField placeholder="김로포"/>
-            <InputButton button="가입 완료"/>
+            <SubmitButton button="가입 완료"/>
             <Link to="/youth/home" style={{ cursor: "pointer", textDecoration: "none"}}>임시버튼</Link>
           </Input>
         </InputContainer>

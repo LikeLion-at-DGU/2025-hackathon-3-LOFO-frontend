@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import Topnav from "../../../components/Topnav/Topnav";
 import InputField from "../../../components/Input/InputField";
-import InputButton from "../../../components/Input/InputButton";
+import SubmitButton from "../../../components/Input/SubmitButton";
 
 //-----Div-----//
 const Div = styled.div`
@@ -95,7 +95,7 @@ function SignUp() {
           </Info>
           <Input>
             <InputField placeholder="01012345678"/>
-            <InputButton button="청년으로 가입하기" />
+            <SubmitButton button="청년으로 가입하기" />
           </Input>
           <SubDescription>이미 LOFO 사용자이신가요?<br/>가입하신 전화번호로 이용할 수 있어요.
           <Link to="/auth/login-youth/nickname" style={{ cursor: "pointer", textDecoration: "none"}}>임시버튼</Link></SubDescription>
