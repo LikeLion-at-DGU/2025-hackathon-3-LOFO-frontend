@@ -32,3 +32,5 @@ __pycache__/
 .env
 *.env
 .env.*
+
+/2025-hackathon-3-LOFO-frontend.git/
