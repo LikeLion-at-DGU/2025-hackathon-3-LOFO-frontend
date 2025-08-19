@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import * as S from "../components/Styled";
-import Topnav from "../../../components/Topnav/Topnav";
+import NopoTopnav from "../../../components/Topnav/NopoTopnav";
 import { HeadingContainer, Title, Subtitle } from "../components/Heading";
 
 const CategoryBox = styled.div`

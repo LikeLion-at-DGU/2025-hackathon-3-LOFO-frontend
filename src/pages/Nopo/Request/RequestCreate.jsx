@@ -48,7 +48,7 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import Topnav from "../../../components/Topnav/Topnav";
+import NopoTopnav from "../../../components/Topnav/NopoTopnav";
 import { HeadingContainer, Title, Subtitle } from "../components/Heading";
 
 const Wrapper = styled.div`
@@ -210,7 +210,7 @@ const RequestCreate = () => {
 
   return (
     <Wrapper>
-      <Topnav />
+      <NopoTopnav />
       <HeadingContainer>
         <Title>가게 고민을 청년과 함께 해결해보세요</Title>
         <Subtitle>
