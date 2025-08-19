@@ -19,7 +19,7 @@ font-weight: 600;
 line-height: normal;
 `
 
-function InputButton(props) {
+function SubmitButton(props) {
   return (
     <Button>
       {props.button}
@@ -27,4 +27,4 @@ function InputButton(props) {
   );
 };
 
-export default InputButton;
+export default SubmitButton;

@@ -4,7 +4,7 @@ import logo from "../../assets/logo.svg";
 const Nav = styled.div`
     display: flex;
     width: 100vw;
-    height: 88px;
+    height: 64px;
     padding: 29px 32px;
     align-items: center;
     border-bottom: 1px solid var(--line-001, #BABABA);
