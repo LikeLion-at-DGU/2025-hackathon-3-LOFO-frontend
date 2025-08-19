@@ -4,7 +4,7 @@ import logo from "../../assets/logo.svg";
 const Nav = styled.div`
     display: flex;
     width: 100vw;
-    height: 88px;
+    height: 64px;
     padding: 29px 32px;
     align-items: center;
     border-bottom: 1px solid var(--line-001, #BABABA);
@@ -18,7 +18,7 @@ const Nav = styled.div`
 function Topnav() {
   return (
     <Nav>
-      <img src={logo} alt="로고"/>
+      <img src={logo} alt="로고-purple"/>
     </Nav>
   );
 };
