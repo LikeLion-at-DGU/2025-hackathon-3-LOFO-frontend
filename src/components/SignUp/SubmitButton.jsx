@@ -17,14 +17,17 @@ font-size: 22px;
 font-style: normal;
 font-weight: 600;
 line-height: normal;
+
+opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
 `
 
-function SubmitButton(props) {
+function SubmitButton ({ button, type = "submit", disabled, onClick }) {
   return (
-    <Button>
-      {props.button}
+    <Button type={type} disabled={disabled} onClick={onClick}>
+      {button}
     </Button>
   );
-};
+}
 
 export default SubmitButton;

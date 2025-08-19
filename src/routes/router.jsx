@@ -3,8 +3,9 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import { Layout } from "../App";
 import Onboarding from "../pages/Onboarding/Onboarding";
-import SignUp from "../pages/Youth/SignUp/SignUp";
-import SignUpNickname from "../pages/Youth/SignUp/SignUpNickname";
+
+import YouthSignUp from "../pages/Youth/YouthSignUp/YouthSignUp";
+import YouthSignUpNickname from "../pages/Youth/YouthSignUp/YouthSignUpNickname";
 
 import YouthHome from "../pages/Youth/Home/YouthHome";
 import YouthHomeAI from "../pages/Youth/Home/YouthHomeAI";
@@ -31,8 +32,9 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Onboarding /> },
 
-      { path: "auth/login-youth", element: <SignUp /> },
-      { path: "auth/login-youth/nickname", element: <SignUpNickname /> },
+      { path: "auth/login-youth", element: <YouthSignUp /> },
+      { path: "auth/login-youth/nickname", element: <YouthSignUpNickname /> },
+  
       { path: "youth/home", element: <YouthHome /> },
       { path: "youth/home/ai", element: <YouthHomeAI /> },
 
