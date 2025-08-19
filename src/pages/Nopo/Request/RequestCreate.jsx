@@ -49,9 +49,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Topnav from "../../../components/Topnav/Topnav";
+import { HeadingContainer, Title, Subtitle } from "../components/Heading";
 
 const Wrapper = styled.div`
-  width: 1440px;
+  width: 100%;
   /* gap: 100px; */
   min-height: 100vh;
   padding-top: 88px;
@@ -61,21 +62,6 @@ const Wrapper = styled.div`
   align-items: center;
   background-color: #f9fafb;
   overflow-y: auto;
-`;
-
-const Title = styled.h1`
-  font-family: Pretendard Variable;
-  font-weight: 700;
-  font-size: 30px;
-  line-height: 100%;
-  margin-bottom: 16px;
-`;
-
-const Subtitle = styled.p`
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 32px;
-  text-align: center;
 `;
 
 const Form = styled.form`
@@ -161,11 +147,11 @@ const CategoryBox = styled.div`
 
 const CategoryButton = styled.button`
   width: 150px;
-height: 99px;
-opacity: 1;
-gap: 10px;
-border-radius: 20px;
-border-width: 1px;
+  height: 99px;
+  opacity: 1;
+  gap: 10px;
+  border-radius: 20px;
+  border-width: 1px;
 
   padding: 16px 32px;
   border: 1px solid rgba(186, 186, 186, 1);
@@ -183,8 +169,6 @@ border-width: 1px;
   &:hover {
     background-color: ${({ selected }) =>
       selected ? "rgba(225, 149, 67, 1)" : "#f5f5f5"};
-  }
-
   }
 `;
 
@@ -227,11 +211,14 @@ const RequestCreate = () => {
   return (
     <Wrapper>
       <Topnav />
-      <Title>가게 고민을 청년과 함께 해결해보세요</Title>
-      <Subtitle>
-        요청은 청년이 지원하기 전까지만 수정할 수 있습니다. <br />
-        지원이 시작되면 수정과 중단은 불가능합니다.
-      </Subtitle>
+      <HeadingContainer>
+        <Title>가게 고민을 청년과 함께 해결해보세요</Title>
+        <Subtitle>
+          요청은 청년이 지원하기 전까지만 수정할 수 있습니다.
+          <br />
+          지원이 시작되면 수정과 중단은 불가능합니다.
+        </Subtitle>
+      </HeadingContainer>
 
       <Form onSubmit={handleSubmit}>
         <FormGroup>
@@ -259,7 +246,7 @@ const RequestCreate = () => {
           <FileUpload>
             <input
               type="file"
-              accept="image/*"
+              // accept="image/*"
               onChange={(e) => setFile(e.target.files[0])}
             />
           </FileUpload>
