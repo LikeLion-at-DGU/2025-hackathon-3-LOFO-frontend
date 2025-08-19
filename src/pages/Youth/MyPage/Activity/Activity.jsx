@@ -1,5 +1,4 @@
 import styled from "styled-components";
-// 네 폴더트리 기준 (MyPage → Home)
 import PostGrid from "../../Home/components/Posts/PostGrid.jsx";
 import PostCard from "../../Home/components/Posts/PostGrid.jsx";
 

@@ -3,8 +3,9 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import { Layout } from "../App";
 import Onboarding from "../pages/Onboarding/Onboarding";
-import SignUp from "../pages/Youth/SignUp/SignUp";
-import SignUpNickname from "../pages/Youth/SignUp/SignUpNickname";
+
+import YouthSignUp from "../pages/Youth/YouthSignUp/YouthSignUp";
+import YouthSignUpNickname from "../pages/Youth/YouthSignUp/YouthSignUpNickname";
 
 import YouthHome from "../pages/Youth/Home/YouthHome";
 import YouthHomeAI from "../pages/Youth/Home/YouthHomeAI";
@@ -22,6 +23,7 @@ import RequestEdit from "../pages/Nopo/Request/RequestEdit";
 import Received from "../pages/Nopo/Received/Received";
 import ReceivedFeedback from "../pages/Nopo/Received/ReceivedFeedback";
 
+import Community from "../pages/Lofo/Community";
 
 const router = createBrowserRouter([
   {
@@ -29,15 +31,15 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Onboarding /> },
-      
-      { path: "auth/login-youth", element: <SignUp /> },
-      { path: "auth/login-youth/nickname", element: <SignUpNickname /> },
+
+      { path: "auth/login-youth", element: <YouthSignUp /> },
+      { path: "auth/login-youth/nickname", element: <YouthSignUpNickname /> },
       { path: "youth/home", element: <YouthHome /> },
       { path: "youth/home/ai", element: <YouthHomeAI /> },
 
       { path: "youth/mission", element: <MissionEditor /> },
       { path: "youth/mission/plan", element: <MissionPlan /> },
-      
+
       { path: "youth/mypage", element: <YouthMyPage /> },
       { path: "youth/mypage/portfolio", element: <Portfolio /> },
       { path: "youth/mypage/growth", element: <Growth /> },
@@ -48,6 +50,8 @@ const router = createBrowserRouter([
       { path: "nopo/request/edit", element: <RequestEdit /> },
       { path: "nopo/received", element: <Received /> },
       { path: "nopo/received/feedback", element: <ReceivedFeedback /> },
+
+      { path: "lofo/community", element: <Community /> },
     ],
   },
 ]);

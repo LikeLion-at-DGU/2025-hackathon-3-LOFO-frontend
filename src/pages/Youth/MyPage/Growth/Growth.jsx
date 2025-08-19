@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { ProfileCard } from "./components/ProfileCard.jsx";
 import { FeedbackList } from "./components/FeedbackList.jsx";
 import { LofoPickSection } from "./components/LofoPickSection.jsx";
-import EmptyState from "./EmptyState.jsx";
+import EmptyState from "../EmptyState.jsx";
 
 
 const FEEDBACKS = [];     // []면 빈 상태
