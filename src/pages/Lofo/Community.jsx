@@ -3,13 +3,7 @@ import * as S from "../components/Styled";
 import NopoTopnav from "../../../components/Topnav/NopoTopnav";
 import { HeadingContainer, Title, Subtitle } from "../components/Heading";
 
-const ReceivedContainer = styled.div`
-  display: flex;
-  align-self: stretch;
-  padding: 50px 60px 50px 60px;
-`;
-
-const Received = () => {
+const Community = () => {
   return (
     <S.Wrapper>
       <NopoTopnav />
@@ -27,4 +21,4 @@ const Received = () => {
   );
 };
 
-export default Received;
+export default Community;

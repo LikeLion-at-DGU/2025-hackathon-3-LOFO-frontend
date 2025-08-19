@@ -48,7 +48,7 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import Topnav from "../../../components/Topnav/Topnav";
+import NopoTopnav from "../../../components/Topnav/NopoTopnav";
 
 const Wrapper = styled.div`
   width: 1440px;
@@ -226,7 +226,7 @@ const RequestEdit = () => {
 
   return (
     <Wrapper>
-      <Topnav />
+      <NopoTopnav />
       <Title>요청 내용을 수정하고 싶으신가요?</Title>
       <Subtitle>
         기존에 작성한 내용을 확인하고 필요한 부분을 고쳐주세요.

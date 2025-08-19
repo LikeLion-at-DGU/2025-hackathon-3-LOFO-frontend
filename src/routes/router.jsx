@@ -22,6 +22,7 @@ import RequestEdit from "../pages/Nopo/Request/RequestEdit";
 import Received from "../pages/Nopo/Received/Received";
 import ReceivedFeedback from "../pages/Nopo/Received/ReceivedFeedback";
 
+import Community from "../pages/Lofo/Community";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Onboarding /> },
-      
+
       { path: "auth/login-youth", element: <SignUp /> },
       { path: "auth/login-youth/nickname", element: <SignUpNickname /> },
       { path: "youth/home", element: <YouthHome /> },
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
 
       { path: "youth/mission", element: <MissionEditor /> },
       { path: "youth/mission/plan", element: <MissionPlan /> },
-      
+
       { path: "youth/mypage", element: <YouthMyPage /> },
       { path: "youth/mypage/portfolio", element: <Portfolio /> },
       { path: "youth/mypage/growth", element: <Growth /> },
@@ -48,6 +49,8 @@ const router = createBrowserRouter([
       { path: "nopo/request/edit", element: <RequestEdit /> },
       { path: "nopo/received", element: <Received /> },
       { path: "nopo/received/feedback", element: <ReceivedFeedback /> },
+
+      { path: "lofo/community", element: <Community /> },
     ],
   },
 ]);

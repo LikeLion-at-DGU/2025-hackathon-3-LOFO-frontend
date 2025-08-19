@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Scroll1 from "./components/Scroll1";
 import Scroll2 from "./components/Scroll2";
-import Topnav from "../../../components/Topnav/Topnav";
+import NopoTopnav from "../../../components/Topnav/NopoTopnav";
 
 const Container = styled.div`
   /* height: 100vh; */
@@ -19,7 +19,7 @@ const NopoHome = () => {
   return (
     <>
       <Container>
-        <Topnav />
+        <NopoTopnav />
         <Scroll1 />
         <Scroll2 />
       </Container>
