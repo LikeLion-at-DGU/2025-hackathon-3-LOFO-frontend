@@ -34,6 +34,7 @@ const router = createBrowserRouter([
 
       { path: "auth/login-youth", element: <YouthSignUp /> },
       { path: "auth/login-youth/nickname", element: <YouthSignUpNickname /> },
+  
       { path: "youth/home", element: <YouthHome /> },
       { path: "youth/home/ai", element: <YouthHomeAI /> },
 
