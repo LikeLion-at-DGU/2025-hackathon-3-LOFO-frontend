@@ -18,3 +18,18 @@ export async function signupYouthByNickname({ phone_num, nickname }) {
   });
   return data; // { message, redirect }
 }
+
+export async function signupNopoByPhone({ phone_num }) {
+  const { data } = await instance.post("/auth/login-nopo", {
+    phone_num,
+  });
+  return data; // { message, redirect }
+}
+
+export async function signupNopoByNickname({ phone_num, nickname }) {
+  const { data } = await instance.post("/auth/login-nopo", {
+    phone_num,
+    nickname,
+  });
+  return data; // { message, redirect }
+}

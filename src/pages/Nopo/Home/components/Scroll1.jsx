@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 1440px;
@@ -17,7 +18,6 @@ const Title = styled.h1`
   font-weight: 700;
   font-style: Bold;
   font-size: 48px;
-  leading-trim: NONE;
   line-height: 100%;
   letter-spacing: 0%;
   text-align: center;
@@ -57,12 +57,13 @@ const ButtonContent = styled.div`
   font-weight: 600;
   font-style: SemiBold;
   font-size: 28px;
-  leading-trim: NONE;
   line-height: 100%;
   letter-spacing: 0%;
 `;
 
 const Scroll1 = () => {
+  const navigate = useNavigate();
+
   return (
     <Wrapper>
       <Title>
@@ -72,7 +73,9 @@ const Scroll1 = () => {
       </Title>
       <Subtitle>내 가게에 대한 요청을 입력하고 도움을 얻을 수 있어요</Subtitle>
       <Button>
-        <ButtonContent>요청 쓰러가기</ButtonContent>
+        <ButtonContent onClick={() => navigate(`/nopo/request/create`)}>
+          요청 쓰러가기
+        </ButtonContent>
       </Button>
     </Wrapper>
   );

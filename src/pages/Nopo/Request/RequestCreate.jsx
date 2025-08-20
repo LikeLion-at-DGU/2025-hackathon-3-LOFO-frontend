@@ -1,55 +1,11 @@
-// import React, { useState } from "react";
-// import styled from "styled-components";
-// import Topnav from "../../../components/Topnav/Topnav";
-
-// const Wrapper = styled.div`
-//   width: 1440px;
-//   height: 1024px;
-//   padding-top: 88px;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-//   text-align: center;
-// `;
-
-// const Title = styled.h1`
-//   font-family: Pretendard Variable;
-//   font-weight: 700;
-//   font-style: Bold;
-//   font-size: 48px;
-//   line-height: 100%;
-//   letter-spacing: 0%;
-// `;
-
-// const Subtitle = styled.p`
-//   font-size: 1rem;
-//   color: #555;
-//   margin-bottom: 24px;
-// `;
-
-// const RequestCreate = () => {
-//   return (
-//     <Wrapper>
-//       <Topnav />
-//       <Title>가게 고민을 청년과 함께 해결해보세요</Title>
-//       <Subtitle>
-//         요청은 청년이 지원하기 전까지만 수정할 수 있습니다. <br /> 지원이
-//         시작되면 수정과 중단은 불가능합니다.
-//       </Subtitle>
-//       {/* <Button>
-//         <ButtonContent>요청 등록하기</ButtonContent>
-//       </Button> */}
-//     </Wrapper>
-//   );
-// };
-
-// export default RequestCreate;
-
 import React, { useState } from "react";
 import styled from "styled-components";
+import * as S from "../components/Styled";
 import NopoTopnav from "../../../components/Topnav/NopoTopnav";
 import { HeadingContainer, Title, Subtitle } from "../components/Heading";
+import axios from "axios";
+import { createRequest } from "../../../apis/request";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -187,6 +143,154 @@ const SubmitButton = styled.button`
     background-color: #d1d5db;
   }
 `;
+
+// const RequestCreate = () => {
+//   const [storeName, setStoreName] = useState("");
+//   const [title, setTitle] = useState("");
+//   const [storeLink, setStoreLink] = useState("");
+//   const [selectedCategory, setSelectedCategory] = useState("");
+//   const [content, setContent] = useState("");
+//   const [file, setFile] = useState(null);
+//   const [previewUrl, setPreviewUrl] = useState("");
+
+//   const navigate = useNavigate();
+
+//   const categories = [
+//     "홍보영상",
+//     "포스터·전단",
+//     "SNS 이미지",
+//     "인테리어 제안",
+//     "홍보기획",
+//     "광고문구",
+//   ];
+
+//   const categoryMap = {
+//     홍보영상: "PROMOTION_VIDEO",
+//     "포스터·전단": "POSTER_FLYER",
+//     "SNS 이미지": "SNS_IMAGE",
+//     "인테리어 제안": "INTERIOR_SUGGESTION",
+//     홍보기획: "PROMOTION_PLANNING",
+//     광고문구: "AD_TEXT",
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     try {
+//       await createRequest({
+//         store_name: storeName,
+//         title,
+//         category: categoryMap[selectedCategory],
+//         url: storeLink,
+//         content,
+//         file,
+//       });
+
+//       navigate("/nopo/request");
+//     } catch (error) {
+//       console.error("요청 등록 실패:", error);
+//       alert("요청 등록에 실패했습니다. 다시 시도해주세요.");
+//     }
+//   };
+
+//   return (
+//     <Wrapper>
+//       <NopoTopnav />
+//       <HeadingContainer>
+//         <Title>가게 고민을 청년과 함께 해결해보세요</Title>
+//         <Subtitle>
+//           요청은 청년이 지원하기 전까지만 수정할 수 있습니다.
+//           <br />
+//           지원이 시작되면 수정과 중단은 불가능합니다.
+//         </Subtitle>
+//       </HeadingContainer>
+
+//       <form onSubmit={handleSubmit}>
+//         {/* 가게명 */}
+//         <div>
+//           <label>가게명 *</label>
+//           <input
+//             type="text"
+//             value={storeName}
+//             onChange={(e) => setStoreName(e.target.value)}
+//             placeholder="예: 멋사노포"
+//           />
+//         </div>
+
+//         {/* 요청 제목 */}
+//         <div>
+//           <label>요청 제목 *</label>
+//           <input
+//             type="text"
+//             value={title}
+//             onChange={(e) => setTitle(e.target.value)}
+//             placeholder="예: 홍보기획"
+//           />
+//         </div>
+
+//         {/* 가게 링크 */}
+//         <div>
+//           <label>가게 링크 *</label>
+//           <input
+//             type="url"
+//             value={storeLink}
+//             onChange={(e) => setStoreLink(e.target.value)}
+//             placeholder="예: https://haru-coffee.com"
+//           />
+//         </div>
+
+//         {/* 카테고리 */}
+//         <div>
+//           <label>요청 카테고리 *</label>
+//           <div>
+//             {categories.map((category) => (
+//               <button
+//                 key={category}
+//                 type="button"
+//                 onClick={() => setSelectedCategory(category)}
+//                 style={{
+//                   backgroundColor:
+//                     selectedCategory === category ? "#e19543" : "#fff",
+//                   color: selectedCategory === category ? "#fff" : "#333",
+//                 }}
+//               >
+//                 {category}
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+
+//         {/* 요청 내용 */}
+//         <div>
+//           <label>청년에게 부탁할 내용 *</label>
+//           <input
+//             type="text"
+//             value={content}
+//             onChange={(e) => setContent(e.target.value)}
+//             placeholder="예: 신메뉴 전단 디자인 요청"
+//           />
+//         </div>
+
+//         {/* 이미지 */}
+//         <div>
+//           <label>가게 사진</label>
+//           <input
+//             type="file"
+//             onChange={(e) => {
+//               setFile(e.target.files[0]);
+//               setPreviewUrl(URL.createObjectURL(e.target.files[0]));
+//             }}
+//           />
+//           {previewUrl && <img src={previewUrl} alt="미리보기" width="200" />}
+//         </div>
+
+//         <SubmitButton type="submit">요청 등록하기</SubmitButton>
+//       </form>
+//     </Wrapper>
+//   );
+// };
+
+// export default RequestCreate;
 
 const RequestCreate = () => {
   const [storeName, setStoreName] = useState("");

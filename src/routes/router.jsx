@@ -17,7 +17,11 @@ import Portfolio from "../pages/Youth/MyPage/Portfolio/Portfolio";
 import Growth from "../pages/Youth/MyPage/Growth/Growth";
 import Activity from "../pages/Youth/MyPage/Activity/Activity";
 
+import NopoSignUp from "../pages/Nopo/NopoSignUp/NopoSignUp";
+import NopoSignUpNickname from "../pages/Nopo/NopoSignUp/NopoSignUpNickname";
+
 import NopoHome from "../pages/Nopo/Home/NopoHome";
+import Request from "../pages/Nopo/Request/Request";
 import RequestCreate from "../pages/Nopo/Request/RequestCreate";
 import RequestEdit from "../pages/Nopo/Request/RequestEdit";
 import Received from "../pages/Nopo/Received/Received";
@@ -34,7 +38,7 @@ const router = createBrowserRouter([
 
       { path: "auth/login-youth", element: <YouthSignUp /> },
       { path: "auth/login-youth/nickname", element: <YouthSignUpNickname /> },
-  
+
       { path: "youth/home", element: <YouthHome /> },
       { path: "youth/home/ai", element: <YouthHomeAI /> },
 
@@ -46,7 +50,11 @@ const router = createBrowserRouter([
       { path: "youth/mypage/growth", element: <Growth /> },
       { path: "youth/mypage/activity", element: <Activity /> },
 
+      { path: "auth/login-nopo", element: <NopoSignUp /> },
+      { path: "auth/login-nopo/nickname", element: <NopoSignUpNickname /> },
+
       { path: "nopo/home", element: <NopoHome /> },
+      { path: "nopo/request", element: <Request /> },
       { path: "nopo/request/create", element: <RequestCreate /> },
       { path: "nopo/request/edit", element: <RequestEdit /> },
       { path: "nopo/received", element: <Received /> },

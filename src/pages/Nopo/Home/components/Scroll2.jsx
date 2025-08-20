@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   /* min-height: 100vh; */
@@ -92,6 +93,8 @@ const Button = styled.button`
 `;
 
 const Scroll2 = () => {
+  const navigate = useNavigate();
+
   return (
     <Wrapper>
       <StatusBar>
@@ -125,7 +128,7 @@ const Scroll2 = () => {
         ))}
       </CardList>
 
-      <Button>모든 요청 보기</Button>
+      <Button onClick={() => navigate(`/nopo/request`)}>모든 요청 보기</Button>
     </Wrapper>
   );
 };
