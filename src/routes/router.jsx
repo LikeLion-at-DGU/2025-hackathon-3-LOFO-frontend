@@ -2,8 +2,11 @@ import { createBrowserRouter } from "react-router-dom";
 
 import App from "../App";
 import { Layout } from "../App";
+
+//Onboarding
 import Onboarding from "../pages/Onboarding/Onboarding";
 
+//Youth
 import YouthSignUp from "../pages/Youth/YouthSignUp/YouthSignUp";
 import YouthSignUpNickname from "../pages/Youth/YouthSignUp/YouthSignUpNickname";
 
@@ -11,12 +14,9 @@ import YouthHome from "../pages/Youth/Home/YouthHome";
 import YouthHomeAI from "../pages/Youth/Home/YouthHomeAI";
 import MissionEditor from "../pages/Youth/Mission/MissionEditor";
 import MissionPlan from "../pages/Youth/Mission/MissionPlan";
-
 import YouthMyPage from "../pages/Youth/MyPage/YouthMyPage";
-import Portfolio from "../pages/Youth/MyPage/Portfolio/Portfolio";
-import Growth from "../pages/Youth/MyPage/Growth/Growth";
-import Activity from "../pages/Youth/MyPage/Activity/Activity";
 
+//Nopo
 import NopoSignUp from "../pages/Nopo/NopoSignUp/NopoSignUp";
 import NopoSignUpNickname from "../pages/Nopo/NopoSignUp/NopoSignUpNickname";
 
@@ -34,8 +34,11 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
+
+      //Onboarding
       { index: true, element: <Onboarding /> },
 
+      //Youth
       { path: "auth/login-youth", element: <YouthSignUp /> },
       { path: "auth/login-youth/nickname", element: <YouthSignUpNickname /> },
 
@@ -46,10 +49,8 @@ const router = createBrowserRouter([
       { path: "youth/mission/plan", element: <MissionPlan /> },
 
       { path: "youth/mypage", element: <YouthMyPage /> },
-      { path: "youth/mypage/portfolio", element: <Portfolio /> },
-      { path: "youth/mypage/growth", element: <Growth /> },
-      { path: "youth/mypage/activity", element: <Activity /> },
 
+      //Nopo
       { path: "auth/login-nopo", element: <NopoSignUp /> },
       { path: "auth/login-nopo/nickname", element: <NopoSignUpNickname /> },
 

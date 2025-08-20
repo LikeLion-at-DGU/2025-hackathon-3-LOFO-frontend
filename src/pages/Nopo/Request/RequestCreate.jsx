@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
-import * as S from "../components/Styled";
 import NopoTopnav from "../../../components/Topnav/NopoTopnav";
 import { HeadingContainer, Title, Subtitle } from "../components/Heading";
-import axios from "axios";
-import { createRequest } from "../../../apis/request";
+import { createRequest } from "../../../apis/nopo_request";
 import { useNavigate } from "react-router-dom";
+import * as S from "../components/Styled";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -46,7 +45,7 @@ const Label = styled.label`
 `;
 
 const Required = styled.span`
-  color: red;
+  color: #ef4444;
 `;
 
 const Desc = styled.p`
@@ -57,6 +56,17 @@ const Desc = styled.p`
   line-height: 100%;
   letter-spacing: 0%;
   color: rgba(79, 79, 79, 1);
+`;
+
+const Textarea = styled.textarea`
+  width: 100%;
+  min-height: 120px;
+  padding: 14px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: vertical;
+  &::placeholder { color: #aaa; }
 `;
 
 const Input = styled.input`
@@ -143,6 +153,217 @@ const SubmitButton = styled.button`
     background-color: #d1d5db;
   }
 `;
+
+const Preview = styled.img`
+  margin-top: 12px;
+  max-width: 280px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+`;
+
+//--------------------------- ^ 스타일----------------------------------//
+
+const ErrorText = styled.p` color: #dc2626; font-size: 14px; `
+
+export default function RequestCreate() {
+  const navigate = useNavigate();
+
+  // form state
+  const [storeName, setStoreName] = useState("");
+  const [title, setTitle] = useState("");          // ✅ 백에 전송됨
+  const [storeLink, setStoreLink] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [content, setContent] = useState("");
+  const [file, setFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  //에러메시지
+  const [errMsg, setErrMsg] = useState("");
+  const [urlError, setUrlError] = useState("");
+  const [submitError, setSubmitError] = useState("");
+
+  const categories = [
+    "홍보영상", "포스터·전단", "SNS 이미지",
+    "인테리어 제안", "홍보기획", "광고문구",
+  ];
+  const categoryMap = useMemo(() => ({
+    "홍보영상": "PROMOTION_VIDEO",
+    "포스터·전단": "POSTER_FLYER",
+    "SNS 이미지": "SNS_IMAGE",
+    "인테리어 제안": "INTERIOR_SUGGESTION",
+    "홍보기획": "PROMOTION_PLANNING",
+    "광고문구": "AD_TEXT",
+  }), []);
+
+
+  const isUrl = (v="") => {
+    try { new URL(v); return true; } catch { return false; }
+  };
+  const isValid = storeName && title && isUrl(storeLink) && selectedCategory && content;
+
+  const onSelectFile = (e) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    const max = 5 * 1024 * 1024; // 5MB
+    if (f.size > max) {
+      setErrMsg("이미지는 5MB 이하만 업로드할 수 있어요.");
+      return;
+    }
+    setErrMsg("");
+    setFile(f);
+    setPreviewUrl(URL.createObjectURL(f));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isValid) {
+      setErrMsg("필수 항목을 모두 입력해 주세요.");
+      return;
+    }
+    const categoryEnum = categoryMap[selectedCategory];
+    if (!categoryEnum) {
+      setErrMsg("카테고리를 다시 선택해 주세요.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setErrMsg("");
+      await createRequest({
+        store_name: storeName,
+        title,
+        category: categoryEnum,
+        url: storeLink,
+        content,
+        file,              // 없으면 request.js에서 자동 제외
+      });
+      // 성공 시 이동 경로
+      navigate("/nopo/request");
+    } catch (err) {
+      console.error(err);
+      const msg = err?.response?.data?.message || err?.message || "요청 등록에 실패했어요.";
+      setErrMsg(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Wrapper>
+      <NopoTopnav />
+      <HeadingContainer>
+        <Title>가게 고민을 청년과 함께 해결해보세요</Title>
+        <Subtitle>
+          요청은 청년이 지원하기 전까지만 수정할 수 있습니다.<br/>
+          지원이 시작되면 수정과 중단은 불가능합니다.
+        </Subtitle>
+      </HeadingContainer>
+
+      <Form onSubmit={handleSubmit}>
+        {/* 가게명 */}
+        <FormGroup>
+          <Label>가게명을 입력해주세요. <Required>*</Required></Label>
+          <Input
+            type="text"
+            value={storeName}
+            onChange={(e) => setStoreName(e.target.value)}
+            placeholder="예: 멋사노포"
+            required
+          />
+        </FormGroup>
+
+        {/* 요청 제목 */}
+        <FormGroup>
+          <Label>요청 제목을 입력해주세요. <Required>*</Required></Label>
+          <Input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="예: 홍보기획"
+            required
+          />
+        </FormGroup>
+
+        {/* 가게 사진 업로드 */}
+        <FormGroup>
+          <Label>가게 사진을 올려주세요. <Required>*</Required></Label>
+          <Desc>요청과 관련된 사진 1장을 업로드해주세요.</Desc>
+          <FileUpload>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={onSelectFile}
+            />
+            {previewUrl && <Preview src={previewUrl} alt="미리보기" />}
+          </FileUpload>
+        </FormGroup>
+
+        {/* 가게 링크 */}
+        <FormGroup>
+          <Label>가게 링크를 첨부해주세요. <Required>*</Required></Label>
+          <Desc>네이버 지도에 등록된 가게 링크를 입력해주세요.</Desc>
+          <Input
+            type="url"
+            value={storeLink}
+            onChange={(e) => setStoreLink(e.target.value)}
+            placeholder="예: https://map.naver.com/..."
+            required
+            onBlur={() => {
+            if (!isUrl(storeLink)) {
+              setUrlError("올바른 URL 형식이 아닙니다.");
+            } else {
+              setUrlError("");
+            }
+          }}
+            
+          />
+          {urlError && <ErrorText>{urlError}</ErrorText>}
+          
+        </FormGroup>
+
+        {/* 카테고리 */}
+        <FormGroup>
+          <Label>요청 카테고리를 선택해주세요. <Required>*</Required></Label>
+          <Desc>가장 알맞은 카테고리를 골라주세요.</Desc>
+          <CategoryBox>
+            {categories.map((c) => (
+              <CategoryButton
+                key={c}
+                type="button"                // ✅ 중요
+                onClick={() => setSelectedCategory(c)}
+                selected={selectedCategory === c}
+              >
+                {c}
+              </CategoryButton>
+            ))}
+          </CategoryBox>
+        </FormGroup>
+
+        {/* 요청 내용 */}
+        <FormGroup>
+          <Label>청년에게 부탁하고 싶은 내용을 적어주세요. <Required>*</Required></Label>
+          <Desc>구체적으로 적을수록 이해하기 쉬워요.</Desc>
+          <Textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="예: 신메뉴 출시 기념 전단지를 트렌디한 느낌으로 부탁드려요."
+            required
+          />
+        </FormGroup>
+
+        {errMsg && <ErrorText>{errMsg}</ErrorText>}
+
+        <SubmitButton type="submit" disabled={!isValid || loading}>
+          {loading ? "등록 중..." : "요청 등록하기"}
+        </SubmitButton>
+      </Form>
+    </Wrapper>
+  );
+}
+
+
+// 주석처리 되어있던 부분 남겨둡니다
 
 // const RequestCreate = () => {
 //   const [storeName, setStoreName] = useState("");
@@ -291,129 +512,3 @@ const SubmitButton = styled.button`
 // };
 
 // export default RequestCreate;
-
-const RequestCreate = () => {
-  const [storeName, setStoreName] = useState("");
-  const [storeLink, setStoreLink] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [content, setContent] = useState("");
-  const [file, setFile] = useState(null);
-
-  const categories = [
-    "홍보영상",
-    "포스터·전단",
-    "SNS 이미지",
-    "인테리어 제안",
-    "홍보기획",
-    "광고문구",
-  ];
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
-  return (
-    <Wrapper>
-      <NopoTopnav />
-      <HeadingContainer>
-        <Title>가게 고민을 청년과 함께 해결해보세요</Title>
-        <Subtitle>
-          요청은 청년이 지원하기 전까지만 수정할 수 있습니다.
-          <br />
-          지원이 시작되면 수정과 중단은 불가능합니다.
-        </Subtitle>
-      </HeadingContainer>
-
-      <Form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label>
-            가게명을 입력해주세요. <Required>*</Required>
-          </Label>
-          <Input
-            type="text"
-            value={storeName}
-            onChange={(e) => setStoreName(e.target.value)}
-            placeholder="예: 멋사노포"
-          />
-        </FormGroup>
-
-        {/* 가게 사진 업로드  */}
-        <FormGroup>
-          <Label>
-            가게 사진을 올려주세요. <Required>*</Required>
-          </Label>
-          <Desc>
-            요청과 관련된 자료 사진을 업로드해주세요.
-            <br />
-            가게 사진이 아니어도 되며, 한 장만 첨부 가능합니다.
-          </Desc>
-          <FileUpload>
-            <input
-              type="file"
-              // accept="image/*"
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-          </FileUpload>
-        </FormGroup>
-
-        {/* 가게 링크 */}
-        <FormGroup>
-          <Label>
-            가게 링크를 첨부해주세요. <Required>*</Required>
-          </Label>
-          <Desc>네이버 지도에 등록된 가게 링크를 입력해주세요.</Desc>
-          <Input
-            type="url"
-            value={storeLink}
-            onChange={(e) => setStoreLink(e.target.value)}
-            placeholder="예: https://www.naver.com/"
-          />
-        </FormGroup>
-
-        {/* 카테고리 */}
-        <FormGroup>
-          <Label>
-            요청 카테고리를 선택해주세요. <Required>*</Required>
-          </Label>
-          <Desc>
-            청년들이 더 잘 이해할 수 있도록 가장 알맞은 카테고리를 골라주세요.
-          </Desc>
-          <CategoryBox>
-            {categories.map((category) => (
-              <CategoryButton
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                selected={selectedCategory === category}
-              >
-                {category}
-              </CategoryButton>
-            ))}
-          </CategoryBox>
-        </FormGroup>
-
-        {/* 요청 내용 */}
-        <FormGroup>
-          <Label>
-            청년에게 부탁하고 싶은 내용을 적어주세요. <Required>*</Required>
-          </Label>
-          <Desc>
-            요청은 자유롭게 작성할 수 있으며, 구체적으로 적을수록 청년이
-            이해하기 쉽습니다.
-            <br />
-            원하는 분위기나 목적을 적어주시면 청년이 더 잘 도와드릴 수 있어요.
-          </Desc>
-
-          <Input
-            type="text"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="예: 신메뉴 출시 기념으로 사용할 전단지를 트렌디한 느낌 원해요."
-          />
-        </FormGroup>
-        <SubmitButton type="submit">요청 등록하기</SubmitButton>
-      </Form>
-    </Wrapper>
-  );
-};
-
-export default RequestCreate;
