@@ -15,24 +15,13 @@ const Body = styled.div`
 const Title = styled.h3` font-size: 16px; font-weight: 700; `;
 const Meta = styled.div` font-size: 12px; opacity: .9; `;
 
-export default function PostCard({ item = {}, onClick = () => {} }) {
-  const {
-    title = "",
-    category = "",
-    region = "",
-    thumbnailUrl = "",
-  } = item;
-
-  const thumb = typeof thumbnailUrl === "string" && thumbnailUrl.trim()
-    ? thumbnailUrl
-    : null; // ✅ 빈 src 방지
-
+export default function PostCard({ item, onClick }) {
   return (
-    <Card onClick={() => onClick(item)}>
-      {thumb ? <Thumb src={thumb} alt={title} /> : null}
+    <Card onClick={() => onClick?.(item)}>
+      <Thumb src={item.thumbnailUrl} alt={item.title} />
       <Body>
-        <Title>{title}</Title>
-        <Meta>{region}{region && category ? " · " : ""}{category}</Meta>
+        <Title>{item.title}</Title>
+        <Meta>{item.region} · {item.category}</Meta>
       </Body>
     </Card>
   );

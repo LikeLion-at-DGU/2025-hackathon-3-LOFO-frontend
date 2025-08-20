@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import * as S from "../Styled.js";
 import PostGrid from "../../Home/components/Posts/PostGrid.jsx";
 import PostCard from "../../Home/components/Posts/PostGrid.jsx";
 
@@ -24,120 +24,50 @@ const LIKED_WORKS = [
 
 export default function Activity() {
   return (
-    <Wrap>
+    <S.Wrap>
       {/* 찜한 요청 */}
-      <Section>
-        <SectionHead>
-          <Title>찜한 요청</Title>
-          <Count>{WISHLIST.length}개</Count>
-        </SectionHead>
+      <S.Section>
+        <S.SectionHead>
+          <S.Title>찜한 요청</S.Title>
+          <S.Count>{WISHLIST.length}개</S.Count>
+        </S.SectionHead>
 
-        <CardPanel>
+        <S.CardPanel>
           <PostGrid
             items={WISHLIST}
             renderItem={(item) => (
-              <OverlayWrap key={item.id}>
+              <S.OverlayWrap key={item.id}>
                 <PostCard {...item} />
                 {item.cta && (
-                  <CTAOverlay>
-                    <CTAButton
+                  <S.CTAOverlay>
+                    <S.CTAButton
                       type="button"
                       onClick={() => console.log("미션 참여하기", item.id)}
                     >
                       미션 참여하기
-                    </CTAButton>
-                  </CTAOverlay>
+                    </S.CTAButton>
+                  </S.CTAOverlay>
                 )}
-              </OverlayWrap>
+              </S.OverlayWrap>
             )}
           />
-        </CardPanel>
-      </Section>
+        </S.CardPanel>
+      </S.Section>
 
       {/* 좋아요 누른 작품 */}
-      <Section>
-        <SectionHead>
-          <Title>좋아요 누른 작품</Title>
-          <Count>{LIKED_WORKS.length}개</Count>
-        </SectionHead>
+      <S.Section>
+        <S.SectionHead>
+          <S.Title>좋아요 누른 작품</S.Title>
+          <S.Count>{LIKED_WORKS.length}개</S.Count>
+        </S.SectionHead>
 
-        <CardPanel>
+        <S.CardPanel>
           <PostGrid
             items={LIKED_WORKS}
             renderItem={(item) => <PostCard key={item.id} {...item} />}
           />
-        </CardPanel>
-      </Section>
-    </Wrap>
+        </S.CardPanel>
+      </S.Section>
+    </S.Wrap>
   );
 }
-
-/* ───────── styles ───────── */
-
-const Wrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-`;
-
-const Section = styled.section``;
-
-const SectionHead = styled.div`
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 10px;
-  margin-bottom: 16px;
-`;
-
-const Title = styled.h3`
-  font-size: 18px;
-  font-weight: 700;
-  color: #111827;
-`;
-
-const Count = styled.span`
-  margin-left: auto;
-  font-size: 14px;
-  color: #6b7280;
-`;
-
-const CardPanel = styled.div`
-  background: #ffffff;
-  border: 1px solid #eef2f7;
-  border-radius: 16px;
-  padding: 20px;
-`;
-
-/* 카드 위 CTA 오버레이 */
-const OverlayWrap = styled.div`
-  position: relative;
-`;
-
-const CTAOverlay = styled.div`
-  pointer-events: none; /* 기본은 클릭 막기 */
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  background: linear-gradient(
-    180deg,
-    rgba(163, 123, 255, 0.95) 0%,
-    rgba(115, 66, 229, 0.85) 70%,
-    rgba(115, 66, 229, 0.0) 100%
-  );
-  display: grid;
-  place-items: center;
-`;
-
-const CTAButton = styled.button`
-  pointer-events: auto; /* 버튼만 클릭 가능 */
-  height: 36px;
-  padding: 0 16px;
-  border-radius: 999px;
-  border: 0;
-  font-weight: 700;
-  color: #111827;
-  background: #ffffff;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
-`;
