@@ -1,4 +1,5 @@
-import { styled } from "styled-components";
+import React, { styled } from "styled-components";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo_nopo from "../../assets/logo_nopo.svg";
 
@@ -56,7 +57,7 @@ function NopoTopnav() {
         <Link to="/nopo/request">
           <Tab>요청</Tab>
         </Link>
-        <Link to="/lopo/community">
+        <Link to="/lofo/community">
           <Tab>발견</Tab>
         </Link>
         <Link to="/nopo/received">

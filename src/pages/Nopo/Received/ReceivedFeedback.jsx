@@ -84,7 +84,7 @@ const ReceivedFeedback = () => {
 
   return (
     <S.Wrapper>
-      <Topnav />
+      <NopoTopnav />
       <HeadingContainer>
         <Title>작업물을 확인하고 후기를 남겨주세요</Title>
         <Subtitle>
