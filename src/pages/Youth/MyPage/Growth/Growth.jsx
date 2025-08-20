@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import * as S from "../Styled.js";
 import { ProfileCard } from "./components/ProfileCard.jsx";
 import { FeedbackList } from "./components/FeedbackList.jsx";
 import { LofoPickSection } from "./components/LofoPickSection.jsx";
-import EmptyState from "../EmptyState.jsx";
+import EmptyState from "../components/EmptyState.jsx";
 
 
 const FEEDBACKS = [];     // []면 빈 상태
@@ -35,9 +35,9 @@ const MOCK_PICKS = [
 
 export default function Growth() {
   return (
-    <Wrap>
-      <Grid>
-        <Aside>
+    <S.GrowthWrap>
+      <S.Grid>
+        <S.Aside>
           <ProfileCard
             name="김로포"
             phone="01012345678"
@@ -48,16 +48,16 @@ export default function Growth() {
               total: 0,
             }}
           />
-        </Aside>
+        </S.Aside>
 
-        <Main>
+        <S.Main>
 
           {/* 내가 받은 피드백 */}
-          <Section>
-            <SectionHead>
-              <Title>내가 받은 피드백</Title>
-              <Count>{MOCK_FEEDBACKS.length}개</Count>
-            </SectionHead>
+          <S.GrowthSection>
+            <S.GrowthSectionHead>
+              <S.Title>내가 받은 피드백</S.Title>
+              <S.Count>{MOCK_FEEDBACKS.length}개</S.Count>
+            </S.GrowthSectionHead>
 
             {FEEDBACKS.length > 0 ? (
               <FeedbackList items={FEEDBACKS} />
@@ -71,14 +71,14 @@ export default function Growth() {
               />
             )}
             <FeedbackList items={MOCK_FEEDBACKS} />
-          </Section>
+          </S.GrowthSection>
 
           {/* LOFO PICK 작품 */}
-          <Section>
-            <SectionHead>
-              <Title>LOFO PICK 작품</Title>
-              <Count>{MOCK_PICKS.length}개</Count>
-            </SectionHead>
+          <S.GrowthSection>
+            <S.GrowthSectionHead>
+              <S.Title>LOFO PICK 작품</S.Title>
+              <S.Count>{MOCK_PICKS.length}개</S.Count>
+            </S.GrowthSectionHead>
 
             {PICKS.length > 0 ? (
             <LofoPickSection posts={MOCK_PICKS} />
@@ -91,60 +91,9 @@ export default function Growth() {
                 align="right"
               />
             )}
-          </Section>
-        </Main>
-      </Grid>
-    </Wrap>
+          </S.GrowthSection>
+        </S.Main>
+      </S.Grid>
+    </S.GrowthWrap>
   );
 }
-
-const Wrap = styled.div`
-  padding: 0 0 80px;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 24px;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const Aside = styled.aside`
-  position: sticky;
-  top: 88px; /* Topnav 높이에 맞춰 조절 */
-  align-self: start;
-`;
-
-const Main = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-`;
-
-const Section = styled.section`
-  background: transparent;
-`;
-
-const SectionHead = styled.div`
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 10px;
-  margin-bottom: 16px;
-`;
-
-const Title = styled.h3`
-  font-size: 18px;
-  font-weight: 700;
-  color: #111827;
-`;
-
-const Count = styled.span`
-  margin-left: auto;
-  font-size: 14px;
-  color: #6b7280;
-`;

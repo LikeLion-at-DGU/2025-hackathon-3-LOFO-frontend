@@ -1,10 +1,8 @@
-// src/pages/mypage/MyPageYouth.jsx
 import { useMemo, useState } from "react";
 import styled from "styled-components";
 import { YouthTopnav as Topnav } from "../../../components/Topnav/YouthTopnav";
 import { BannerTabs } from "./components/BannerTabs";
-import { RecommendCTA } from "./components/RecommendCTA";
-import { PostGridSection } from "./components/PostGridSection";
+import Portfolio from "./Portfolio/Portfolio";
 import Growth from "./Growth/Growth"
 import Activity from "./Activity/Activity";
 
@@ -29,15 +27,10 @@ export default function YouthMyPage() {
         <HeaderRow>
           <BannerTabs value={active} onChange={setActive} />
         </HeaderRow>
-        <RecommendCTA onClick={() => console.log("추천 요청")} />
 
-        {active === "portfolio" && <PostGridSection posts={posts} />}
-        {active === "growth" && (
-          <Growth />
-        )}
-        {active === "activity" && (
-          <Activity />
-        )}
+        {active === "portfolio" && (<Portfolio />)}
+        {active === "growth" && (<Growth />)}
+        {active === "activity" && (<Activity />)}
       </Content>
     </PageWrap>
   );
@@ -45,6 +38,7 @@ export default function YouthMyPage() {
 
 const PageWrap = styled.div`
   min-height: 100vh;
+  width: 100%;
   background: #f9fafb;
   margin-top: 100px; /*임시*/
 `;

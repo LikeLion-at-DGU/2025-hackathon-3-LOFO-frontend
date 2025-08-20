@@ -5,7 +5,7 @@ export function ProfileCard({ name, phone, stats }) {
   return (
     <Card>
       <AvatarWrap>
-        <Logo>누</Logo>
+        <Logo>LF</Logo>
       </AvatarWrap>
 
       <UserName>{name}</UserName>
@@ -14,6 +14,7 @@ export function ProfileCard({ name, phone, stats }) {
       <Divider />
 
       <StatList>
+        <div>활동정보</div>
         <li>
           <span>작업 완료</span>
           <b>{completed ?? 0}</b>
@@ -39,7 +40,7 @@ const Card = styled.div`
   background: #ffffff;
   border: 1px solid #eef2f7;
   border-radius: 16px;
-  padding: 20px 16px;
+  padding: 80px 26px;
   box-shadow: 0 4px 16px rgba(16, 24, 40, 0.06);
 `;
 
@@ -82,8 +83,11 @@ const Divider = styled.hr`
 `;
 
 const StatList = styled.ul`
-  display: grid;
-  gap: 6px;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 10px;
+  margin-top: 40px;
   li {
     display: grid;
     grid-template-columns: 1fr auto;

@@ -51,9 +51,9 @@ const Underline = styled.i`
   left: 0;
   bottom: 0;
   height: 3px;
-  width: 112px;
+  width: 33%;
   background: #2563eb;
   border-radius: 99px;
-  transform: translateX(${({ $index }) => $index * 140}px);
+  transform: translateX(${({ $index }) => $index * 365}px);
   transition: transform 200ms ease;
 `;
