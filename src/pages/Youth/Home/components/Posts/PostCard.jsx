@@ -20,8 +20,10 @@ export default function PostCard({ item, onClick }) {
     <Card onClick={() => onClick?.(item)}>
       <Thumb src={item.thumbnailUrl} alt={item.title} />
       <Body>
-        <Title>{item.title}</Title>
-        <Meta>{item.region} · {item.category}</Meta>
+        <Title>{item.storeName}</Title>
+        <Meta>
+          {item.content} · ❤️ {item.savedCount}
+        </Meta>
       </Body>
     </Card>
   );

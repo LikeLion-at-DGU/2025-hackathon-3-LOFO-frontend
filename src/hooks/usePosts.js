@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPostList } from "../../../../apis/nopo_request";
+import { getPostList } from "../apis/nopo_request";
 
 export function usePosts({ category="전체", page=1, pageSize=12 }) {
   const [data, setData] = useState({ items: [], total: 0 });

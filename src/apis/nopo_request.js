@@ -60,12 +60,9 @@ function toAbsoluteUrl(pathOrUrl) {
 function normalizePost(row = {}) {
   return {
     id: row.id,
-    // 📌 카드에서 쓸 필드들
     storeName: row.store_name ?? "",
     content: row.content ?? "",
     savedCount: row.saved_count ?? 0,
-
-    // 기존 필드도 유지(원하면 쓰거나 지워도 됨)
     title: row.title ?? "",
     category: row.category_display ?? row.category ?? "",
     region: row.store_name ?? "",
