@@ -4,7 +4,7 @@ import {YouthTopnav} from "../../../components/Topnav/YouthTopnav";
 import Hero from "./components/Hero/Hero";
 import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
 import PostGrid from "./components/Posts/PostGrid";
-import { PostGridSection } from "../MyPage/components/PostGridSection";
+import { PostGridSection } from "./components/Posts/PostGridSection";
 
 import { useMemo, useState, useEffect } from "react";
 import { usePosts } from "../../../hooks/usePosts";
@@ -42,7 +42,7 @@ export default function YouthHome() {
         onChange={setCategory}
       />
 
-      <PostGridSection posts={posts} />{/*테스트*/}
+      {/*<PostGridSection posts={posts} />테스트*/}
 
       {loading && <div>불러오는 중…</div>}
       {error && <div>오류가 발생했어요. 새로고침 해주세요.</div>}
