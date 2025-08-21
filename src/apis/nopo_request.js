@@ -28,6 +28,7 @@ export async function createRequest({
     return data;
   } catch (error) {
     // 디버깅에 도움되게 상세 로그
+    console.log("[createRequest] payload =", { store_name, title, category, url, content, file });
     console.error("요청 등록 실패:", {
       status: error?.response?.status,
       data: error?.response?.data,
