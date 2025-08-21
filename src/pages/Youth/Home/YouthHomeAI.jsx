@@ -6,7 +6,7 @@ import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
 import PostGrid from "./components/Posts/PostGrid";
 
 import { useState, useEffect } from "react";
-import { usePosts } from "../../../hooks/usePosts";
+import { usePosts } from "./hooks/usePosts";
 
 const Page = styled.main`
   width: 100%;
