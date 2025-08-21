@@ -1,13 +1,18 @@
 [build]
-  command = "npm run build"
-  publish = "dist"
+  command  = "npm run build"
+  publish  = "dist"
+  functions = "netlify/functions"
 
-# Node 버전 고정 (권장)
 [build.environment]
   NODE_VERSION = "20"
 
-# SPA 리다이렉트 (위 _redirects 대신 이 방식도 가능)
-# [[redirects]]
-#   from = "/*"
-#   to = "/index.html"
-#   status = 200
+# redirects - 순서 중요!
+[[redirects]]
+  from = "/api/*"
+  to   = "/.netlify/functions/api-proxy/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to   = "/index.html"
+  status = 200
