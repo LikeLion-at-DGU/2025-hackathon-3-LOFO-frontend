@@ -1,6 +1,6 @@
 import { instance } from "./instance";
 
-// BE가 요구하는 키 이름이 phone_num, nickname 임에 주의!
+//------------------------ 청년 회원가입/로그인 기능을 posts로 불러옵니다. ------------------------//
 
 // phone_num 입력
 export async function signupYouthByPhone({ phone_num }) {
@@ -18,6 +18,9 @@ export async function signupYouthByNickname({ phone_num, nickname }) {
   });
   return data; // { message, redirect }
 }
+
+
+//------------------------ 상인 회원가입/로그인 기능을 posts로 불러옵니다. ------------------------//
 
 export async function signupNopoByPhone({ phone_num }) {
   const { data } = await instance.post("/auth/login-nopo", {

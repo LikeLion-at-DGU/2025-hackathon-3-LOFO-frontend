@@ -7,7 +7,7 @@ import PostGrid from "./components/Posts/PostGrid";
 import { PostGridSection } from "../MyPage/components/PostGridSection";
 
 import { useMemo, useState, useEffect } from "react";
-import { usePosts } from "./hooks/usePosts";
+import { usePosts } from "../../../hooks/usePosts";
 
 const Page = styled.main`
   width: 100%;
