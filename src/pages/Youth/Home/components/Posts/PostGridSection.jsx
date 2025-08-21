@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import PostGrid from "../../Home/components/Posts/PostGrid";
-import Post from "../../Home/components/Posts/PostCard";
+import PostGrid from "./PostGrid";
+import Post from "./PostCard";
 
 export function PostGridSection({ posts }) {
   return (
