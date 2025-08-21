@@ -1,4 +1,5 @@
 import { instance } from "./instance";
+import { buildPostQuery } from "./filters";
 
 //------------------------ 새 상인요청을 post로 생성합니다. ------------------------//
 
@@ -73,12 +74,9 @@ function normalizePost(row = {}) {
   };
 }
 
-export const getPostList = async ({ category, page, pageSize }) => {
-  const params = {
-    page,
-    pageSize,
-    ...(category && category !== "전체" ? { category } : {}),
-  };
+export const getPostList = async ({ category, sort = "latest", page, pageSize }) => {
+  const params = buildPostQuery({ category, sort, page, pageSize });
+  
   const res = await instance.get("/youth/home", { params });
 
   console.log("🎯 데이터만:", res.data);

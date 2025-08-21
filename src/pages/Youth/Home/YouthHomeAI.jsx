@@ -1,18 +1,12 @@
-import styled from "styled-components";
+import * as S from "./Styled";
 
 import {YouthTopnav} from "../../../components/Topnav/YouthTopnav";
 import Hero from "./components/Hero/Hero";
-import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
+import CategoryFilter from "./components/Filter/CategoryFilter";
 import PostGrid from "./components/Posts/PostGrid";
 
 import { useState, useEffect } from "react";
 import { usePosts } from "../../../hooks/usePosts";
-
-const Page = styled.main`
-  width: 100%;
-  max-width: 1120px; margin: 0 auto; padding: 0 20px 80px;
-`;
-
 
 const CATEGORIES = ["전체","홍보영상","포스터·전단","SNS 이미지","인테리어 제안","홍보기획","광고문구"];
 
@@ -24,7 +18,7 @@ export default function YouthHomeAI() {
   return (
   <>
     <YouthTopnav />
-    <Page>
+    <S.Page>
       <h1>이건 사실 YouthHomeAI</h1>
       <Hero onClickAIMission={() => {}} />
       <CategoryFilter
@@ -49,7 +43,7 @@ export default function YouthHomeAI() {
           }}
         />
       )}
-    </Page>
+    </S.Page>
   </>
 );
 }
