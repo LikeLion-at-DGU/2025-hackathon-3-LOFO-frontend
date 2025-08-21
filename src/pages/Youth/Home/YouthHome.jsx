@@ -5,7 +5,6 @@ import Hero from "./components/Hero/Hero";
 import CategoryFilter from "./components/Filter/CategoryFilter";
 import SortDropdown from "./components/Filter/SortDropdown";
 import PostGrid from "./components/Posts/PostGrid";
-import { PostGridSection } from "./components/Posts/PostGridSection";
 
 import { useMemo, useState, useEffect } from "react";
 import { usePosts } from "../../../hooks/usePosts";

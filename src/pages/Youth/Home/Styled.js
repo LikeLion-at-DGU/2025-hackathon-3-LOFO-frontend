@@ -13,11 +13,12 @@ export const HeroWrapper = styled.div`
   background: #fff;
   border-bottom: 1px solid var(--line-001, #BABABA);
   width: 100%;
+  padding: 0 30px;
 `
 export const FilterWrapper = styled.div`
     display:"flex";
     align-items:"center";
     justify-content:"space-between";
-    gap:100px;
+    gap: auto;
     margin-bottom:16;
 `;
