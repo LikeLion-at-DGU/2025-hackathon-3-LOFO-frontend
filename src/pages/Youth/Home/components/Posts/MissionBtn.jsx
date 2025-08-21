@@ -1,11 +1,14 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { Sparkles } from "lucide-react";
 
 export function MissionBtn({ onClick }) {
   return (
+    <Link to="/youth/mission">
       <Button type="button" onClick={onClick}>
         미션 참여하기
       </Button>
+    </Link>
 
   );
 }
@@ -18,6 +21,7 @@ const Button = styled.button`
   font-size: 20px; font-weight: 600;
   box-shadow: 0 2px 8px rgba(0,0,0,.25);
   transition: transform .1s ease, box-shadow .2s ease;
+  cursor: pointer;
 
   &:hover { box-shadow: 0 4px 24px rgba(2,72,255,.12); }
   &:active { transform: translateY(1px); }
