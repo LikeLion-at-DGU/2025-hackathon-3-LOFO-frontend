@@ -20,30 +20,46 @@
 // };
 
 // export default Community;
-
 import styled from "styled-components";
 import * as S from "../Nopo/components/Styled";
 import NopoTopnav from "../../components/Topnav/NopoTopnav";
 import { HeadingContainer, Title, Subtitle } from "../Nopo/components/Heading";
 import lofopick from "../../assets/lofopick.svg";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { Heart } from "lucide-react";
+import { useState } from "react";
+
+const initialCards = [
+  { id: 1, store_name: "목구이 별관", title: "홍보영상", saved_count: 1 },
+  { id: 2, store_name: "생맥주 전문점", title: "포스터-전단", saved_count: 1 },
+  { id: 3, store_name: "미리내 양곱창", title: "SNS 이미지", saved_count: 1 },
+  { id: 4, store_name: "목구이 별관", title: "홍보영상", saved_count: 12 },
+  { id: 5, store_name: "생맥주 전문점", title: "포스터-전단", saved_count: 15 },
+  { id: 6, store_name: "미리내 양곱창", title: "SNS 이미지", saved_count: 20 },
+];
 
 const Community = () => {
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState(initialCards);
+  const [likedCards, setLikedCards] = useState({});
 
-  const fetchCards = async () => {
-    try {
-      const res = await axios.get("https://lofo.life/lofo/community");
-      setCards(res.data); // [{id, name, likes}, ...] 형태라고 가정
-    } catch (err) {
-      console.error("데이터 불러오기 실패:", err);
-    }
+  const toggleLike = (id) => {
+    setCards((prevCards) =>
+      prevCards.map((card) =>
+        card.id === id
+          ? {
+              ...card,
+              saved_count: likedCards[id]
+                ? card.saved_count - 1
+                : card.saved_count + 1,
+            }
+          : card
+      )
+    );
+
+    setLikedCards((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
-
-  useEffect(() => {
-    fetchCards();
-  }, []);
 
   return (
     <S.Wrapper>
@@ -58,9 +74,24 @@ const Community = () => {
       <CardGrid>
         {cards.map((card) => (
           <Card key={card.id}>
-            <CardContent>{card.name}</CardContent>
-            {card.likes >= 10 && (
-              <Badge className="badge">
+            <ImagePlaceholder />
+            <Overlay />
+            <CardContent>
+              <StoreName>{card.store_name}</StoreName>
+              <StoreInfo>{card.title}</StoreInfo>
+              <LikeBox>
+                <LikeButton onClick={() => toggleLike(card.id)}>
+                  <Heart
+                    size={18}
+                    fill={likedCards[card.id] ? "#fff" : "transparent"}
+                    stroke="#fff"
+                  />
+                </LikeButton>
+                <LikeCount>{card.saved_count}</LikeCount>
+              </LikeBox>
+            </CardContent>
+            {card.saved_count >= 10 && (
+              <Badge>
                 <img src={lofopick} alt="LOFO PICK" />
               </Badge>
             )}
@@ -76,46 +107,86 @@ export default Community;
 // Styled Components
 const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 1440px;
 `;
 
 const Card = styled.div`
   position: relative;
-  background-color: #f8f8f8;
-  border-radius: 12px;
-  height: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #333;
+  border-radius: 16px;
+  overflow: hidden;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
 
   &:hover {
-    background-color: #ececec;
-  }
-
-  &:hover .badge {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-6px);
   }
 `;
 
-const CardContent = styled.div``;
+const ImagePlaceholder = styled.div`
+  width: 100%;
+  height: 200px;
+  background-color: #ddd; /* 임시 배경 */
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 50%);
+`;
+
+const CardContent = styled.div`
+  position: absolute;
+  bottom: 12px;
+  left: 16px;
+  right: 16px;
+  color: #fff;
+`;
+
+const StoreName = styled.div`
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+`;
+
+const StoreInfo = styled.div`
+  font-size: 14px;
+  opacity: 0.85;
+`;
+
+const LikeBox = styled.div`
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+`;
+
+const LikeButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
+const LikeCount = styled.span`
+  font-size: 14px;
+`;
 
 const Badge = styled.div`
   position: absolute;
-  top: 10px;
-  left: 10px;
-  opacity: 0;
-  transform: translateY(-5px);
-  transition: all 0.2s ease-in-out;
+  top: 12px;
+  left: 12px;
 
   img {
-    width: 50px;
+    width: 55px;
   }
 `;
