@@ -1,6 +1,7 @@
 // PostCard.jsx
 import styled from "styled-components";
 import { MissionBtn } from "./MissionBtn";
+import { toAbsUrl } from "../../../../../utils/url";
 
 const Card = styled.article`
   position: relative;
@@ -69,18 +70,26 @@ const Meta = styled.div`
   opacity: .9;
 `;
 
+
 export default function PostCard({ item, onClick, onJoin }) {
+
+  // 백/프론트 혼용 대비: snake 우선, 없으면 camel
+  const name = item.store_name ?? item.storeName ?? item.title ?? "";
+  const img  = item.image ?? item.thumbnailUrl;               // ★ 여기!
+  const saved = item.saved_count ?? item.savedCount ?? 0;
+  const content = item.content ?? item.subtitle ?? "";
+
   return (
     <Card
       onClick={() => onClick?.(item)}
       OverlayEl={Overlay}
     >
-      <Thumb src={item.thumbnailUrl} alt={item.title} />
+      <Thumb src={toAbsUrl(img)} alt={name} />
 
       {/* 평소 텍스트 */}
       <Body>
-        <Title>{item.storeName}</Title>
-        <Meta>{item.content} · ❤️ {item.savedCount}</Meta>
+        <Title>{name}</Title>
+        <Meta>{content} · ❤️ {saved ?? 0}</Meta>
       </Body>
 
       {/* 호버 시 얹어지는 보라색 레이어 + 버튼 */}

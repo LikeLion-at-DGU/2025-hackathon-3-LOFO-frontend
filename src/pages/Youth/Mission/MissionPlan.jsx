@@ -1,10 +1,14 @@
-// src/pages/mission/MissionPlan.jsx
+//--------------------이건 아마도 사용을 안 할 예정------------------------//
+
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { YouthTopnav } from "../../../components/Topnav/YouthTopnav";
 import { ShopCard } from "./components/ShopCard";
-import { MissionCard } from "./components/MissionCard";
+
+import { PlanGoalBox } from "./components/PlanGoalBox";
+import { PlanMissionCard } from "./components/PlanMissionCard";
+
 import { generatePlan, getAiMode } from "../../../ai/generatePlan";
 import { UploadModal } from "./components/UploadModal";
 
@@ -61,17 +65,7 @@ export default function MissionPlan() {
               naverUrl="#"
               request="앞 화면에서 작성한 목표와 마감기한을 확인하세요."
             />
-            <GoalBox>
-              <GoalTitle>내 목표</GoalTitle>
-              <GoalText>{goal || "—"}</GoalText>
-              <Row>
-                <span>마감기한</span>
-                <strong>{dueDate || "—"}</strong>
-              </Row>
-              <ModePill $mode={mode}>
-                {mode === "local" ? "LOCAL (무료·온디바이스)" : "SERVER (Netlify 함수)"}
-              </ModePill>
-            </GoalBox>
+            <PlanGoalBox goal={goal} dueDate={dueDate} mode={mode} />
           </Left>
 
           {/* 오른쪽: 생성된 3단계 */}
@@ -83,7 +77,7 @@ export default function MissionPlan() {
             {err && <Warn>{err}</Warn>}
             {steps?.map((s) => (
               <Item key={s.idx}>
-                <MissionCard
+                <aiMissionCard
                   idx={s.idx}
                   title={s.title}
                   bullets={s.bullets}

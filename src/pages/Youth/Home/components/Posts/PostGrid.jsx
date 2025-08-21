@@ -9,11 +9,16 @@ const Grid = styled.div`
   @media (max-width: 640px) { grid-template-columns: 1fr; }
 `;
 
-export default function PostGrid({ items, onClickCard }) {
+export default function PostGrid({ items = [], onClickCard, onJoin }) {
   return (
     <Grid>
       {items.map((it) => (
-        <PostCard key={it.id} item={it} onClick={onClickCard} />
+        <PostCard
+          key={it.id} 
+          item={it} 
+          onClick={onClickCard}
+          onJoin={onJoin}
+        />
       ))}
     </Grid>
   );

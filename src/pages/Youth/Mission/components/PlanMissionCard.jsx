@@ -9,7 +9,7 @@ import styled from "styled-components";
  * - cta: string ("미션 업로드" | "추가 업로드" 등)
  * - onClick: () => void
  */
-export function MissionCard({ idx, title, bullets = [], dueDate, cta = "미션 업로드", onClick }) {
+export function PlanMissionCard({ idx, title, bullets = [], dueDate, cta = "미션 업로드", onClick }) {
   return (
     <Card>
       <Left>
