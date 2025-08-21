@@ -1,8 +1,9 @@
-import styled from "styled-components";
+import * as S from "./Styled";
 
 import {YouthTopnav} from "../../../components/Topnav/YouthTopnav";
 import Hero from "./components/Hero/Hero";
-import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
+import CategoryFilter from "./components/Filter/CategoryFilter";
+import SortDropdown from "./components/Filter/SortDropdown";
 import PostGrid from "./components/Posts/PostGrid";
 import { PostGridSection } from "./components/Posts/PostGridSection";
 
@@ -10,18 +11,15 @@ import { useMemo, useState, useEffect } from "react";
 import { usePosts } from "../../../hooks/usePosts";
 import { useNavigate } from "react-router-dom";
 import { toAbsUrl } from "../../../utils/url";
+import { UI_CATEGORIES } from "../../../apis/filters";
 
-const Page = styled.main`
-  width: 100%;
-  max-width: 1120px; margin: 0 auto; padding: 0 20px 80px;
-`;
-
-const CATEGORIES = ["전체","홍보영상","포스터·전단","SNS 이미지","인테리어 제안","홍보기획","광고문구"];
 
 export default function YouthHome() {
   const navigate = useNavigate(); 
   const [category, setCategory] = useState("전체");
-  const { items, total, loading, error } = usePosts({ category });
+  const [sort, setSort] = useState("latest"); // "latest" | "popular"
+  const { items, total, loading, error } = usePosts({ category, sort });
+  const CATEGORIES = UI_CATEGORIES;
 
   const handleJoin = (it) => {
   const shop = {
@@ -62,13 +60,18 @@ export default function YouthHome() {
   return (
   <>
     <YouthTopnav />
-    <Page>
-      <Hero onClickAIMission={() => {}} />
-      <CategoryFilter
-        categories={CATEGORIES}
-        value={category}
-        onChange={setCategory}
-      />
+    <S.Page>
+      <S.HeroWrapper>
+        <Hero onClickAIMission={() => {}} />
+        <S.FilterWrapper>
+          <CategoryFilter
+            categories={CATEGORIES}
+            value={category}
+            onChange={setCategory}
+          />
+          <SortDropdown value={sort} onChange={setSort} />
+        </S.FilterWrapper>
+      </S.HeroWrapper>
 
       {loading && <div>불러오는 중…</div>}
       {error && <div>오류가 발생했어요. 새로고침 해주세요.</div>}
@@ -104,7 +107,7 @@ export default function YouthHome() {
         />
       
       )}
-    </Page>
+    </S.Page>
   </>
 );
 }

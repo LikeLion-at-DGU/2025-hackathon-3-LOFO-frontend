@@ -1,13 +1,17 @@
 import styled from "styled-components";
 
 const Bar = styled.div`
-  display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 0 24px;
+  display: flex; gap: 20px; flex-wrap: wrap; padding: 12px 0 24px;
+  display: inline-block;
 `;
 const Chip = styled.button`
-  padding: 8px 14px; border-radius: 999px;
+  padding: 8px 30px;
+  margin-right: 20px; 
+  border-radius: 100px;
   border: 1px solid #ddd; 
-  background: ${({active})=>active?"#111":"#fff"};
-  color: ${({active})=>active?"#fff":"#333"}; cursor: pointer;
+  color: ${({active})=>active?"#fff":"#4F4F4F"};
+  background: ${({active})=>active?"#59418F":"#ECECEC"};
+  cursor: pointer;
 `;
 
 export default function CategoryFilter({ categories, value, onChange }) {

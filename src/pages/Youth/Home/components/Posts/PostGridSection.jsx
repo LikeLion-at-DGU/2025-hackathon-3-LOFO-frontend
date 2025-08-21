@@ -1,3 +1,5 @@
+//-----------------------이건 아마 안 쓸 예정-------------------------//
+
 import styled from "styled-components";
 import PostGrid from "./PostGrid";
 import Post from "./PostCard";
