@@ -1,4 +1,3 @@
-// src/pages/Youth/Home/components/Posts/PostCard/PostCard.jsx
 import * as S from "./Styled";
 import { MissionBtn } from "./MissionBtn";
 import { toAbsUrl } from "../../../../../utils/url";

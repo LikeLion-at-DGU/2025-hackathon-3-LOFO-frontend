@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import * as S from "../Styled.js";
-import PostGrid from "../Portfolio/PostGrid.jsx";
+import PortfolioPostGrid from "../Portfolio/PortfolioPostGrid.jsx";
 //import PostCard from "../Portfolio/PostGrid.jsx";
 import {usePortfolio} from "../../../../hooks/usePortfolio.js";
 
