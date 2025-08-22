@@ -29,7 +29,7 @@ export const Count = styled.span`
   color: #6b7280;
 `;
 
-export const CardPanel = styled.div`
+/*export const CardPanel = styled.div`
   background: #ffffff;
   border: 1px solid #eef2f7;
   border-radius: 16px;
