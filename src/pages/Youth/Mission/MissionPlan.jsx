@@ -10,7 +10,7 @@ import { PlanGoalBox } from "./components/PlanGoalBox";
 import { PlanMissionCard } from "./components/PlanMissionCard";
 
 import { generatePlan, getAiMode } from "../../../ai/generatePlan";
-import { UploadModal } from "./components/UploadModal";
+//import { UploadModal } from "./components/UploadModal";
 
 
 export default function MissionPlan() {
@@ -29,8 +29,8 @@ export default function MissionPlan() {
 
   // ▼ 추가: 모달 상태(현재 선택된 단계)
   const [activeStep, setActiveStep] = useState(null);
-  const openUploadModal = (step) => setActiveStep(step);
-  const closeUploadModal = () => setActiveStep(null);
+  //const openUploadModal = (step) => setActiveStep(step);
+  //const closeUploadModal = () => setActiveStep(null);
 
   useEffect(() => {
     if (!goal || !dueDate) return;
