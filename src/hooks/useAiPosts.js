@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getPostList } from "../apis/home_post";
+import { getAiPostList } from "../apis/home_post";
 
-export function usePosts({ category="전체", sort = "latest", page=1, pageSize=12, refreshKey=0 }) {
+export function useAiPosts({ category="전체", sort = "latest", page=1, pageSize=12 }) {
   const [data, setData] = useState({ items: [], total: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ export function usePosts({ category="전체", sort = "latest", page=1, pageSize=
       setLoading(true);
       setError(null);
       try {
-        const result = await getPostList({ category, sort, page, pageSize, refreshKey });
+        const result = await getAiPostList({ category, sort, page, pageSize });
         setData(result);
       } catch (e) {
         if (e.name !== "AbortError") setError(e);

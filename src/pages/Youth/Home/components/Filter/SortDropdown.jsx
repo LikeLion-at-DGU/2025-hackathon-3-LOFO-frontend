@@ -1,16 +1,12 @@
-// src/pages/Youth/Home/components/SortDropdown.jsx
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { SORT_OPTIONS } from "../../../../../apis/filters"; // ← 단일 소스 사용
 
-const OPTIONS = [
-  { label: "최신순", value: "latest" },
-  { label: "찜많은순", value: "popular" },
-];
-
-export default function SortDropdown({ value = "latest", onChange }) {
+export default function SortDropdown({ value, onChange }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
+  // 바깥 클릭 닫기
   useEffect(() => {
     const onClickOutside = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
@@ -19,23 +15,34 @@ export default function SortDropdown({ value = "latest", onChange }) {
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
 
-  const current = OPTIONS.find(o => o.value === value) ?? OPTIONS[0];
+  const current = SORT_OPTIONS.find(o => o.value === value) ?? SORT_OPTIONS[0];
+
+  const handleSelect = (val) => {
+    setOpen(false);
+    if (val !== value) onChange?.(val);           // ★ 반드시 value("popular"/"latest")만 넘김
+  };
 
   return (
     <Wrap ref={ref}>
-      <Trigger type="button" onClick={() => setOpen(v => !v)} aria-haspopup="listbox" aria-expanded={open}>
+      <Trigger
+        type="button"
+        onClick={() => setOpen(v => !v)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
         {current.label}
         <Chevron aria-hidden>▾</Chevron>
       </Trigger>
 
       {open && (
         <List role="listbox">
-          {OPTIONS.map(opt => (
+          {SORT_OPTIONS.map(opt => (
             <Item
               key={opt.value}
               role="option"
               aria-selected={opt.value === value}
-              onClick={() => { onChange?.(opt.value); setOpen(false); }}
+              $selected={opt.value === value}      // 선택 표시
+              onClick={() => handleSelect(opt.value)}
             >
               {opt.label}
             </Item>
@@ -50,6 +57,7 @@ export default function SortDropdown({ value = "latest", onChange }) {
 const Wrap = styled.div`
   position: relative;
   display: inline-block;
+  margin-left: 60px;
 `;
 const Trigger = styled.button`
   height: 36px; padding: 0 12px; border-radius: 8px;
@@ -65,4 +73,5 @@ const List = styled.div`
 const Item = styled.button`
   width: 100%; text-align: left; padding: 10px 12px; cursor: pointer; background: #fff; border: 0;
   &:hover { background: #f4f2ff; }
+  ${(p) => p.$selected && `background:#f4f2ff; font-weight:600;`} /* 현재 선택 강조 */
 `;
