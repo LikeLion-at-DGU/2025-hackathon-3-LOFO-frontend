@@ -155,12 +155,12 @@ export default function RequestCreate() {
   ];
   const categoryMap = useMemo(
     () => ({
-      홍보영상: "PROMOTION_VIDEO",
       "포스터·전단": "POSTER_FLYER",
       "SNS 이미지": "SNS_IMAGE",
-      "인테리어 제안": "INTERIOR_SUGGESTION",
       홍보기획: "PROMOTION_PLANNING",
-      광고문구: "AD_TEXT",
+      광고문구: "AD_COPY",
+      홍보영상: "PROMOTION_VIDEO",
+      "인테리어 제안": "INTERIOR_PROPOSAL",
     }),
     []
   );
