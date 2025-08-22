@@ -1,97 +1,153 @@
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useState } from "react";
 
-export function UploadModal({ open, onClose }) {
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+/**
+ * props
+ * - open, onClose, onSubmit({file, feedback})
+ * - title?: string
+ * - variant?: "blue" | "purple"   // 색 테마
+ * - showFeedbackAction?: boolean   // "피드백 받기" 버튼 노출
+ * - onAskFeedback?: ({ file, currentText }) => Promise<string> | string
+ */
+
+export default function UploadModal({ 
+  open, onClose, onSubmit,
+  title = "미션 제출하기",
+  variant = "blue",
+  showFeedbackAction = false,
+ }) {
+  const [file, setFile] = useState(null);
+  const [feedback, setFeedback] = useState("");
+  const [fbLoading, setFbLoading] = useState(false);
 
   if (!open) return null;
 
+  const THEME = variant === "purple"
+    ? { accent: "#8B6FD4", bg: "#F2ECFF", border: "#C7B5F3", chip: "#EAE2FF" }
+    : { accent: "#2D5CF6", bg: "#F3F7FF", border: "#9DB7FF", chip: "#E3EEFF" };
+
+  const handleBgClick = (e) => {
+    if (e.target === e.currentTarget) onClose?.();
+  };
+
+  const askFeedback = async () => {
+    if (!onAskFeedback) return;
+    try {
+      setFbLoading(true);
+      const text = await onAskFeedback({ file, currentText: feedback });
+      if (typeof text === "string") setFeedback(text);
+    } finally {
+      setFbLoading(false);
+    }
+  };
+
   return (
-    <Backdrop onClick={onClose} role="presentation">
-      <Dialog
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="upload-title"
-        onClick={(e) => e.stopPropagation()} // 바깥 클릭 시 닫히고, 안쪽 클릭은 유지
-      >
-        <Header>
-          <h2 id="upload-title">미션 제출하기</h2>
+    <ModalBackdrop onClick={handleBgClick}>
+      <ModalCard role="dialog" aria-modal="true" aria-labelledby="upload-title">
+        <ModalHeader>
+          <h3 id="upload-title">미션 제출하기</h3>
           <CloseBtn aria-label="닫기" onClick={onClose}>×</CloseBtn>
-        </Header>
+        </ModalHeader>
 
-        <DropArea>
-          <CloudIcon viewBox="0 0 24 24" aria-hidden>
-            <path d="M6 15a4 4 0 0 1 0-8 5 5 0 0 1 9.7-1.2A4.5 4.5 0 1 1 18 15H6z"
-              fill="none" stroke="currentColor" strokeWidth="1.6"/>
-            <path d="M12 13v-4m0 0 2 2m-2-2-2 2" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+        <Dropzone $t={THEME}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            e.preventDefault();
+            const f = e.dataTransfer.files?.[0];
+            if (f) setFile(f);
+          }}
+        >
+          <CloudIcon viewBox="0 0 24 24" aria-hidden style={{ color: THEME.accent }}>
+            <path d="M6 16a4 4 0 0 1 .9-7.9A5 5 0 0 1 19 9a3 3 0 0 1-.2 6H6z"
+              fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M12 14V8m0 0l-3 3m3-3l3 3"
+              fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
           </CloudIcon>
-          <small>작업한 파일을 업로드해주세요</small>
-          <UploadBtn type="button">Upload</UploadBtn>
-        </DropArea>
 
-        <Field>
-          <label>AI 피드백</label>
-          <TextArea placeholder="굿굿" />
-        </Field>
+          <p>{file ? `선택된 파일: ${file.name}` : "작업한 파일을 업로드해 주세요"}</p>
+
+          <label>
+            <HiddenInput
+              type="file"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
+            <UploadChip $t={THEME}>Upload</UploadChip>
+          </label>
+        </Dropzone>
+
+         {showFeedbackAction && (
+          <Actions>
+            <SecondaryBtn $t={THEME} disabled={!file || fbLoading} onClick={askFeedback}>
+              {fbLoading ? "분석 중…" : "피드백 받기"}
+            </SecondaryBtn>
+          </Actions>
+        )}
+
+        <FieldLabel>AI 피드백</FieldLabel>
+        <Textarea
+          placeholder="예: 굿굿"
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+        />
 
         <Footer>
-          <PrimaryBtn type="button" onClick={onClose}>완료</PrimaryBtn>
+          <PrimaryBtn $t={THEME} disabled={!file}
+            onClick={() => onSubmit?.({ file, feedback })}
+          >
+            완료
+          </PrimaryBtn>
         </Footer>
-      </Dialog>
-    </Backdrop>
+      </ModalCard>
+    </ModalBackdrop>
   );
 }
 
-/* ------- styles ------- */
-const Backdrop = styled.div`
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.35);
-  display: grid; place-items: center;
-  z-index: 1000;
+/* --------- modal styles --------- */
+const ModalBackdrop = styled.div`
+  position: fixed; inset: 0; background: rgba(0,0,0,.38);
+  display: grid; place-items: center; z-index: 1000;
 `;
-const Dialog = styled.div`
-  width: min(560px, 92vw);
-  background: #fff; border-radius: 14px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  padding: 20px;
+const ModalCard = styled.div`
+  width: 380px; max-width: calc(100vw - 32px);
+  background: #fff; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.18);
+  padding: 18px;
 `;
-const Header = styled.div`
-  display:flex; align-items:center; justify-content:space-between;
-  margin-bottom: 12px;
-  h2 { font-size: 18px; font-weight: 800; }
+const ModalHeader = styled.div`
+  display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px;
+  h3 { font-size:16px; font-weight:800; }
 `;
-const CloseBtn = styled.button`
-  border:0; background:transparent; font-size: 24px; line-height:1; cursor:pointer;
+const CloseBtn = styled.button`border:0; background:transparent; font-size:20px; cursor:pointer; color:#6b7280;`;
+
+const Dropzone = styled.div`
+  margin: 6px 0 10px;
+  border: 1.5px dashed ${(p) => p.$t.border};
+  border-radius: 12px;
+  background: ${(p) => p.$t.bg};
+  height: 140px; display:grid; place-items:center; text-align:center; gap:10px; padding: 10px;
+  p { font-size:12px; color:#6b7280; }
 `;
-const DropArea = styled.div`
-  border: 2px dashed #bcd6ff; background: #f2f7ff;
-  border-radius: 12px; padding: 28px;
-  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;
-  text-align:center; color:#4f7fff; margin: 8px 0 18px;
+const CloudIcon = styled.svg`width: 48px; height: 48px;`;
+const HiddenInput = styled.input`position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);`;
+const UploadChip = styled.span`
+  display:inline-block; padding:6px 14px; border-radius:999px;
+  background:${(p) => p.$t.chip}; color:${(p) => p.$t.accent}; font-weight:800; border:1px solid ${(p) => p.$t.border};
+  cursor:pointer;
 `;
-const CloudIcon = styled.svg` width: 64px; height: 64px; opacity: .9;`;
-const UploadBtn = styled.button`
-  margin-top: 8px; padding: 8px 14px; border-radius: 10px;
-  border: 1px solid #93c5fd; background: #dbeafe; color:#1d4ed8; font-weight:800;
+const FieldLabel = styled.div`font-size:12px; font-weight:700; margin: 10px 0 6px; color:#374151;`;
+const Textarea = styled.textarea`
+  width:100%; min-height: 70px; border:1px solid #e5e7eb; border-radius:10px; padding:10px;
+  &:focus { border-color:#93c5fd; box-shadow: 0 0 0 3px rgba(147,197,253,.35); }
 `;
-const Field = styled.div`
-  display:flex; flex-direction:column; gap:8px; margin-top: 8px;
-  label { font-weight: 800; }
-`;
-const TextArea = styled.textarea`
-  width: 100%; min-height: 72px; border: 1px solid #cfe1ff;
-  border-radius: 10px; padding: 12px; resize: vertical; outline: none;
-  &:focus { box-shadow: 0 0 0 3px #e5efff; }
-`;
-const Footer = styled.div`
-  display:flex; justify-content:center; padding-top: 12px;
-`;
+const Footer = styled.div`display:flex; justify-content:center; margin-top: 14px;`;
+const Actions = styled.div`display:flex; justify-content:flex-start; margin: 6px 0 8px;`;
 const PrimaryBtn = styled.button`
-  padding: 10px 18px; border-radius: 999px; border: 1px solid #93c5fd;
-  background: #dbeafe; color:#1d4ed8; font-weight: 800; cursor:pointer;
+  min-width: 140px; height: 36px; border-radius: 18px; font-weight:800; cursor:pointer;
+  background:${(p)=>p.$t.chip}; color:${(p)=>p.$t.accent}; border:1px solid ${(p)=>p.$t.border};
+  opacity:${p=>p.disabled?0.6:1};
+`;
+const SecondaryBtn = styled.button`
+  margin: 30px auto;
+  height: 30px; border-radius: 999px; padding: 0 12px; font-weight:800; cursor:pointer;
+  background:#fff; color:${(p)=>p.$t.accent}; border:1px solid ${(p)=>p.$t.border};
+  box-shadow: 0 2px 0 rgba(0,0,0,.03);
 `;
