@@ -1,72 +1,75 @@
-import * as S from "../Styled.js";
-import PostGrid from "../../Home/components/Posts/PostGrid.jsx";
-import PostCard from "../../Home/components/Posts/PostGrid.jsx";
-
-// ── 더미 데이터 (API 연동 시 교체)
-const WISHLIST = [
-  {
-    id: 1,
-    title: "일이삼사오육칠팔구십일이삼사오육",
-    subtitle: "종무.노포",
-    thumbnail:
-      "https://images.unsplash.com/photo-1520697222861-6f5f21b6c8b0?q=80&w=1200&auto=format&fit=crop",
-    cta: true, // ← 첫 카드 CTA 오버레이 표시
-  },
-  { id: 2, title: "일이삼사오육칠팔구십", subtitle: "종무.노포", thumbnail: "https://images.unsplash.com/photo-1520697222861-6f5f21b6c8b0?q=80&w=1200&auto=format&fit=crop" },
-  { id: 3, title: "일이삼사오육칠팔", subtitle: "종무.노포", thumbnail: "https://images.unsplash.com/photo-1520697222861-6f5f21b6c8b0?q=80&w=1200&auto=format&fit=crop" },
-];
-
-const LIKED_WORKS = [
-  { id: 11, title: "일이삼사오육칠팔구십", subtitle: "종무.노포", thumbnail: "https://images.unsplash.com/photo-1520697222861-6f5f21b6c8b0?q=80&w=1200&auto=format&fit=crop" },
-  { id: 12, title: "일이삼사오육", subtitle: "종무.노포", thumbnail: "https://images.unsplash.com/photo-1520697222861-6f5f21b6c8b0?q=80&w=1200&auto=format&fit=crop" },
-  { id: 13, title: "일이삼사오육칠", subtitle: "종무.노포", thumbnail: "https://images.unsplash.com/photo-1520697222861-6f5f21b6c8b0?q=80&w=1200&auto=format&fit=crop" },
-];
+import * as S from "../Styled";
+import PostGrid from "../../Home/components/Posts/PostGrid";
+import PostCard from "../../Home/components/Posts/PostCard";
+import { useMySavedActivity } from "../../../../hooks/useMySavedActivity";
 
 export default function Activity() {
+  const {
+    loading,
+    error,
+    counts,
+    savedRequests,
+    likedOutcomes,
+    isEmptySaved,
+    isEmptyLiked,
+  } = useMySavedActivity({ withCta: true });
+
+  if (loading) return <S.Wrap>불러오는 중…</S.Wrap>;
+  if (error) return <S.Wrap>{error}</S.Wrap>;
+
   return (
     <S.Wrap>
       {/* 찜한 요청 */}
       <S.Section>
         <S.SectionHead>
           <S.Title>찜한 요청</S.Title>
-          <S.Count>{WISHLIST.length}개</S.Count>
+          <S.Count>{counts.saved}개</S.Count>
         </S.SectionHead>
 
-        <S.CardPanel>
-          <PostGrid
-            items={WISHLIST}
-            renderItem={(item) => (
-              <S.OverlayWrap key={item.id}>
-                <PostCard {...item} />
-                {item.cta && (
-                  <S.CTAOverlay>
-                    <S.CTAButton
-                      type="button"
-                      onClick={() => console.log("미션 참여하기", item.id)}
-                    >
-                      미션 참여하기
-                    </S.CTAButton>
-                  </S.CTAOverlay>
-                )}
-              </S.OverlayWrap>
-            )}
-          />
-        </S.CardPanel>
+        {isEmptySaved ? (
+          <div>아직 찜한 요청이 없어요.</div>
+        ) : (
+          <S.CardPanel>
+            <PostGrid
+              items={savedRequests}
+              renderItem={(item) => (
+                <S.OverlayWrap key={item.id}>
+                  {/* ✅ PostCard는 item prop을 기대 */}
+                  <PostCard item={item} />
+                  {item.__cta && (
+                    <S.CTAOverlay>
+                      <S.CTAButton
+                        type="button"
+                        onClick={() => console.log("미션 참여하기", item.id)}
+                      >
+                        미션 참여하기
+                      </S.CTAButton>
+                    </S.CTAOverlay>
+                  )}
+                </S.OverlayWrap>
+              )}
+            />
+          </S.CardPanel>
+        )}
       </S.Section>
 
       {/* 좋아요 누른 작품 */}
       <S.Section>
         <S.SectionHead>
           <S.Title>좋아요 누른 작품</S.Title>
-          <S.Count>{LIKED_WORKS.length}개</S.Count>
+          <S.Count>{counts.liked}개</S.Count>
         </S.SectionHead>
 
-        <S.CardPanel>
-          <PostGrid
-            items={LIKED_WORKS}
-            renderItem={(item) => <PostCard key={item.id} {...item} />}
-          />
-        </S.CardPanel>
+        {isEmptyLiked ? (
+          <div>아직 좋아요한 작품이 없어요.</div>
+        ) : (
+          <S.CardPanel>
+            <PostGrid
+              items={likedOutcomes}
+              renderItem={(item) => <PostCard key={item.id} item={item} />}
+            />
+          </S.CardPanel>
+        )}
       </S.Section>
     </S.Wrap>
   );
