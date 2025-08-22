@@ -1,10 +1,9 @@
-import React, { styled } from "styled-components";
-import { useState } from "react";
+import React from "react";
+import styled from "styled-components";
 import { Link } from "react-router-dom";
 import logo_nopo from "../../assets/logo_nopo.svg";
 
-//topnav height 64px 로 고정시키기
-
+// topnav height 64px 고정
 const Nav = styled.div`
   display: flex;
   width: 100vw;
@@ -28,7 +27,6 @@ const NavTabs = styled.nav`
   gap: 16px;
   margin-left: 8px;
 `;
-
 const Tab = styled.button`
   padding: 6px 10px;
   border-radius: 8px;
@@ -36,7 +34,6 @@ const Tab = styled.button`
   background: transparent;
   color: #6b7280;
   cursor: pointer;
-
   &:hover {
     background: #eef2ff;
     color: #4338ca;
