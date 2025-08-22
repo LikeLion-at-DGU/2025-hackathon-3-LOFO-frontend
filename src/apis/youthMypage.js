@@ -16,3 +16,11 @@ export async function fetchGrowthInsights() {
   const { data } = await instance.get("/youth/mypage/insights");
   return data;
 }
+
+
+//----------------- 내 활동 : 찜/좋아요 목록을 get으로 불러옵니다 -----------------//
+
+export async function getMySaved() {
+  const { data } = await instance.get("/youth/mypage/saved");
+  return data;
+}
