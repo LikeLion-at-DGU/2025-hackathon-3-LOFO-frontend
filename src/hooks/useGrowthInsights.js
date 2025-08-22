@@ -12,7 +12,7 @@ function formatPhone(v = "") {
 function mapToVM(payload = {}) {
   const {
     nickname = "",
-    phone_number = "",
+    phone_num = "",
     stats = {},
     feedbacks = [],
     nopo_pick_outcomes = [],
@@ -20,8 +20,8 @@ function mapToVM(payload = {}) {
   } = payload;
 
   const profile = {
-    name: nickname || "로포",
-    phone: formatPhone(phone_number),
+    name: nickname || "LOFO",
+    phone: formatPhone(phone_num),
     stats: {
       completed: Number(stats?.missions_done ?? 0),
       inProgress: Number(stats?.missions_in_progress ?? 0),
@@ -30,6 +30,8 @@ function mapToVM(payload = {}) {
     },
     logoUrl: logo_url,
   };
+
+  console.log("프로필:", profile);/*test*/
 
   const feedbackItems = (feedbacks || []).map((f, i) => ({
     id: f.outcome_id ?? i,

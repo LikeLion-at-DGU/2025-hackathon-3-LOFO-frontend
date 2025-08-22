@@ -5,38 +5,10 @@ import { LofoPickSection } from "./components/LofoPickSection.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import { useGrowthInsights } from "../../../../hooks/useGrowthInsights.js";
 
-/*
-const FEEDBACKS = [];     // []면 빈 상태
-const PICKS = [];         // []면 빈 상태
-
-
-// ── 예시 데이터 (API로 대체 가능)
-const MOCK_FEEDBACKS = [
-  { id: 1, text: "정말 좋네요!" },
-  { id: 2, text: "정말 좋네요!" },
-  { id: 3, text: "정말 좋네요!" },
-];
-
-const MOCK_PICKS = [
-  {
-    id: 1,
-    title: "SNS 이미지",
-    subtitle: "종무노포",
-    thumbnail:
-      "https://images.unsplash.com/photo-1520697222861-6f5f21b6c8b0?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 2,
-    title: "SNS 이미지",
-    subtitle: "종무노포",
-    thumbnail:
-      "https://images.unsplash.com/photo-1520697222861-6f5f21b6c8b0?q=80&w=1200&auto=format&fit=crop",
-  },
-];*/
 
 export default function Growth() {
   const { loading, error, profile, feedbacks, picks, counts } = useGrowthInsights();
-  
+
   return (
     <S.GrowthWrap>
       <S.Grid>
@@ -58,7 +30,7 @@ export default function Growth() {
               <S.Title>내가 받은 피드백</S.Title>
               <S.Count>{counts.feedbacks}개</S.Count>
             </S.GrowthSectionHead>
-
+            <S.GrowthSectionBody>
             {loading ? (
               <div style={{ opacity: 0.6 }}>불러오는 중…</div>
             ) : counts.feedbacks > 0 ? (
@@ -72,6 +44,7 @@ export default function Growth() {
                 align="right"
               />
             )}
+            </S.GrowthSectionBody>
           </S.GrowthSection>
 
           {/* LOFO PICK 작품 */}
@@ -80,7 +53,7 @@ export default function Growth() {
               <S.Title>LOFO PICK 작품</S.Title>
               <S.Count>{counts.picks}개</S.Count>
             </S.GrowthSectionHead>
-
+            <S.GrowthSectionBody>
             {loading ? (
               <div style={{ opacity: 0.6 }}>불러오는 중…</div>
             ) : counts.picks > 0 ? (
@@ -94,6 +67,7 @@ export default function Growth() {
                 align="right"
               />
             )}
+            </S.GrowthSectionBody>
           </S.GrowthSection>
         </S.Main>
       </S.Grid>

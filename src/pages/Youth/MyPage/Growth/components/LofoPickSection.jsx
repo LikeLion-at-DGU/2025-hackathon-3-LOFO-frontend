@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import PostGrid from "../../../Home/components/Posts/PostGrid"; // 네 파일트리 기준
-import PostCard from "../../../Home/components/Posts/PostCard";   // 네 파일트리 기준
+import PostGrid from "../../../Home/components/Posts/PostGrid"; 
+import PostCard from "../../../Home/components/Posts/PostCard";   
 
 export function LofoPickSection({ posts = [] }) {
   return (
