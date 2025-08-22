@@ -10,11 +10,18 @@ function toAbsoluteUrl(pathOrUrl) {
 }
 
 function normalizePost(row = {}) {
+  const savedCnt = (typeof row.saved_count === "number" ? row.saved_count : row.savedCount) ?? 0;
+  const isSaved  = (typeof row.is_saved === "boolean" ? row.is_saved : row.savedByMe) ?? false;
+
   return {
     id: row.id,
-    storeName: row.store_name ?? "",
+    store_name: row.store_name, 
+    storeName: row.store_name ?? row.storeName ?? "",
     content: row.content ?? "",
-    savedCount: row.saved_count ?? 0,
+    saved_count: savedCnt,
+    savedCount: savedCnt,
+    is_saved: !!isSaved,
+    savedByMe: !!isSaved, 
     title: row.title ?? "",
     category: row.category_display ?? row.category ?? "",
     region: row.store_name ?? "",
@@ -28,7 +35,6 @@ function normalizePost(row = {}) {
 
 export const getPostList = async ({ category, sort = "latest", page, pageSize }) => {
   const params = buildPostQuery({ category, sort, page, pageSize });
-  
   const res = await instance.get("/youth/home", { params });
 
   console.log("🎯 상인요청 데이터:", res.data);
