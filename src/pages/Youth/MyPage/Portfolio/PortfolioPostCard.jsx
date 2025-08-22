@@ -1,9 +1,8 @@
-// src/pages/Youth/Home/components/Posts/PostCard/PostCard.jsx
 import * as S from "./Styled";
 import { MissionBtn } from "../../Home/components/Posts/MissionBtn";
 import { toAbsUrl } from "../../../../utils/url";
 
-export default function PostCard({ item, onClick, onJoin, onToggleSave }) {
+export default function PortfolioPostCard({ item, onClick, onJoin, onToggleSave }) {
   // 백/프론트 혼용 대비
   const name = item.store_name ?? item.storeName ?? item.title ?? "";
   const img = item.image ?? item.thumbnailUrl;

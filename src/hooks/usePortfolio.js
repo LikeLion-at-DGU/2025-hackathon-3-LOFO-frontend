@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchMyPortfolio } from "../apis/portfolio";
+import { fetchMyPortfolio } from "../apis/youthMypage";
 
 /** API 응답 → PostCard가 이해하는 형태로 normalize */
 function normalize(item) {

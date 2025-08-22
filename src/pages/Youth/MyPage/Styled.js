@@ -101,7 +101,12 @@ export const Main = styled.div`
 export const GrowthSection = styled.section`
   background: transparent;
 `;
-
+export const GrowthSectionBody = styled.div`
+    display: flex;
+    justify-content: center;
+    padding: 12px 0 16px;
+    flex-grow:1;
+`
 export const GrowthSectionHead = styled.div`
   display: flex;
   align-items: flex-end;
