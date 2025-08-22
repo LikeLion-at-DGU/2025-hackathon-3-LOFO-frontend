@@ -134,11 +134,11 @@
 // };
 
 // export default Scroll2;
-
+// src/pages/Nopo/Home/components/Scroll2.jsx
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { getRequestList } from "../../../../apis/nopo_request"; // /nopo/home을 불러오는 함수
+import { getHomeDashboard } from "../../../../apis/nopo_request";
 
 const Wrapper = styled.div`
   padding: 23px 70px;
@@ -156,7 +156,6 @@ const StatusBar = styled.div`
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 `;
-
 const StatusItem = styled.div`
   text-align: center;
 `;
@@ -166,7 +165,7 @@ const Label = styled.p`
 `;
 const Number = styled.p`
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: 700;
 `;
 
 const CardList = styled.div`
@@ -175,51 +174,36 @@ const CardList = styled.div`
   overflow-x: auto;
   padding-bottom: 16px;
 `;
-
 const Card = styled.div`
-  min-width: 280px;
+  min-width: 200px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 `;
-
 const CardImage = styled.img`
   width: 100%;
-  height: 160px;
+  height: 120px;
   object-fit: cover;
 `;
-
 const CardTitle = styled.p`
   font-weight: 700;
-  padding: 10px 12px 4px;
-  margin: 0;
+  padding: 8px;
 `;
-
-const StoreName = styled.p`
-  padding: 0 12px 12px;
-  margin: 0;
-  font-size: 12px;
-  color: #6b7280;
-`;
-
-/* transient prop로 경고 제거 */
 const CardStatus = styled.span`
-  display: inline-block;
-  margin-left: 8px;
-  font-size: 12px;
+  font-size: 0.8rem;
   padding: 4px 8px;
   border-radius: 12px;
   color: #fff;
-  background: ${({ $status }) =>
-    $status === "모집중"
+  margin-left: 8px;
+  background: ${(p) =>
+    p.$status === "모집중"
       ? "#8b72ff"
-      : $status === "진행중"
+      : p.$status === "진행중"
       ? "#4db2ff"
       : "#888"};
 `;
-
-const MoreButton = styled.button`
+const Button = styled.button`
   display: block;
   width: 404px;
   height: 103px;
@@ -227,7 +211,6 @@ const MoreButton = styled.button`
   padding: 30px 100px;
   border-radius: 100px;
   background: #fff;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
   border: none;
   font-weight: 700;
   cursor: pointer;
@@ -235,25 +218,33 @@ const MoreButton = styled.button`
 
 export default function Scroll2() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [cards, setCards] = useState([]);
   const [progress, setProgress] = useState({
-    total: 0,
     open: 0,
     ongoing: 0,
     closed: 0,
+    total: 0,
   });
-  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
       setLoading(true);
       try {
-        // /nopo/home 호출 → { items, progress } 반환 (getRequestList 내부 정규화)
-        const { items, progress } = await getRequestList();
-        setItems(items);
+        const {
+          items = [],
+          progress = { open: 0, ongoing: 0, closed: 0, total: 0 },
+        } = await getHomeDashboard();
+        setCards(items.slice(0, 3)); // 혹시 모를 과다 응답 대비
         setProgress(progress);
       } catch (e) {
-        console.error(e);
+        console.error(
+          "[Scroll2] load failed:",
+          e?.response?.status,
+          e?.message
+        );
+        setCards([]);
+        setProgress({ open: 0, ongoing: 0, closed: 0, total: 0 }); // 🔒 안전값
       } finally {
         setLoading(false);
       }
@@ -281,24 +272,21 @@ export default function Scroll2() {
         </StatusItem>
       </StatusBar>
 
+      {loading && <p style={{ color: "#6b7280" }}>불러오는 중…</p>}
+
       <CardList>
-        {loading && <p style={{ color: "#6b7280" }}>불러오는 중…</p>}
-        {!loading &&
-          items.map((it) => (
-            <Card key={it.id}>
-              <CardImage src={it.thumbnailUrl || "/assets/bear.png"} alt="" />
-              <CardTitle>
-                {it.title}{" "}
-                <CardStatus $status={it.status}>{it.status}</CardStatus>
-              </CardTitle>
-              <StoreName>{it.storeName}</StoreName>
-            </Card>
-          ))}
+        {cards.map((it) => (
+          <Card key={it.id}>
+            <CardImage src={it.thumbnailUrl || "/assets/bear.png"} alt="" />
+            <CardTitle>
+              {it.title}
+              <CardStatus $status={it.status}>{it.status}</CardStatus>
+            </CardTitle>
+          </Card>
+        ))}
       </CardList>
 
-      <MoreButton onClick={() => navigate("/nopo/request")}>
-        모든 요청 보기
-      </MoreButton>
+      <Button onClick={() => navigate(`/nopo/request`)}>모든 요청 보기</Button>
     </Wrapper>
   );
 }
