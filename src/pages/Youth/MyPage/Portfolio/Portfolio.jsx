@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import * as S from "../Styled.js";
 import PortfolioPostGrid from "../Portfolio/PortfolioPostGrid.jsx";
-//import PostCard from "../Portfolio/PostGrid.jsx";
+//import PortfolioPostCard from "../Portfolio/PortfolioPostGrid.jsx";
 import {usePortfolio} from "../../../../hooks/usePortfolio.js";
 
 export default function Portfolio() {
@@ -34,7 +34,7 @@ export default function Portfolio() {
   return (
     <S.Wrap>
       <S.Section>
-        <PostGrid items={items} />
+        <PortfolioPostGrid items={items} />
       </S.Section>
     </S.Wrap>
   );

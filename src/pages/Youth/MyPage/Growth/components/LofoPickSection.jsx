@@ -7,7 +7,7 @@ export function LofoPickSection({ posts = [] }) {
     <Card>
       <PostGrid
         items={posts}
-        renderItem={(p) => <PostCard key={p.id} {...p} />}
+        renderItem={(p) => <PostCard key={p.id} item={p} />}
       />
     </Card>
   );

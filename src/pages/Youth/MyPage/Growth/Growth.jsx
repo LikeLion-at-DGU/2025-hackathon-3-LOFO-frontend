@@ -3,8 +3,9 @@ import { ProfileCard } from "./components/ProfileCard.jsx";
 import { FeedbackList } from "./components/FeedbackList.jsx";
 import { LofoPickSection } from "./components/LofoPickSection.jsx";
 import EmptyState from "../components/EmptyState.jsx";
+import { useGrowthInsights } from "../../../../hooks/useGrowthInsights.js";
 
-
+/*
 const FEEDBACKS = [];     // []면 빈 상태
 const PICKS = [];         // []면 빈 상태
 
@@ -31,36 +32,37 @@ const MOCK_PICKS = [
     thumbnail:
       "https://images.unsplash.com/photo-1520697222861-6f5f21b6c8b0?q=80&w=1200&auto=format&fit=crop",
   },
-];
+];*/
 
 export default function Growth() {
+  const { loading, error, profile, feedbacks, picks, counts } = useGrowthInsights();
+  
   return (
     <S.GrowthWrap>
       <S.Grid>
         <S.Aside>
           <ProfileCard
-            name="김로포"
-            phone="01012345678"
-            stats={{
-              completed: 0,
-              inProgress: 0,
-              picks: 0,
-              total: 0,
-            }}
+            name={profile?.name ?? "로포"}
+            phone={profile?.phone ?? ""}
+            stats={profile?.stats ?? { completed: 0, inProgress: 0, picks: 0, total: 0 }}
           />
         </S.Aside>
 
         <S.Main>
 
+          {error && <div style={{ color: "#d00", marginBottom: 12 }}>{error}</div>}
+
           {/* 내가 받은 피드백 */}
           <S.GrowthSection>
             <S.GrowthSectionHead>
               <S.Title>내가 받은 피드백</S.Title>
-              <S.Count>{MOCK_FEEDBACKS.length}개</S.Count>
+              <S.Count>{counts.feedbacks}개</S.Count>
             </S.GrowthSectionHead>
 
-            {FEEDBACKS.length > 0 ? (
-              <FeedbackList items={FEEDBACKS} />
+            {loading ? (
+              <div style={{ opacity: 0.6 }}>불러오는 중…</div>
+            ) : counts.feedbacks > 0 ? (
+              <FeedbackList items={feedbacks} />
             ) : (
               <EmptyState
                 title="아직 받은 피드백이 없어요!"
@@ -70,18 +72,19 @@ export default function Growth() {
                 align="right"
               />
             )}
-            <FeedbackList items={MOCK_FEEDBACKS} />
           </S.GrowthSection>
 
           {/* LOFO PICK 작품 */}
           <S.GrowthSection>
             <S.GrowthSectionHead>
               <S.Title>LOFO PICK 작품</S.Title>
-              <S.Count>{MOCK_PICKS.length}개</S.Count>
+              <S.Count>{counts.picks}개</S.Count>
             </S.GrowthSectionHead>
 
-            {PICKS.length > 0 ? (
-            <LofoPickSection posts={MOCK_PICKS} />
+            {loading ? (
+              <div style={{ opacity: 0.6 }}>불러오는 중…</div>
+            ) : counts.picks > 0 ? (
+              <LofoPickSection posts={picks} />
             ) : (
               <EmptyState
                 title="아직 PICK된 작품이 없어요!"
