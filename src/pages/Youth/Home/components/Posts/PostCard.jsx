@@ -5,14 +5,17 @@ import { Heart } from "lucide-react";
 
 export default function PostCard({ item, onClick, onJoin, onToggleSave }) {
   // 백/프론트 혼용 대비
-  const name = item.store_name ?? item.storeName ?? item.title ?? "";
+  const storeName = item.store_name ?? item.storeName ?? item.title ?? "";
   const img = item.image ?? item.thumbnailUrl;
+  const title = item.title;
   const content = item.content ?? item.subtitle ?? "";
 
   // ⚠️ 로컬 상태 쓰지 말고 부모가 내려준 상태만 표시
   const isSaved = (item.is_saved ?? item.savedByMe) ?? false;
   const savedCount = (item.saved_count ?? item.savedCount) ?? 0;
 
+  console.log("title: ",item);
+  console.log("title: ",item.content);
   return (
     <S.Card onClick={() => onClick?.(item)} $OverlayEl={S.Overlay}>
       <S.Thumb src={toAbsUrl(img)} alt={name} />
@@ -35,10 +38,10 @@ export default function PostCard({ item, onClick, onJoin, onToggleSave }) {
 
       {/* 본문 */}
       <S.Body>
-        <S.Title>{name}</S.Title>
-        <S.Meta>{content} · ❤️ {savedCount}</S.Meta>
+        <S.Title>{title}</S.Title>
+        <S.Meta>{storeName} · ❤️ {savedCount}</S.Meta>
       </S.Body>
-
+      
       {/* 호버 레이어 */}
       <S.Overlay>
         <MissionBtn
