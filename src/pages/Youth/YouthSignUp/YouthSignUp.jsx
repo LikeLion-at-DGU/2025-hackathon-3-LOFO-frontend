@@ -32,7 +32,6 @@ export default function YouthSignUp() {
       const data = await signupYouthByPhone({
         phone_num: phone,
       });
-      console.log("응답:", data);
 
       // redirect가 오면 그대로 라우팅, 아니면 기본 경로로
       if (data?.redirect) {
