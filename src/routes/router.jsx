@@ -12,8 +12,9 @@ import YouthSignUpNickname from "../pages/Youth/YouthSignUp/YouthSignUpNickname"
 
 import YouthHome from "../pages/Youth/Home/YouthHome";
 import YouthHomeAI from "../pages/Youth/Home/YouthHomeAI";
+import YouthMission from "../pages/Youth/Mission/YouthMission";
 import MissionEditor from "../pages/Youth/Mission/MissionEditor";
-import MissionPlan from "../pages/Youth/Mission/MissionPlan";
+import MissionPlan from "../pages/Youth/Mission/MissionPlan"; /*임시*/
 import YouthMyPage from "../pages/Youth/MyPage/YouthMyPage";
 
 //Nopo
@@ -44,8 +45,9 @@ const router = createBrowserRouter([
       { path: "youth/home", element: <YouthHome /> },
       { path: "youth/home/ai", element: <YouthHomeAI /> },
 
-      { path: "youth/mission", element: <MissionEditor /> },
-      { path: "youth/mission/plan", element: <MissionPlan /> },
+      { path: "youth/mission", element: <YouthMission /> },
+      { path: "youth/mission/:id", element: <MissionEditor /> },
+      { path: "youth/mission/plan", element: <MissionPlan /> }, /*모달창 테스트용 임시*/
 
       { path: "youth/mypage", element: <YouthMyPage /> },
 

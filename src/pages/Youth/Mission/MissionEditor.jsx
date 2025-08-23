@@ -1,5 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { getMissionDetail, createAiPlan } from "../../../apis/youth_Mission";
+import { toAbsUrl } from "../../../utils/url";
 import * as S from "./Styled";
 
 import { YouthTopnav } from "../../../components/Topnav/YouthTopnav";
@@ -11,15 +13,24 @@ import { SubmitBar } from "./components/SubmitBar";
 import { PlanGoalBox } from "./components/PlanGoalBox";
 import { PlanMissionCard } from "./components/PlanMissionCard";
 import { getAiMode } from "../../../ai/generatePlan";
-import { createAiPlan } from "../../../apis/youth_Mission";
 
-export default function MissionEditor({ defaultGoal = "", defaultDueDate, onSubmit }) {
+export default function MissionEditor({ 
+  defaultGoal = "", defaultDueDate, onSubmit,
+  // ✅ 서버에서 이미 존재하는 미션을 열 때 사용하는 선택적 prop
+  initialSteps = null,      // [{idx,title,bullets,dueDate,status}]
+  initialGoal = "",         // string
+  initialDueDate = "",      // "YYYY-MM-DD"
+  serverShop = null,        // { id,name,imageUrl,naverUrl,request }
+  forcePlanPhase = false,   // true면 즉시 plan 단계로
+}) {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { id: reqIdParam } = useParams(); // ← /youth/mission/:id
+  const reqId = reqIdParam ? Number(reqIdParam) : undefined;
 
-  const [phase, setPhase] = useState("edit");  // "edit" | "plan"
+  const [phase, setPhase] = useState(forcePlanPhase ? "plan" : "edit");  // "edit" | "plan"
   const [mode, setMode] = useState(getAiMode?.() ?? "local");
-  const [steps, setSteps] = useState(null);
+  const [steps, setSteps] = useState(initialSteps);
 
   // ✅ 추가: 로딩/에러 상태 (API 대기 중 표시용)
   const [planLoading, setPlanLoading] = useState(false);
@@ -29,11 +40,46 @@ export default function MissionEditor({ defaultGoal = "", defaultDueDate, onSubm
     (typeof window !== "undefined" &&
       JSON.parse(sessionStorage.getItem("lastShop") || "null")) || null;
 
-  const rawShop = state?.shop || fallbackShop || null;
+ const [detailLoading, setDetailLoading] = useState(!!reqId);   // 상세 로딩 플래그
+ const [detailError, setDetailError] = useState("");
+ const [detailShop, setDetailShop] = useState(null);
 
-  useEffect(() => {
-    if (!rawShop) navigate("/youth/home", { replace: true });
-  }, [rawShop, navigate]);
+ // 상세 가져오기 (인증 불필요)
+ useEffect(() => {
+   let alive = true;
+   async function run() {
+     if (!reqId) return;   // /youth/mission 으로 들어온 경우 스킵
+     setDetailLoading(true);
+     setDetailError("");
+     try {
+       const d = await getMissionDetail(reqId);
+       if (!alive) return;
+       // 응답 매핑 → ShopCard용
+       const shopFromServer = {
+         id: d.id,
+         name: d.store_name ?? "가게",
+         imageUrl: toAbsUrl(d.image || ""),  // /media/... → 절대경로
+         naverUrl: d.url ?? "#",
+         request: d.content ?? "",
+         category: d.category,
+         title: d.title,
+       };
+       setDetailShop(shopFromServer);
+       sessionStorage.setItem("lastShop", JSON.stringify(shopFromServer)); // 새로고침 대비
+     } catch (e) {
+       setDetailError(e?.message || "요청 상세를 불러오지 못했어요.");
+     } finally {
+       setDetailLoading(false);
+     }
+   }
+   run();
+   return () => { alive = false; };
+ }, [reqId]);
+
+ const rawShop = serverShop || detailShop || state?.shop || fallbackShop || null;
+
+
+const noContext = !rawShop && !forcePlanPhase;
 
   const shop = rawShop || {
     id: undefined,
@@ -44,10 +90,19 @@ export default function MissionEditor({ defaultGoal = "", defaultDueDate, onSubm
   };
 
   const todayStr = useMemo(() => new Date().toISOString().slice(0, 10), []);
-  const [goal, setGoal] = useState(defaultGoal);
-  const [dueDate, setDueDate] = useState(defaultDueDate || todayStr);
+  const [goal, setGoal] = useState(initialGoal || defaultGoal);
+  const [dueDate, setDueDate] = useState(initialDueDate || defaultDueDate || todayStr);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+
+   // ✅ 서버 초기값이 주어지면 즉시 plan 단계로 진입(초기 1회)
+ useEffect(() => {
+   if (forcePlanPhase && Array.isArray(initialSteps) && initialSteps.length) {
+     setMode("server");
+     setPhase("plan");
+   }
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, []);
 
   // ✅ 클라이언트에서 “오늘 이후” 날짜 유효성
   const goalError =
@@ -158,10 +213,29 @@ export default function MissionEditor({ defaultGoal = "", defaultDueDate, onSubm
 
           {/* ---------------- Right ---------------- */}
           <S.RightCol>
-            {/* 로딩 상태 (API 대기) */}
-            {planLoading && (
-              <LoadingPanel />
+            {detailLoading && (
+              <div style={{padding:16, marginBottom:12, border:"1px dashed #e2e8f0", borderRadius:12}}>
+                상세를 불러오는 중…
+              </div>
             )}
+            {!detailLoading && detailError && (
+              <S.GlobalError style={{ marginBottom: 12 }}>{detailError}</S.GlobalError>
+            )}
+
+            {noContext && (
+              <div style={{
+                minHeight: 200, display:"grid", placeItems:"center",
+                border:"1px dashed #e2e8f0", borderRadius:12, marginBottom:12
+              }}>
+                <div style={{textAlign:"center", color:"#475569"}}>
+                  <b>선택된 가게가 없어요.</b><br/>
+                  홈에서 <u>미션 참여하기</u>를 눌러 시작해 주세요.
+                </div>
+              </div>
+            )}
+
+            {/* 로딩 상태 (API 대기) */}
+            {planLoading && ( <LoadingPanel /> )}
 
             {/* 오류 메시지 */}
             {!planLoading && planError && (
@@ -169,7 +243,7 @@ export default function MissionEditor({ defaultGoal = "", defaultDueDate, onSubm
             )}
 
             {/* 작성 단계 */}
-            {!planLoading && phase === "edit" && (
+            {!planLoading && !detailLoading && phase === "edit" && !noContext && (
               <>
                 <GoalField value={goal} onChange={setGoal} error={goalError} />
                 <S.Spacer />

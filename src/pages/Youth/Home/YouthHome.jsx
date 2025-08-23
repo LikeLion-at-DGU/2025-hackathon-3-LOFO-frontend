@@ -87,17 +87,8 @@ export default function YouthHome() {
   }
 
   const handleJoin = (it) => {
-    const shop = {
-      id: it.id,
-      name: it.store_name ?? it.storeName ?? it.title ?? it.name ?? it.store?.name ?? "(이름 없음)",
-      imageUrl: toAbsUrl(it.image ?? it.thumbnail_url ?? it.thumbnailUrl ?? it.thumb ?? ""),
-      naverUrl: it.url ?? it.naver_url ?? it.link ?? "#",
-      request: it.content ?? it.request ?? it.description ?? "",
-      category: it.category ?? it.category_display,
-    };
-    sessionStorage.setItem("lastShop", JSON.stringify(shop));
-    navigate("/youth/mission", { state: { shop } });
-  };
+   navigate(`/youth/mission/${it.id}`);
+ };
 
   return (
     <>
