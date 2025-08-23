@@ -37,7 +37,7 @@ export const getPostList = async ({ category, sort = "latest", page, pageSize })
   const params = buildPostQuery({ category, sort, page, pageSize });
   const res = await instance.get("/youth/home", { params });
 
-  console.log("🎯 상인요청 데이터:", res.data);
+  //console.log("🎯 상인요청 데이터:", res.data);
 
   const raw = Array.isArray(res.data) ? res.data : (res.data?.items ?? []);
   const items = raw.map(normalizePost);
@@ -53,7 +53,7 @@ export const getAiPostList = async ({ category, sort = "latest", page, pageSize 
   
   const res = await instance.get("/youth/home/ai-mission", { params });
 
-  console.log("🎯 AI미션 데이터:", res.data);
+  //console.log("🎯 AI미션 데이터:", res.data);
 
   const raw = Array.isArray(res.data) ? res.data : (res.data?.items ?? []);
   const items = raw.map(normalizePost);

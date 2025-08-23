@@ -36,3 +36,28 @@ export async function signupNopoByNickname({ phone_num, nickname }) {
   });
   return data; // { message, redirect }
 }
+
+
+//------------------------ 로그아웃 기능을 posts로 불러옵니다. ------------------------//
+
+export async function requestLogout() {
+  console.log("[logout] ▶ POST /auth/logout");
+  try {
+    const res = await instance.post("/auth/logout");
+    console.log("[logout] ◀ response", res.status, res.data);
+    return res.data;
+  } catch (err) {
+    if (err.response) {
+      console.log("[logout] ✖ server error", err.response.status, err.response.data);
+    } else {
+      console.log("[logout] ✖ network error", err.message);
+    }
+    throw err;
+  }
+}
+
+// 에러 나면 이걸로
+//export async function requestLogout() {
+//  const { data } = await instance.post("/auth/logout");
+//  return data;
+//}

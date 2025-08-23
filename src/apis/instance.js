@@ -7,3 +7,21 @@ export const instance = axios.create({
   withCredentials: true,   // ✅ 세션 쿠키를 보내려면 필수
   //headers: {"Content-Type": "application/json",},
 });
+
+// 응답 확인용
+instance.interceptors.request.use((cfg) => {
+  console.log("[axios:req]", cfg.method?.toUpperCase(), cfg.url, cfg);
+  return cfg;
+});
+instance.interceptors.response.use(
+  (res) => {
+    console.log("[axios:res]", res.status, res.config.url, res.data);
+    return res;
+  },
+  (error) => {
+    const r = error.response;
+    console.log("[axios:res:err]", r?.status, r?.config?.url, r?.data || error.message);
+    return Promise.reject(error);
+  }
+);
+
