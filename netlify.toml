@@ -1,17 +1,21 @@
 [build]
   command  = "npm run build"
   publish  = "dist"
-  functions = "netlify/functions"
+
+[functions]
+  directory   = "netlify/functions"
+  node_bundler = "esbuild"
 
 [build.environment]
   NODE_VERSION = "20"
 
-# redirects - 순서 중요!
+# API 프록시 (먼저 매칭)
 [[redirects]]
   from = "/api/*"
   to   = "/.netlify/functions/api-proxy/:splat"
   status = 200
 
+# SPA 새로고침 (마지막 매칭)
 [[redirects]]
   from = "/*"
   to   = "/index.html"
