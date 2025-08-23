@@ -1,5 +1,0 @@
-/api/*  /.netlify/functions/api-proxy/:splat  200
-/* /index.html 200
-# (리액트 라우터 새로고침 404 방지)
-
-
