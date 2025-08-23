@@ -33,7 +33,6 @@ export default function YouthSignUpNickname() {
         phone_num: phone,
         nickname: nickname.trim(),
       });
-      console.log("응답:", data);
 
   // 성공 후 이동
       navigate(data?.redirect ?? "/youth/home");

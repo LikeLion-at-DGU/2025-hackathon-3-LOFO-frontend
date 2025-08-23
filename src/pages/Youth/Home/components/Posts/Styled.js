@@ -55,8 +55,8 @@ export const Overlay = styled.div`
   visibility: hidden;
   transform: translateY(6px);
   transition: opacity .2s ease, transform .2s ease;
-  /*z-index: 2; /* Body보다 위 */
-  z-index: 0; /* Body보다 아래, but 내용이 위로 뜸(피그마 동일) */
+  z-index: 2; /* Body보다 위 */
+  /*z-index: 0; /* Body보다 아래, but 내용이 위로 뜸(피그마 동일) */
 `;
 
 export const Title = styled.h3`
