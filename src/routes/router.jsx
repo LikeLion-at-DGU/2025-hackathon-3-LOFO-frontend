@@ -34,7 +34,6 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-
       //Onboarding
       { index: true, element: <Onboarding /> },
 
@@ -57,7 +56,7 @@ const router = createBrowserRouter([
       { path: "nopo/home", element: <NopoHome /> },
       { path: "nopo/request", element: <Request /> },
       { path: "nopo/request/create", element: <RequestCreate /> },
-      { path: "nopo/request/edit", element: <RequestEdit /> },
+      { path: "nopo/request/edit/:id", element: <RequestEdit /> },
       { path: "nopo/received", element: <Received /> },
       { path: "nopo/received/feedback", element: <ReceivedFeedback /> },
 
