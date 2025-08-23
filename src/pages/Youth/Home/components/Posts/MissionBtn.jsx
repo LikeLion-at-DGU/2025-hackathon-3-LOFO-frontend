@@ -1,15 +1,10 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { Sparkles } from "lucide-react";
 
 export function MissionBtn({ onClick }) {
   return (
-    <Link to="/youth/mission">
       <Button type="button" onClick={onClick}>
         미션 참여하기
       </Button>
-    </Link>
-
   );
 }
 

@@ -1,5 +1,27 @@
 import { instance } from "./instance";
 
+//--------------- 요청 상세내용을 POST로 불러옵니다. --------------//
+
+export async function getMissionDetail(id) {
+  const res = await instance.get(`/youth/mission/${id}`);
+  return res.data; // { id,title,store_name,category,content,status,saved_count,image,url,created_at }
+}
+
+
+//--------------- 진행 중인 미션을 POST로 불러옵니다. --------------//
+
+export async function getMyMission() {
+  const token = localStorage.getItem("accessToken");
+  const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+  const res = await instance.get("/youth/mymission", {
+    headers,
+    // withCredentials는 instance에 이미 설정됨
+  });
+  return res.data; // { exists, mission, request, steps }
+}
+
+
 //--------------- Request를 Post 후 AI 플랜 생성 (미션 & 스텝 3개 생성)을 응답으로 받습니다. --------------//
 
 /**

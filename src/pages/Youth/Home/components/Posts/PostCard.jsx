@@ -17,7 +17,7 @@ export default function PostCard({ item, onClick, onJoin, onToggleSave }) {
   //console.log("title: ",item.title);
   return (
     <S.Card onClick={() => onClick?.(item)} $OverlayEl={S.Overlay}>
-      <S.Thumb src={toAbsUrl(img)} alt={name} />
+      <S.Thumb src={toAbsUrl(img)} alt={storeName} />
 
       {/* 하트 버튼: 클릭만 부모로 올림 */}
       <S.HeartBtn

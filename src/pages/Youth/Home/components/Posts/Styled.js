@@ -83,7 +83,7 @@ export const HeartBtn = styled.button`
   display: grid; place-items: center;
   color: white;
   border: none;
-  background: none; backdrop-filter: blur(2px);
+  background: none;
   transition: transform .12s ease;
   &:active { transform: scale(.96); }
 `;
