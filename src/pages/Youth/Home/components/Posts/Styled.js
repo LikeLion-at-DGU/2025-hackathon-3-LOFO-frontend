@@ -28,10 +28,10 @@ export const Thumb = styled.img`
 export const Body = styled.div`
   position: absolute;
   left: 0; right: 0; bottom: 0;
-  padding: 14px;
+  padding: 8px 28px;
   display: flex;
+  gap: 2px;
   flex-direction: column;
-  gap: 6px;
   z-index: 1; /* Body도 위로 */
 `;
 
@@ -55,23 +55,35 @@ export const Overlay = styled.div`
   visibility: hidden;
   transform: translateY(6px);
   transition: opacity .2s ease, transform .2s ease;
-  z-index: 2; /* Body보다 위 */
+  /*z-index: 2; /* Body보다 위 */
+  z-index: 0; /* Body보다 아래, but 내용이 위로 뜸(피그마 동일) */
 `;
 
 export const Title = styled.h3`
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
+  margin-bottom: 0;
 `;
 export const Meta = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   opacity: .9;
 `;
+export const HeartCount = styled.div`
+  font-size: 20px;
+  opacity: .9;
+
+`;
+export const DivRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 export const HeartBtn = styled.button`
-  position: absolute; top: 120px; right: 10px; z-index: 3;
+  position: absolute; top: 140px; right: 40px; z-index: 3;
   width: 36px; height: 36px; border-radius: 999px;
   display: grid; place-items: center;
-  border: 1px solid rgba(255,255,255,.4);
-  background: rgba(0,0,0,.35); backdrop-filter: blur(2px);
+  color: white;
+  border: none;
+  background: none; backdrop-filter: blur(2px);
   transition: transform .12s ease;
   &:active { transform: scale(.96); }
 `;

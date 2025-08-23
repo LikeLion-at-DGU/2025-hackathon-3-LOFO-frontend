@@ -14,8 +14,7 @@ export default function PostCard({ item, onClick, onJoin, onToggleSave }) {
   const isSaved = (item.is_saved ?? item.savedByMe) ?? false;
   const savedCount = (item.saved_count ?? item.savedCount) ?? 0;
 
-  console.log("title: ",item);
-  console.log("title: ",item.content);
+  //console.log("title: ",item.title);
   return (
     <S.Card onClick={() => onClick?.(item)} $OverlayEl={S.Overlay}>
       <S.Thumb src={toAbsUrl(img)} alt={name} />
@@ -39,7 +38,10 @@ export default function PostCard({ item, onClick, onJoin, onToggleSave }) {
       {/* 본문 */}
       <S.Body>
         <S.Title>{title}</S.Title>
-        <S.Meta>{storeName} · ❤️ {savedCount}</S.Meta>
+        <S.DivRow>
+          <S.Meta>{storeName}</S.Meta>
+          <S.HeartCount>{savedCount}</S.HeartCount>
+        </S.DivRow>
       </S.Body>
       
       {/* 호버 레이어 */}
