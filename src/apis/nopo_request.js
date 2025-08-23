@@ -168,6 +168,75 @@ export async function endRequest(id) {
   return data;
 }
 
+//////////////////////////////////
+// ------------------------ 상세 GET (fallback 포함) ------------------------ //
+// 우선 /nopo/request/:id (혹은 끝 슬래시)로 시도하고, 없으면 목록에서 찾아서 반환
+export async function getRequestDetail(id) {
+  if (!id) throw new Error("id가 필요합니다.");
+  const candidates = [`/nopo/request/${id}`, `/nopo/request/${id}/`];
+  let lastErr;
+
+  for (const p of candidates) {
+    try {
+      const res = await instance.get(p);
+      const raw =
+        res.data?.item ?? res.data?.result ?? res.data?.request ?? res.data;
+      return normalize(raw || {});
+    } catch (e) {
+      lastErr = e;
+      if (e?.response?.status !== 404) throw e;
+    }
+  }
+
+  // 전용 상세 API가 없다면 목록에서 찾아서 반환
+  const { items } = await getRequestTabList();
+  const row = items.find((x) => String(x.id) === String(id));
+  if (!row) throw lastErr || new Error("요청을 찾을 수 없습니다.");
+  return row;
+}
+
+// ------------------------ 수정 PATCH: /nopo/request/:id/edit ------------------------ //
+export async function updateRequest(
+  id,
+  { store_name, title, url, category, content, file }
+) {
+  if (!id) throw new Error("id가 필요합니다.");
+
+  // 이미지가 있을 수 있으니 FormData로 통일
+  const fd = new FormData();
+  if (store_name != null) fd.append("store_name", store_name);
+  if (title != null) fd.append("title", title);
+  if (url != null) fd.append("url", url);
+  if (category != null) fd.append("category", category); // 예: PROMOTION_PLANNING
+  if (content != null) fd.append("content", content);
+  if (file) fd.append("image", file); // 새 이미지 업로드 시
+
+  const endpoint = `/nopo/request/${id}/edit`;
+
+  try {
+    const { data } = await instance.patch(endpoint, fd);
+    const raw = data?.item ?? data?.result ?? data?.request ?? data;
+    const normalized = normalize(raw || {});
+    console.log("[updateRequest] ✅ 수정 성공:", normalized);
+    return normalized;
+  } catch (err) {
+    console.group("[updateRequest] ❌ 수정 실패");
+    console.log("→ endpoint:", endpoint);
+    console.log("→ payload(no file dump):", {
+      store_name,
+      title,
+      url,
+      category,
+      content,
+      file: !!file,
+    });
+    console.log("→ status:", err?.response?.status);
+    console.log("→ response.data:", err?.response?.data);
+    console.groupEnd();
+    throw err;
+  }
+}
+
 //------------------------ 작성된 상인요청을 patch로 수정합니다. ------------------------//
 // "/nopo/request/<int:id>/edit"
 
