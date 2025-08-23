@@ -6,7 +6,7 @@ import LogoutBtn from "./Logout/LogoutBtn";
 export function YouthTopnav() {
   return (
     <Header>
-      <LogoLink to="/"><Logo src={logo_blue} alt="로고-blue" /></LogoLink>
+      <Logo src={logo_blue} alt="로고-blue" />
       <NavTabs>
         <Tab to="/youth/home" end>홈</Tab>
         <Tab to="/youth/mission">미션</Tab>
@@ -39,7 +39,7 @@ const LogoLink = styled(NavLink)`
   align-items: center;
 `;
 const Logo = styled.img`
-  cursor: pointer;
+  //cursor: pointer;
 `;
 const NavTabs = styled.nav`
   display: flex;
