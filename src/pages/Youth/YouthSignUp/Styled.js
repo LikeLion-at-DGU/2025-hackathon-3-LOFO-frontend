@@ -15,7 +15,7 @@ export const Title = styled.div`
   color: var(--sub-003, #59418F);
   text-align: center;
   font-family: "Pretendard Variable";
-  font-size: 43px;
+  font-size: 32px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -25,11 +25,11 @@ export const Title = styled.div`
 //Input 외부 레이아웃//
 export const InputContainer = styled.div`
   display: flex;
-  width: 600px;
-  padding: 80px 60px;
+  width: 480px;
+  padding: 74px 50px;
   flex-direction: column;
   justify-content: center;
-  gap: 3rem;
+  gap: 1.5rem;
   align-self: stretch;
   border-radius: 60px;
   background: var(--white, #FFF);
@@ -43,14 +43,14 @@ export const Info = styled.div`
 `
 export const InputTitle = styled.div`
 color: var(--text-001, #333);
-font-size: 32px;
+font-size: 28px;
 font-style: normal;
 font-weight: 600;
 line-height: normal;
 `
 export const InputDescription = styled.span`
   color: var(--text-002, #4F4F4F);
-font-size: 22px;
+font-size: 18px;
 font-style: normal;
 font-weight: 400;
 line-height: normal;
@@ -61,7 +61,7 @@ export const InputWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.8rem;
+  gap: 1rem;
   align-self: stretch;
 `
 
@@ -70,7 +70,7 @@ export const SubDescription = styled.span`
   color: var(--main-003, #8B6FD4);
 text-align: center;
 font-family: "Pretendard Variable";
-font-size: 14px;
+font-size: 12px;
 font-style: normal;
 font-weight: 400;
 line-height: normal;

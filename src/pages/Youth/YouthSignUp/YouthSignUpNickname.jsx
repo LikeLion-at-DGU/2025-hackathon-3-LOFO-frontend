@@ -53,7 +53,7 @@ export default function YouthSignUpNickname() {
     <>
       <Topnav />
       <S.Div>
-        <S.Title>닉네임을 정하고 미션을 시작하세요!</S.Title>
+        <S.Title style={{ marginTop:"111px" }}>닉네임을 정하고 미션을 시작하세요!</S.Title>
         <S.InputContainer>
           <S.Info>
             <S.InputTitle>닉네임 입력</S.InputTitle>
@@ -92,12 +92,6 @@ export default function YouthSignUpNickname() {
             이미 LOFO 사용자이신가요?
             <br />
             가입하신 전화번호로 이용할 수 있어요.
-            <Link
-              to="/youth/home"
-              style={{ cursor: "pointer", textDecoration: "none" }}
-            >
-              임시버튼
-            </Link>
           </S.SubDescription>
         </S.InputContainer>
       </S.Div>
