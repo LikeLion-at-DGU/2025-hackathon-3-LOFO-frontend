@@ -290,15 +290,20 @@ const noContext = !rawShop && !forcePlanPhase;
                   setBasicModalOpen(true);     // ✅ 완료 모달 열기
                 }}
                 />
-
-                {/* 페이지 어디든(보통 맨 아래) */}
-                <BasicModal open={basicModalOpen} onClose={() => setBasicModalOpen(false)} />
-
               </div>
             ))}
           </S.RightCol>
         </S.Main>
       </S.Shell>
+
+      {/* 최종 미션 완성 안내 모달 */}
+      <BasicModal
+        open={basicModalOpen}
+        title="최종 미션이 완성되었어요!"
+        desc={"마이페이지에서 포트폴리오를 확인할 수 있어요."}
+        confirmText="미션으로 이동"
+        onClose={() => setBasicModalOpen(false)} />
+
     </S.Page>
   );
 }
