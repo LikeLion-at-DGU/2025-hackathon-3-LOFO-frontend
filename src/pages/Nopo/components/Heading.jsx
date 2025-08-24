@@ -23,5 +23,5 @@ export const Subtitle = styled.div`
   font-size: 23px;
   color: #555;
   /* margin-bottom: 32px; */
-  text-align: center;
+  /* text-align: center; */
 `;
