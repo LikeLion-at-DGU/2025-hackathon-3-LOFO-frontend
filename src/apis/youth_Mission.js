@@ -75,7 +75,7 @@ export async function postMissionFeedback({ missionId, stepNo, files, note }) {
 }
 
 
-//--------------- 1,2단계 결과물을 POST하여 완료합니다. --------------//
+//--------------------- 1,2단계 결과물을 POST하여 완료합니다. ----------------------//
 
 export async function postMissionDone({ missionId, stepNo }) {
   const { data } = await instance.post("/youth/mission/done", {
@@ -85,7 +85,8 @@ export async function postMissionDone({ missionId, stepNo }) {
   return data; // { detail, mission_id, step_no, status, completed_at, all_steps }
 }
 
-// --------------- 최종 제출 (Outcome 생성 + 미션/스텝 DONE) --------------//
+// --------------- 최종 결과물을 POST로 제출합니다. (Outcome 생성 + 미션/스텝 DONE) --------------//
+
 export async function postMissionSubmit({ missionId, files }) {
   if (!missionId) throw new Error("mission_id가 필요합니다.");
   if (!Array.isArray(files) || files.length === 0) {
