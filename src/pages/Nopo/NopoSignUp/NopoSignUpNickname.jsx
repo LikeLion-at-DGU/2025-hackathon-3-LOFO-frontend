@@ -6,10 +6,12 @@ import Topnav from "../../../components/Topnav/Topnav";
 import InputField from "../../../components/SignUp/InputField";
 import SubmitButton from "../../../components/SignUp/SubmitButton";
 import { signupNopoByNickname } from "../../../apis/auth";
+import { useUserRole } from "../../../hooks/useUserRole";
 
 export default function NopoSignUpNickname() {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { setRole } = useUserRole({ verifyOnMount: false });
 
   const phone = state?.phone ?? sessionStorage.getItem("signup_phone") ?? "";
 
@@ -35,6 +37,7 @@ export default function NopoSignUpNickname() {
       console.log("응답:", data);
 
       // 성공 후 이동
+      setRole("MERCHANT");
       navigate(data?.redirect ?? "/nopo/home");
     } catch (err) {
       const msg =

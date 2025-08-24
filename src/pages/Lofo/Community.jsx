@@ -1,33 +1,13 @@
-// import styled from "styled-components";
-// import * as S from "../Nopo/components/Styled";
-// import {}
-// import NopoTopnav from "../../components/Topnav/NopoTopnav";
-// import { HeadingContainer, Title, Subtitle } from "../Nopo/components/Heading";
-// import lofopick from "../../assets/lofopick.svg";
-
-// const Community = () => {
-//   return (
-//     <S.Wrapper>
-//       <NopoTopnav />
-//       <HeadingContainer>
-//         <Title>청년의 시선이 담긴 작업물, 한눈에 발견하세요</Title>
-//         <Subtitle>
-//           상인에게는 영감이, 청년에게는 성취가 되는 공간입니다.{" "}
-//         </Subtitle>
-//       </HeadingContainer>
-//     </S.Wrapper>
-//   );
-// };
-
-// export default Community;
 import styled from "styled-components";
 import * as S from "../Nopo/components/Styled";
 import NopoTopnav from "../../components/Topnav/NopoTopnav";
+import { YouthTopnav } from "../../components/Topnav/YouthTopnav";
 import { HeadingContainer, Title, Subtitle } from "../Nopo/components/Heading";
 import lofopick from "../../assets/lofopick.svg";
 import { Heart } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getCommunityList, likeCommunity } from "../../apis/community";
+import { useUserRole } from "../../hooks/useUserRole";
 
 /* ---- 카테고리 탭 ---- */
 const CATEGORY_TABS = [
@@ -45,7 +25,8 @@ const likedKey = (id) => `community:liked:${id}`;
 
 export default function Community() {
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(true);
+
   const [likedMap, setLikedMap] = useState({});
   const [activeTab, setActiveTab] = useState("ALL");
 
@@ -59,7 +40,7 @@ export default function Community() {
   useEffect(() => {
     (async () => {
       try {
-        setLoading(true);
+        setListLoading(true);
         const { items } = await getCommunityList();
         setItems(items);
         const lm = {};
@@ -68,7 +49,7 @@ export default function Community() {
         });
         setLikedMap(lm);
       } finally {
-        setLoading(false);
+        setListLoading(false);
       }
     })();
   }, []);
@@ -150,9 +131,29 @@ export default function Community() {
     }
   };
 
+  //로그인 role 분류
+  const {
+    role,
+    isYouth,
+    isMerchant,
+    loading: roleLoading,
+  } = useUserRole({ verifyOnMount: false });
+
+  //역할 값이 실제로 들어오는지 콘솔에서 확인
+  useEffect(() => {
+    console.log("[role]", {
+      roleLoading,
+      role,
+      isYouth,
+      isMerchant,
+      ls: localStorage.getItem("role"),
+    });
+  }, [roleLoading, role, isYouth, isMerchant]);
+
   return (
     <S.Wrapper>
-      <NopoTopnav />
+      {!roleLoading &&
+        (isYouth ? <YouthTopnav /> : isMerchant ? <NopoTopnav /> : null)}
 
       <HeadingContainer>
         <Title>청년의 시선이 담긴 작업물, 한눈에 발견하세요</Title>
@@ -213,14 +214,13 @@ export default function Community() {
 
       {/* 카드 그리드 */}
       <CardGrid>
-        {loading && <div style={{ color: "#6b7280" }}>불러오는 중…</div>}
-        {!loading && filteredSorted.length === 0 && (
+        {listLoading && <div style={{ color: "#6b7280" }}>불러오는 중…</div>}
+        {!listLoading && filteredSorted.length === 0 && (
           <Empty>
             아직 공개된 작업물이 없어요. 곧 다양한 작품이 올라올 거예요!
           </Empty>
         )}
-
-        {!loading &&
+        {!listLoading &&
           filteredSorted.map((card) => (
             <Card key={card.id}>
               <Image $src={card.imageUrl} />
@@ -267,6 +267,11 @@ export default function Community() {
 }
 
 /* ---------------- styles ---------------- */
+
+const TopnavPlaceholder = styled.div`
+  height: 64px; /* Topnav 고정 높이에 맞춰 조정하세요 */
+`;
+
 const TopRow = styled.div`
   display: flex;
   align-items: center;
