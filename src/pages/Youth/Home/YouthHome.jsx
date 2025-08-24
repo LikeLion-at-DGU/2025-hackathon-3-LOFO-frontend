@@ -6,6 +6,7 @@ import Hero from "./components/Hero/Hero";
 import CategoryFilter from "./components/Filter/CategoryFilter";
 import SortDropdown from "./components/Filter/SortDropdown";
 import PostGrid from "./components/Posts/PostGrid";
+import BasicModal from "../Mission/components/BasicModal";
 
 import { useMemo, useState } from "react";
 import { usePosts } from "../../../hooks/usePosts";
@@ -13,9 +14,12 @@ import { useNavigate } from "react-router-dom";
 import { toAbsUrl } from "../../../utils/url";
 import { UI_CATEGORIES } from "../../../apis/filters";
 import { toggleSaveMission } from "../../../apis/saveMission"; // ★ 하트 토글 API
+import { getMyMission } from "../../../apis/youth_Mission";
 
 export default function YouthHome() {
   const navigate = useNavigate();
+  const [activeModal, setActiveModal] = useState(false);
+  
   const [category, setCategory] = useState("전체");
   const [sort, setSort] = useState("latest"); // "latest" | "popular"
   const [refreshKey, setRefreshKey] = useState(0);
@@ -86,9 +90,27 @@ export default function YouthHome() {
     }
   }
 
-  const handleJoin = (it) => {
-   navigate(`/youth/mission/${it.id}`);
- };
+    const handleJoin = async (it) => {
+      console.log("[handleJoin] start", it?.id);
+    try {
+      // 토큰 유무와 상관없이 호출 → 401이면 catch로 이동
+        const my = await getMyMission();
+        console.log("[mymission]", my); 
+        if (my?.exists) {
+          console.log("진행중 미션 존재 → 모달 오픈");
+          setActiveModal(true);       // ← 모달 오픈
+          return;         
+        }            // 상세로 가지 않음
+    } catch (e) {
+      const status = e?.response?.status;
+      console.log("getMyMission 실패", status, e?.message);
+      // 401(비로그인) 등은 상세 페이지로 그냥 진행
+    }
+
+    console.log("[handleJoin] go detail");
+    navigate(`/youth/mission/${it.id}`);  // 참여중 아님 → 상세로
+  };
+
 
   return (
     <>
@@ -123,6 +145,15 @@ export default function YouthHome() {
           />
         )}
       </S.Page>
+      
+      {/* 진행중 미션 가드 모달 */}
+      <BasicModal
+        open={ activeModal }
+        title="이미 진행 중인 미션이 있습니다."
+        desc={"현재 진행중인 미션에서 이어서 작업해주세요."}
+        confirmText="미션으로 이동"
+        onClose={() => setActiveModal(false)}
+      />
     </>
   );
 }

@@ -1,4 +1,4 @@
-//-----------모달창 테스트용 임시 페이지입니다.------------//
+//----------- 모달창 테스트용 임시 페이지입니다. !!삭제 예정!! ------------//
 
 import { useMemo, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";

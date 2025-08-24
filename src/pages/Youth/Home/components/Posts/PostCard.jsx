@@ -49,6 +49,7 @@ export default function PostCard({ item, onClick, onJoin, onToggleSave }) {
         <MissionBtn
           onClick={(e) => {
             e.stopPropagation();
+             console.log("[PostCard] join click", item.id);
             onJoin?.(item);
           }}
         />

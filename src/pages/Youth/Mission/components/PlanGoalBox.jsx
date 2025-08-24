@@ -25,8 +25,9 @@ export function PlanGoalBox({ goal, dueDate, mode }) {
         <strong>{dateText}</strong>
       </S.Row>
 
-      {/* Styled에서 $mode 프롭을 사용해 색상 분기 */}
+      {/* Styled에서 $mode 프롭을 사용해 색상 분기 
       <S.ModePill $mode={resolvedMode}>{label}</S.ModePill>
+      --> 제거 예정 */}
     </S.GoalBox>
   );
 }
