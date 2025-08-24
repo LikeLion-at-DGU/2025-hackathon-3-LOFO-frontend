@@ -152,9 +152,17 @@ const noContext = !rawShop && !forcePlanPhase;
         title: s.title || "단계",
         bullets,
         dueDate: safeDue,
+        status: s.status || "TODO",
       };
     }).sort((a, b) => a.idx - b.idx);
   }
+
+  function mergeStatuses(prevCards, allSteps) {
+  return prevCards.map((c) => {
+    const found = allSteps.find((x) => (x.step_no ?? x.idx) === c.idx);
+    return found ? { ...c, status: found.status || c.status } : c;
+  });
+}
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -271,9 +279,10 @@ const noContext = !rawShop && !forcePlanPhase;
                   title={s.title}
                   bullets={s.bullets}
                   dueDate={s.dueDate}
-                  cta={s.idx === 3 ? "추가 업로드" : "미션 업로드"}
-                  onClick={() => console.log(`${s.idx}단계 업로드 클릭`)}
+                  //cta={s.idx === 3 ? "추가 업로드" : "미션 업로드"}
                   missionId={missionId}
+                  status={s.status}
+                  onStepsChange={(all) => setSteps((prev) => mergeStatuses(prev, all))}
                 />
               </div>
             ))}

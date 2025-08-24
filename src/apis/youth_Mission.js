@@ -60,6 +60,7 @@ export async function postMissionFeedback({ missionId, stepNo, files, note }) {
   }
 
   const form = new FormData();
+  //form.append("file", file);
   form.append("mission_id", String(missionId));
   form.append("step_no", String(step));
   if (note) form.append("note", note);
@@ -74,3 +75,13 @@ export async function postMissionFeedback({ missionId, stepNo, files, note }) {
   return data; // { mission_id, step_no, feedback: {...}, feedback_count }
 }
 
+
+//--------------- 1,2단계 결과물을 POST하여 완료합니다. --------------//
+
+export async function postMissionDone({ missionId, stepNo }) {
+  const { data } = await instance.post("/youth/mission/done", {
+    mission_id: missionId,
+    step_no: stepNo,
+  });
+  return data; // { detail, mission_id, step_no, status, completed_at, all_steps }
+}

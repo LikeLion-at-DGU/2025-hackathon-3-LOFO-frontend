@@ -1,3 +1,5 @@
+//--------------------폐기예정------------------------//
+
 import styled from "styled-components";
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useAiFeedback } from "../../../../hooks/useAiFeedback";
@@ -28,6 +30,7 @@ export default function UploadModal({
   //const [fbLoading, setFbLoading] = useState(false);
   const fileInputRef = useRef(null);              // 🆕 input 리셋용
   const stepNum = useMemo(() => Number(stepNo), [stepNo]);
+  const isAutoFeedbackStep = stepNum === 1 || stepNum === 2;
 
   const {
     feedback,            // { summary, bullets }
@@ -101,13 +104,16 @@ useEffect(() => {
   const handlePick = async (f) => {
     if (!f) return;
     setFile(f);
-    try {
-      await requestFeedback({ files: [f], note: "" });
-    } catch (e) {
-      // 훅에서 에러 상태를 이미 셋팅하므로 여기선 추가 처리만 선택적으로
-      console.error(e);
+    
+    // 1·2단계만 자동 피드백 호출
+    if (isAutoFeedbackStep) {
+      try {
+        await requestFeedback({ files: [f], note: "" });
+      } catch (e) {
+        console.error(e);
+      }
     }
-    console.log("missionId, stepNo(type):", missionId, stepNo, typeof stepNo);
+        console.log("missionId, stepNo(type):", missionId, stepNo, typeof stepNo);
   };
 
     const clearFile = () => {

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useUploadModal } from "../../../../hooks/useUploadModal";
+import { useStepUpload } from "../../../../hooks/useStepUpload";
 import UploadModal from "./UploadModal";
 
 /**
@@ -12,21 +12,19 @@ import UploadModal from "./UploadModal";
  * - onClick: () => void
  * - missionId: number | string
  */
-export function PlanMissionCard({ 
+export function PlanMissionCard({
   idx, title, bullets = [], dueDate,
-  cta = "미션 업로드", onClick,
-  missionId,  
+  missionId,
+  status,                  // ← 단계 상태("TODO"/"DONE")를 부모가 내려주도록
+  onStepsChange,           // ← 완료 후 상위에서 steps 갱신
 }) {
-  const { open, handleClick, handleClose, handleSubmit } = useUploadModal({
-    parentOnClick: onClick,
-    onSubmit: ({ file, feedback }) => {
-      // 업로드 API 연동 자리 (예시)
-      // return uploadMission({ stepNo: idx, file, feedback });
-    },
+  const { buttonProps, modalProps } = useStepUpload({
+    missionId,
+    stepNo: idx,
+    status,
+    deadline: dueDate,
+    onStepsChange,
   });
-  
-  const isFinal = idx === 3;
-  const aiEnabled = idx === 1 || idx === 2;  // ✅ 1·2단계만 AI 피드백
 
   return (
     <>
@@ -59,31 +57,20 @@ export function PlanMissionCard({
           <strong>{formatKR(dueDate)}</strong>
         </DuePill>
 
-        <UploadBtn type="button" onClick={handleClick}>
+        <UploadBtn type="button" onClick={buttonProps.onClick} disabled={buttonProps.disabled}>
           <UploadIcon viewBox="0 0 24 24" aria-hidden>
             <path d="M12 16V8M8.5 11.5 12 8l3.5 3.5M5 16v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" 
             fill="none" stroke="currentColor" strokeWidth="1.8" 
             strokeLinecap="round" strokeLinejoin="round"/>
           </UploadIcon>
-          {cta}
+          {buttonProps.label}
         </UploadBtn>
       </Right>
     </Card>
 
      {/* 부모 onClick이 없을 때만 사실상 쓰이게 됨 */}
      
-      <UploadModal
-        open={open}
-        onClose={handleClose}
-        onSubmit={handleSubmit}
-        title={isFinal ? "최종 미션 제출하기" : "미션 제출하기"}
-        variant={isFinal ? "purple" : "blue"}
-        
-        /* ✅ AI 피드백은 1·2단계에서만 자동 수행 */
-        missionId={missionId}                       // ✅ 반드시 전달
-        stepNo={idx === 1 || idx === 2 ? Number(idx) : undefined} // ✅ 숫자 보장, 3단계면 미전달
-        showFeedbackAction={false}                   // 자동요청이면 버튼 불필요
-      />
+      <UploadModal {...modalProps} />
     </>
   );
 }

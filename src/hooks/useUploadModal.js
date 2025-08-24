@@ -1,3 +1,5 @@
+//--------------------폐기예정-----------------------//
+
 import { useState, useCallback } from "react";
 
 /**
