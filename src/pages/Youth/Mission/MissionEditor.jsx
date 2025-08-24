@@ -9,6 +9,7 @@ import { ShopCard } from "./components/ShopCard";
 import { GoalField } from "./components/GoalField";
 import { DueDateField } from "./components/DueDateField";
 import { SubmitBar } from "./components/SubmitBar";
+import BasicModal from "./components/BasicModal";
 
 import { PlanGoalBox } from "./components/PlanGoalBox";
 import { PlanMissionCard } from "./components/PlanMissionCard";
@@ -22,15 +23,26 @@ export default function MissionEditor({
   initialDueDate = "",      // "YYYY-MM-DD"
   serverShop = null,        // { id,name,imageUrl,naverUrl,request }
   forcePlanPhase = false,   // true면 즉시 plan 단계로
+  missionId: missionIdFromProps,
 }) {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { id: reqIdParam } = useParams(); // ← /youth/mission/:id
-  const reqId = reqIdParam ? Number(reqIdParam) : undefined;
+  const reqId = reqIdParam ? Number(reqIdParam) : undefined;//
+
+  // ✅ missionId 우선순위: props → URL(:id) → location.state → localStorage 백업
+  const missionId =
+    missionIdFromProps
+    ?? (reqIdParam ? Number(reqIdParam) : undefined)
+    ?? state?.missionId
+    ?? (typeof window !== "undefined"
+      ? Number(JSON.parse(localStorage.getItem("lastMission") || "{}")?.mission?.id)
+      : undefined);
 
   const [phase, setPhase] = useState(forcePlanPhase ? "plan" : "edit");  // "edit" | "plan"
   const [mode, setMode] = useState(getAiMode?.() ?? "local");
   const [steps, setSteps] = useState(initialSteps);
+  const [basicModalOpen, setBasicModalOpen] = useState(false);
 
   // ✅ 추가: 로딩/에러 상태 (API 대기 중 표시용)
   const [planLoading, setPlanLoading] = useState(false);
@@ -142,9 +154,17 @@ const noContext = !rawShop && !forcePlanPhase;
         title: s.title || "단계",
         bullets,
         dueDate: safeDue,
+        status: s.status || "TODO",
       };
     }).sort((a, b) => a.idx - b.idx);
   }
+
+  function mergeStatuses(prevCards, allSteps) {
+  return prevCards.map((c) => {
+    const found = allSteps.find((x) => (x.step_no ?? x.idx) === c.idx);
+    return found ? { ...c, status: found.status || c.status } : c;
+  });
+}
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -261,9 +281,19 @@ const noContext = !rawShop && !forcePlanPhase;
                   title={s.title}
                   bullets={s.bullets}
                   dueDate={s.dueDate}
-                  cta={s.idx === 3 ? "추가 업로드" : "미션 업로드"}
-                  onClick={() => console.log(`${s.idx}단계 업로드 클릭`)}
+                  //cta={s.idx === 3 ? "추가 업로드" : "미션 업로드"}
+                  missionId={missionId}
+                  status={s.status}
+                  onStepsChange={(all) => setSteps((prev) => mergeStatuses(prev, all))}
+                  onMissionSubmitted={(res) => {
+                  setSteps(prev => mergeStatuses(prev, res.steps || []));
+                  setBasicModalOpen(true);     // ✅ 완료 모달 열기
+                }}
                 />
+
+                {/* 페이지 어디든(보통 맨 아래) */}
+                <BasicModal open={basicModalOpen} onClose={() => setBasicModalOpen(false)} />
+
               </div>
             ))}
           </S.RightCol>

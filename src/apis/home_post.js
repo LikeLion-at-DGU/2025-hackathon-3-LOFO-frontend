@@ -45,19 +45,3 @@ export const getPostList = async ({ category, sort = "latest", page, pageSize })
 
   return { items, total };
 };
-
-//------------------------- 생성된 ai미션 게시글을 get으로 불러옵니다. -------------------------//
-
-export const getAiPostList = async ({ category, sort = "latest", page, pageSize }) => {
-  const params = buildPostQuery({ category, sort, page, pageSize });
-  
-  const res = await instance.get("/youth/home/ai-mission", { params });
-
-  //console.log("🎯 AI미션 데이터:", res.data);
-
-  const raw = Array.isArray(res.data) ? res.data : (res.data?.items ?? []);
-  const items = raw.map(normalizePost);
-  const total = res.data?.total ?? items.length;
-
-  return { items, total };
-};
