@@ -193,29 +193,16 @@ useEffect(() => {
           {!fbLoading && fbError && (
             <div style={{ color: "#ef4444" }}>{fbError}</div>
           )}
-
-
-          {/* 서버에서 feedback 문자열이 바로 오는 경우 */}
-          {!fbLoading && !fbError && typeof feedback === "string" && (
-            <p>{feedback}</p>
-          )}
-
-          {/* 혹시 훅에서 summary/bullets 구조로 내려오는 경우도 대응 */}
-            {!fbLoading && !fbError && feedback?.summary && (
-              <>
-                <p><b>{feedback.summary}</b></p>
-                <ul>
-                  {feedback.bullets?.map((b, i) => <li key={i}>{b}</li>)}
-                </ul>
-              </>
-            )}
-            
-            {/* 아무 것도 없을 때 기본 placeholder */}
-            {!fbLoading && !fbError && !feedback && (
-              <span className="placeholder">파일을 업로드하면 자동 피드백이 표시됩니다.</span>
-            )}
-
-        
+          {!fbLoading && !fbError && feedback?.summary ? (
+            <>
+              <p><b>{feedback.summary}</b></p>
+              <ul>
+                {feedback.bullets?.map((b, i) => <li key={i}>{b}</li>)}
+              </ul>
+            </>
+          ) : (!fbLoading && !fbError && (
+            <span className="placeholder">파일을 업로드하면 자동 피드백이 표시됩니다.</span>
+          ))}
         </FeedbackBox>
 
         <Footer>

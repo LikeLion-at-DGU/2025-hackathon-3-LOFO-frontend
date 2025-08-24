@@ -21,12 +21,41 @@ function validateFiles(files = []) {
   }
 }
 
+
+/** 서버 응답을 {summary, bullets[]}로 표준화 */
+function normalizeFeedback(raw) {
+  if (!raw) return null;
+
+  // 1) 문자열로 오는 현재 백엔드 형태: feedback: "…"
+  if (typeof raw === "string") {
+    return { summary: raw, bullets: [] };
+  }
+
+  // 2) 이미 객체 형태인 경우
+  if (typeof raw === "object") {
+    // 케이스A: { summary, bullets }
+    if (raw.summary || raw.bullets) {
+      return {
+        summary: raw.summary ?? "",
+        bullets: Array.isArray(raw.bullets) ? raw.bullets : [],
+      };
+    }
+    // 케이스B: 배열만 오는 경우 -> bullets로 처리
+    if (Array.isArray(raw)) {
+      return { summary: "", bullets: raw };
+    }
+  }
+
+  // 알 수 없는 형태는 문자열로 캐스팅
+  return { summary: String(raw), bullets: [] };
+}
+
 export function useAiFeedback({ missionId, stepNo }) {
   const [feedback, setFeedback] = useState(null); // { summary, bullets }
   const [feedbackCount, setFeedbackCount] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  
   const reset = useCallback(() => {
     setFeedback(null);
     setFeedbackCount(undefined);
@@ -54,13 +83,16 @@ export function useAiFeedback({ missionId, stepNo }) {
         });
         // 서버 예시 응답 구조:
         // { mission_id, step_no, feedback: { summary, bullets[] }, feedback_count }
-        setFeedback(data?.feedback ?? null);
+        
+        const fb = normalizeFeedback(data?.feedback);
+        setFeedback(fb);
         setFeedbackCount(data?.feedback_count);
         return data;
       } catch (e) {
         // 백엔드 에러 메시지 매핑(예: {"detail": "..."} 형태 고려)
         const msg =
-          (e?.response?.data && (e.response.data.detail || JSON.stringify(e.response.data))) ||
+          (e?.response?.data && 
+            (e.response.data.detail || JSON.stringify(e.response.data))) ||
           e?.message ||
           "AI 피드백 생성 실패";
         setError(msg);
@@ -73,7 +105,7 @@ export function useAiFeedback({ missionId, stepNo }) {
   );
 
   return {
-    feedback,
+    feedback, // 항상 {summary, bullets[]}
     feedbackCount,
     loading,
     error,
