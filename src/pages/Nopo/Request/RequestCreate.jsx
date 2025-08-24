@@ -295,7 +295,7 @@ export default function RequestCreate() {
           <S.Desc>요청과 관련된 사진 1장을 업로드해주세요.</S.Desc>
           <S.FileUpload>
             <input type="file" accept="image/*" onChange={onSelectFile} />
-            {previewUrl && <Preview src={previewUrl} alt="미리보기" />}
+            {previewUrl && <S.Preview src={previewUrl} alt="미리보기" />}
           </S.FileUpload>
         </S.FormGroup>
 
