@@ -9,6 +9,7 @@ import { ShopCard } from "./components/ShopCard";
 import { GoalField } from "./components/GoalField";
 import { DueDateField } from "./components/DueDateField";
 import { SubmitBar } from "./components/SubmitBar";
+import BasicModal from "./components/BasicModal";
 
 import { PlanGoalBox } from "./components/PlanGoalBox";
 import { PlanMissionCard } from "./components/PlanMissionCard";
@@ -41,6 +42,7 @@ export default function MissionEditor({
   const [phase, setPhase] = useState(forcePlanPhase ? "plan" : "edit");  // "edit" | "plan"
   const [mode, setMode] = useState(getAiMode?.() ?? "local");
   const [steps, setSteps] = useState(initialSteps);
+  const [basicModalOpen, setBasicModalOpen] = useState(false);
 
   // ✅ 추가: 로딩/에러 상태 (API 대기 중 표시용)
   const [planLoading, setPlanLoading] = useState(false);
@@ -283,7 +285,15 @@ const noContext = !rawShop && !forcePlanPhase;
                   missionId={missionId}
                   status={s.status}
                   onStepsChange={(all) => setSteps((prev) => mergeStatuses(prev, all))}
+                  onMissionSubmitted={(res) => {
+                  setSteps(prev => mergeStatuses(prev, res.steps || []));
+                  setBasicModalOpen(true);     // ✅ 완료 모달 열기
+                }}
                 />
+
+                {/* 페이지 어디든(보통 맨 아래) */}
+                <BasicModal open={basicModalOpen} onClose={() => setBasicModalOpen(false)} />
+
               </div>
             ))}
           </S.RightCol>

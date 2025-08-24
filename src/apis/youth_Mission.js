@@ -54,15 +54,14 @@ export async function postMissionFeedback({ missionId, stepNo, files, note }) {
   const token = localStorage.getItem("accessToken");
   const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
 
-  const step = Number(stepNo);
-  if (!Number.isInteger(step)) {
-    throw new Error("step_no는 정수여야 합니다."); // 클라이언트에서 선제 차단
-  }
+ if (!Number.isInteger(stepNo) || stepNo < 1 || stepNo > 3) {
+   throw new Error("step_no는 1~3의 정수여야 합니다.");
+ }
 
   const form = new FormData();
   //form.append("file", file);
   form.append("mission_id", String(missionId));
-  form.append("step_no", String(step));
+  form.append("step_no", String(stepNo));
   if (note) form.append("note", note);
   files.forEach(f => form.append("files", f));
 
@@ -84,4 +83,28 @@ export async function postMissionDone({ missionId, stepNo }) {
     step_no: stepNo,
   });
   return data; // { detail, mission_id, step_no, status, completed_at, all_steps }
+}
+
+// --------------- 최종 제출 (Outcome 생성 + 미션/스텝 DONE) --------------//
+export async function postMissionSubmit({ missionId, files }) {
+  if (!missionId) throw new Error("mission_id가 필요합니다.");
+  if (!Array.isArray(files) || files.length === 0) {
+    throw new Error("최종 제출에는 files가 필요합니다.");
+  }
+
+  const token = localStorage.getItem("accessToken");
+  const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+  const form = new FormData();
+  form.append("mission_id", String(missionId));
+  files.forEach(f => form.append("files", f));
+
+  const res = await instance.post("/youth/mission/submit", form, {
+    headers: {
+      ...headers,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  // 성공: 201
+  return res.data; // { detail, outcome_id, files:[...], mission_status, steps:[...], request_status }
 }

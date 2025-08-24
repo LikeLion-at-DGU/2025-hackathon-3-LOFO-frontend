@@ -17,6 +17,7 @@ export function PlanMissionCard({
   missionId,
   status,                  // ← 단계 상태("TODO"/"DONE")를 부모가 내려주도록
   onStepsChange,           // ← 완료 후 상위에서 steps 갱신
+  onMissionSubmitted,
 }) {
   const { buttonProps, modalProps } = useStepUpload({
     missionId,
@@ -24,6 +25,7 @@ export function PlanMissionCard({
     status,
     deadline: dueDate,
     onStepsChange,
+    onMissionSubmitted,
   });
 
   return (

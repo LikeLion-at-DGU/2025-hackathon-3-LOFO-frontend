@@ -17,20 +17,25 @@ export default function UploadModal({
   open, onClose, onSubmit,
   title = "미션 제출하기",
   variant = "blue",
-  showFeedbackAction = false,
-  onAskFeedback,
+  // 3단계 전용 옵션
+  allowMultiple = false,            // ✅ 여러 파일 업로드 허용
+  manualFeedback = false,           // ✅ 버튼 눌러야 피드백
   missionId,
-  stepNo, // 1 / 2
-
+  stepNo, // 1/2에서만 AI 자동피드백. 3단계면 undefined
 }) {
-  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);   // 🆕 미리보기 URL
-  const [isImage, setIsImage] = useState(false);
+  //const [file, setFile] = useState(null);
+  //const [preview, setPreview] = useState(null);   // 🆕 미리보기 URL
+  //const [isImage, setIsImage] = useState(false);
+  const [files, setFiles] = useState([]);     // ✅ 여러 파일
+  const [preview, setPreview] = useState([]); // [{url,isImage,name}]
+
   //const [feedback, setFeedback] = useState("");
   //const [fbLoading, setFbLoading] = useState(false);
   const fileInputRef = useRef(null);              // 🆕 input 리셋용
   const stepNum = useMemo(() => Number(stepNo), [stepNo]);
   const isAutoFeedbackStep = stepNum === 1 || stepNum === 2;
+  // 🔧 3단계(피드백 수동)일 때는 서버 제약(1/2만 허용)에 맞춰 2로 보냄
+  const stepForFeedback = isAutoFeedbackStep ? stepNum : 2;
 
   const {
     feedback,            // { summary, bullets }
@@ -38,12 +43,17 @@ export default function UploadModal({
     error: fbError,      // string
     requestFeedback,
     reset: resetFeedback,
-  } = useAiFeedback({ missionId, stepNo: stepNum });
+  } = useAiFeedback({ missionId, stepNo: stepForFeedback });
   
   const clearAll = () => {
-    setFile(null);
-    setPreview?.(null);
-    setIsImage(false);
+    //setFile(null);
+    //setPreview?.(null);
+    //setIsImage(false);
+
+    // 모두 초기화
+    preview.forEach(p => p?.url && URL.revokeObjectURL(p.url));
+    setFiles([]);
+    setPreview([]);
     if (fileInputRef.current) fileInputRef.current.value = "";
     resetFeedback();
   };
@@ -55,24 +65,38 @@ export default function UploadModal({
 
 
   // B. 파일이 바뀔 때 미리보기 URL 생성/해제
-  useEffect(() => {
-  if (!file) {
-    setPreview(null);
-    setIsImage(false);
-    return;
-  }
-  if ((file.type || "").startsWith("image/")) {
+  //useEffect(() => {
+  //if (!file) {
+    //setPreview(null);
+    //setIsImage(false);
+    //return;
+  //}
+  //if ((file.type || "").startsWith("image/")) {
     // 이미지면 미리보기 URL 생성
-    const url = URL.createObjectURL(file);
-    setPreview(url);
-    setIsImage(true);
-    return () => URL.revokeObjectURL(url);
-  } else {
+    //const url = URL.createObjectURL(file);
+    //setPreview(url);
+    //setIsImage(true);
+    //return () => URL.revokeObjectURL(url);
+  //} else {
     // 이미지가 아니면 (txt, pdf, etc) 미리보기 대신 이름만
-    setPreview(null);
-    setIsImage(false);
-  }
-}, [file]);
+    //setPreview(null);
+    //setIsImage(false);
+ // }
+//}, [file]);
+
+  // B. 파일 선택/추가
+  const buildPreview = (list) =>
+    Array.from(list).map(f => {
+      const isImg = (f.type || "").startsWith("image/");
+      return { file: f, name: f.name, isImage: isImg, url: isImg ? URL.createObjectURL(f) : null };
+    });
+
+  const handleAddFiles = (list) => {
+    if (!list || list.length === 0) return;
+    const items = buildPreview(list);
+    setFiles(prev => [...prev, ...items.map(i=>i.file)]);
+    setPreview(prev => [...prev, ...items]);
+  };
 
 useEffect(() => {
   console.log("missionId, stepNo(type):", missionId, stepNo, typeof stepNo);
@@ -101,35 +125,50 @@ useEffect(() => {
   };*/
 
    // ✅ 파일 픽 시 자동 업로드 & 피드백 요청
-  const handlePick = async (f) => {
-    if (!f) return;
-    setFile(f);
+  //const handlePick = async (f) => {
+    //if (!f) return;
+    //setFile(f);
     
     // 1·2단계만 자동 피드백 호출
+    //if (isAutoFeedbackStep) {
+      //try {
+        //await requestFeedback({ files: [f], note: "" });
+      //} catch (e) {
+        //console.error(e);
+      //}
+    //}
+      //  console.log("missionId, stepNo(type):", missionId, stepNo, typeof stepNo);
+  //};
+
+    // ✅ 파일 선택 시: 1·2단계면 자동 피드백, 3단계면 대기
+  const handlePick = async (fileList) => {
+    handleAddFiles(fileList);
     if (isAutoFeedbackStep) {
-      try {
-        await requestFeedback({ files: [f], note: "" });
-      } catch (e) {
-        console.error(e);
-      }
+      try { await requestFeedback({ files: Array.from(fileList), note: "" }); } catch {}
     }
-        console.log("missionId, stepNo(type):", missionId, stepNo, typeof stepNo);
   };
 
-    const clearFile = () => {
-    setFile(null);
-    setPreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-    resetFeedback();
+//    const clearFile = () => {
+//    setFile(null);
+//    setPreview(null);
+//    if (fileInputRef.current) fileInputRef.current.value = "";
+//    resetFeedback();
+//  };
+
+    const removeAt = (idx) => {
+    const p = preview[idx];
+    if (p?.url) URL.revokeObjectURL(p.url);
+    setPreview(prev => prev.filter((_,i)=>i!==idx));
+    setFiles(prev => prev.filter((_,i)=>i!==idx));
   };
 
-    // (선택) 수동 "피드백 받기" 버튼이 필요하면 훅 재사용
+     // 3단계 수동 피드백
   const handleAskFeedbackManually = async () => {
-    if (!file) return;
-    try {
-      await requestFeedback({ files: [file], note: "" });
-    } catch {}
+     if (!files.length) return;
+    try { await requestFeedback({ files, note: "" }); } catch {}
   };
+
+  if (!open) return null;
 
    return (
     <ModalBackdrop onClick={handleBgClick}>
@@ -147,19 +186,27 @@ useEffect(() => {
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
             e.preventDefault();
-            const f = e.dataTransfer.files?.[0];
-            if (f) handlePick(f);
+            const list = e.dataTransfer.files; if (list?.length) handlePick(list);
           }}
         >
-          {file ? (
-            <PreviewWrap>
-              <RemoveBtn onClick={clearFile} $t={THEME}>×</RemoveBtn>
-              {isImage ? (
-                <PreviewImg src={preview} alt={file.name} />
-              ) : (
-                <FileInfo>📄 {file.name}</FileInfo>
-              )}
-            </PreviewWrap>
+          {preview.length ? (
+            <PreviewWrapGrid>
+              {preview.map((p, i) => (
+                <PreviewItem key={i}>
+                  <RemoveBtn onClick={()=>removeAt(i)} $t={THEME}>×</RemoveBtn>
+                  {p.isImage ? <PreviewImg src={p.url} alt={p.name}/> : <FileInfo>📄 {p.name}</FileInfo>}
+                </PreviewItem>
+              ))}
+              <label>
+                <HiddenInput
+                  ref={fileInputRef}
+                  type="file"
+                  multiple={allowMultiple}
+                  onChange={(e)=>handlePick(e.target.files)}
+              />
+                <UploadChip $t={THEME}>파일 추가</UploadChip>
+              </label>
+            </PreviewWrapGrid>
           ) : (
             <>
               <CloudIcon viewBox="0 0 24 24" aria-hidden style={{ color: THEME.accent }}>
@@ -173,7 +220,8 @@ useEffect(() => {
                 <HiddenInput
                   ref={fileInputRef}
                   type="file"
-                  onChange={(e) => handlePick(e.target.files?.[0] ?? null)}
+                  multiple={allowMultiple}
+                  onChange={(e)=>handlePick(e.target.files)}
                 />
                 <UploadChip $t={THEME}>Upload</UploadChip>
               </label>
@@ -181,11 +229,11 @@ useEffect(() => {
           )}
         </Dropzone>
 
-        {showFeedbackAction && (
+        {manualFeedback && (
           <Actions>
             <SecondaryBtn
               $t={THEME}
-              disabled={!file || fbLoading}
+              disabled={!files.length || fbLoading}
               onClick={handleAskFeedbackManually}
             >
               {fbLoading ? "분석 중…" : "피드백 받기"}
@@ -214,14 +262,11 @@ useEffect(() => {
         <Footer>
           <PrimaryBtn
             $t={THEME}
-            disabled={!file}
-            onClick={() => {
-              onSubmit?.({ file, feedback });
-              clearAll();
-              onClose?.();
-            }}
+           disabled={!files.length}
+           onClick={() => { onSubmit?.({ files, feedback }); clearAll(); onClose?.(); }}
           >
-            완료
+            {/* 3단계면 라벨 바꾸고, 기본은 "완료" */}
+            {manualFeedback ? "상인에게 전달하기" : "완료"}
           </PrimaryBtn>
         </Footer>
       </ModalCard>
@@ -325,3 +370,13 @@ const FeedbackBox = styled.div`
   .placeholder { color: #9ca3af; }
   ul { margin-top: 4px; padding-left: 18px; list-style: disc; }
 `;
+const PreviewWrapGrid = styled.div`
+  width: 100%; display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; align-items: stretch;
+`;
+const PreviewItem = styled.div`
+  position: relative; height: 90px; border-radius: 10px; overflow: hidden;
+  display: grid; place-items: center; background: #fff;
+  border: 1px solid #e5e7eb;
+`;
+
