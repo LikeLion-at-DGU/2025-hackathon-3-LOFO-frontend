@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import * as S from "../components/Styled";
+import * as S from "../components/Styled.js";
 import NopoTopnav from "../../../components/Topnav/NopoTopnav";
 import { HeadingContainer, Title, Subtitle } from "../components/Heading";
 import { getRequestTabList, endRequest } from "../../../apis/nopo_request";

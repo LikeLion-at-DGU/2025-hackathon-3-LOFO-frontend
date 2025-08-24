@@ -1,136 +1,141 @@
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
+import * as S from "../components/Styled.js";
 import NopoTopnav from "../../../components/Topnav/NopoTopnav";
 import { HeadingContainer, Title, Subtitle } from "../components/Heading";
 import { createRequest } from "../../../apis/nopo_request";
 import { useNavigate } from "react-router-dom";
 
-const Wrapper = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  padding-top: 88px;
-  padding-bottom: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #f9fafb;
-  overflow-y: auto;
-`;
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 800px;
-  gap: 80px;
-`;
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 800px;
-  gap: 8px;
-`;
-const Label = styled.label`
-  font-weight: 700;
-  font-size: 30px;
-  line-height: 100%;
-  margin-bottom: 16px;
-`;
-const Required = styled.span`
-  color: #ef4444;
-`;
-const Desc = styled.p`
-  font-size: 15px;
-  color: rgba(79, 79, 79, 1);
-`;
-const Textarea = styled.textarea`
-  width: 100%;
-  min-height: 120px;
-  padding: 14px 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  resize: vertical;
-  &::placeholder {
-    color: #aaa;
-  }
-`;
-const Input = styled.input`
-  width: 100%;
-  padding: 14px 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  &::placeholder {
-    color: #aaa;
-  }
-`;
-const FileUpload = styled.div`
-  padding: 40px;
-  border: 2px dashed #cbd5e1;
-  border-radius: 12px;
-  background-color: #f0f6ff;
-  text-align: center;
-  font-size: 14px;
-  color: #2563eb;
-  input {
-    cursor: pointer;
-  }
-`;
-const CategoryBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 600px;
-  gap: 27px;
-`;
-const CategoryButton = styled.button`
-  width: 150px;
-  height: 99px;
-  border: 1px solid rgba(186, 186, 186, 1);
-  border-radius: 16px;
-  font-size: 16px;
-  cursor: pointer;
-  padding: 16px 32px;
-  background-color: ${({ $selected }) =>
-    $selected ? "rgba(225, 149, 67, 1)" : "#fff"};
-  color: ${({ $selected }) => ($selected ? "#fff" : "#333")};
-  font-weight: ${({ $selected }) => ($selected ? "700" : "500")};
-  box-shadow: ${({ $selected }) =>
-    $selected ? "0px 2px 8px rgba(0,0,0,0.25)" : "none"};
-  transition: all 0.2s;
-  &:hover {
-    background-color: ${({ $selected }) =>
-      $selected ? "rgba(225, 149, 67, 1)" : "#f5f5f5"};
-  }
-`;
-const SubmitButton = styled.button`
-  background-color: #e5e7eb;
-  color: #555;
-  font-weight: 600;
-  padding: 14px;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  font-size: 15px;
-  transition: all 0.2s;
-  &:hover {
-    background-color: #d1d5db;
-  }
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-`;
-const Preview = styled.img`
-  margin-top: 12px;
-  max-width: 280px;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-`;
-const ErrorText = styled.p`
-  color: #dc2626;
-  font-size: 14px;
-`;
+// const Wrapper = styled.div`
+//   width: 100%;
+//   min-height: 100vh;
+//   padding-top: 55px;
+//   padding-bottom: 50px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   background-color: #f9fafb;
+//   overflow-y: auto;
+// `;
+// const Form = styled.form`
+//   display: flex;
+//   flex-direction: column;
+//   width: 800px;
+//   gap: 130px;
+//   margin-top: 80px;
+// `;
+// const FormGroup = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   width: 800px;
+//   gap: 8px;
+// `;
+// const Label = styled.label`
+//   font-weight: 700;
+//   font-size: 30px;
+//   line-height: 100%;
+//   margin-bottom: 8px;
+// `;
+// const Required = styled.span`
+//   color: #ef4444;
+// `;
+// const Desc = styled.p`
+//   font-size: 15px;
+//   color: rgba(79, 79, 79, 1);
+// `;
+// const Textarea = styled.textarea`
+//   width: 100%;
+//   min-height: 120px;
+//   padding: 14px 16px;
+//   border: 1px solid #ddd;
+//   border-radius: 8px;
+//   font-size: 14px;
+//   resize: vertical;
+//   &::placeholder {
+//     color: #aaa;
+//   }
+// `;
+// const Input = styled.input`
+//   width: 100%;
+//   padding: 20px 30px;
+//   font-size: 14px;
+//   outline: none;
+//   border-radius: 13px;
+//   border: 1px solid var(--line-001, #bababa);
+//   background: var(--white, #fff);
+//   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.25);
+//   &::placeholder {
+//     color: #aaa;
+//   }
+// `;
+
+// const FileUpload = styled.div`
+//   padding: 40px;
+//   border: 2px dashed #cbd5e1;
+//   border-radius: 12px;
+//   background-color: #f0f6ff;
+//   text-align: center;
+//   font-size: 14px;
+//   color: #2563eb;
+//   input {
+//     cursor: pointer;
+//   }
+// `;
+// const CategoryBox = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: space-between;
+//   width: 600px;
+//   gap: 27px;
+// `;
+// const CategoryButton = styled.button`
+//   width: 150px;
+//   height: 99px;
+//   border: 1px solid rgba(186, 186, 186, 1);
+//   border-radius: 16px;
+//   font-size: 16px;
+//   cursor: pointer;
+//   padding: 16px 32px;
+//   background-color: ${({ $selected }) =>
+//     $selected ? "rgba(225, 149, 67, 1)" : "#fff"};
+//   color: ${({ $selected }) => ($selected ? "#fff" : "#333")};
+//   font-weight: ${({ $selected }) => ($selected ? "700" : "500")};
+//   box-shadow: ${({ $selected }) =>
+//     $selected ? "0px 2px 8px rgba(0,0,0,0.25)" : "none"};
+//   transition: all 0.2s;
+//   &:hover {
+//     background-color: ${({ $selected }) =>
+//       $selected ? "rgba(225, 149, 67, 1)" : "#f5f5f5"};
+//   }
+// `;
+// const SubmitButton = styled.button`
+//   background-color: #e5e7eb;
+//   color: #555;
+//   font-weight: 600;
+//   padding: 14px;
+//   border: none;
+//   border-radius: 30px;
+//   cursor: pointer;
+//   font-size: 15px;
+//   transition: all 0.2s;
+//   &:hover {
+//     background-color: #d1d5db;
+//   }
+//   &:disabled {
+//     cursor: not-allowed;
+//     opacity: 0.6;
+//   }
+// `;
+// const Preview = styled.img`
+//   margin-top: 12px;
+//   max-width: 280px;
+//   border-radius: 8px;
+//   border: 1px solid #e5e7eb;
+// `;
+// const ErrorText = styled.p`
+//   color: #dc2626;
+//   font-size: 14px;
+// `;
 
 export default function RequestCreate() {
   const navigate = useNavigate();
@@ -146,7 +151,6 @@ export default function RequestCreate() {
   const [urlError, setUrlError] = useState("");
 
   const categories = [
-    "홍보영상",
     "포스터·전단",
     "SNS 이미지",
     "인테리어 제안",
@@ -159,7 +163,6 @@ export default function RequestCreate() {
       "SNS 이미지": "SNS_IMAGE",
       홍보기획: "PROMOTION_PLANNING",
       광고문구: "AD_COPY",
-      홍보영상: "PROMOTION_VIDEO",
       "인테리어 제안": "INTERIOR_PROPOSAL",
     }),
     []
@@ -249,7 +252,7 @@ export default function RequestCreate() {
   };
 
   return (
-    <Wrapper>
+    <S.Wrapper>
       <NopoTopnav />
       <HeadingContainer>
         <Title>가게 고민을 청년과 함께 해결해보세요</Title>
@@ -260,48 +263,48 @@ export default function RequestCreate() {
         </Subtitle>
       </HeadingContainer>
 
-      <Form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label>
-            가게명을 입력해주세요. <Required>*</Required>
-          </Label>
-          <Input
+      <S.Form onSubmit={handleSubmit}>
+        <S.FormGroup>
+          <S.Label>
+            가게명을 입력해주세요. <S.Required>*</S.Required>
+          </S.Label>
+          <S.Input
             value={storeName}
             onChange={(e) => setStoreName(e.target.value)}
             placeholder="예: 멋사노포"
             required
           />
-        </FormGroup>
+        </S.FormGroup>
 
-        <FormGroup>
-          <Label>
-            요청 제목을 입력해주세요. <Required>*</Required>
-          </Label>
-          <Input
+        <S.FormGroup>
+          <S.Label>
+            요청 제목을 입력해주세요. <S.Required>*</S.Required>
+          </S.Label>
+          <S.Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="예: 홍보기획"
             required
           />
-        </FormGroup>
+        </S.FormGroup>
 
-        <FormGroup>
-          <Label>
-            가게 사진을 올려주세요. <Required>*</Required>
-          </Label>
-          <Desc>요청과 관련된 사진 1장을 업로드해주세요.</Desc>
-          <FileUpload>
+        <S.FormGroup>
+          <S.Label>
+            가게 사진을 올려주세요. <S.Required>*</S.Required>
+          </S.Label>
+          <S.Desc>요청과 관련된 사진 1장을 업로드해주세요.</S.Desc>
+          <S.FileUpload>
             <input type="file" accept="image/*" onChange={onSelectFile} />
             {previewUrl && <Preview src={previewUrl} alt="미리보기" />}
-          </FileUpload>
-        </FormGroup>
+          </S.FileUpload>
+        </S.FormGroup>
 
-        <FormGroup>
-          <Label>
-            가게 링크를 첨부해주세요. <Required>*</Required>
-          </Label>
-          <Desc>네이버 지도에 등록된 가게 링크를 입력해주세요.</Desc>
-          <Input
+        <S.FormGroup>
+          <S.Label>
+            가게 링크를 첨부해주세요. <S.Required>*</S.Required>
+          </S.Label>
+          <S.Desc>네이버 지도에 등록된 가게 링크를 입력해주세요.</S.Desc>
+          <S.Input
             type="url"
             value={storeLink}
             onChange={(e) => setStoreLink(e.target.value)}
@@ -311,47 +314,47 @@ export default function RequestCreate() {
               setUrlError(isUrl(storeLink) ? "" : "올바른 URL 형식이 아닙니다.")
             }
           />
-          {urlError && <ErrorText>{urlError}</ErrorText>}
-        </FormGroup>
+          {urlError && <S.ErrorText>{urlError}</S.ErrorText>}
+        </S.FormGroup>
 
-        <FormGroup>
-          <Label>
-            요청 카테고리를 선택해주세요. <Required>*</Required>
-          </Label>
-          <Desc>가장 알맞은 카테고리를 골라주세요.</Desc>
-          <CategoryBox>
+        <S.FormGroup>
+          <S.Label>
+            요청 카테고리를 선택해주세요. <S.Required>*</S.Required>
+          </S.Label>
+          <S.Desc>가장 알맞은 카테고리를 골라주세요.</S.Desc>
+          <S.CategoryBox>
             {categories.map((c) => (
-              <CategoryButton
+              <S.CategoryButton
                 key={c}
                 type="button"
                 onClick={() => setSelectedCategory(c)}
                 $selected={selectedCategory === c}
               >
                 {c}
-              </CategoryButton>
+              </S.CategoryButton>
             ))}
-          </CategoryBox>
-        </FormGroup>
+          </S.CategoryBox>
+        </S.FormGroup>
 
-        <FormGroup>
-          <Label>
-            청년에게 부탁하고 싶은 내용을 적어주세요. <Required>*</Required>
-          </Label>
-          <Desc>구체적으로 적을수록 이해하기 쉬워요.</Desc>
-          <Textarea
+        <S.FormGroup>
+          <S.Label>
+            청년에게 부탁하고 싶은 내용을 적어주세요. <S.Required>*</S.Required>
+          </S.Label>
+          <S.Desc>구체적으로 적을수록 이해하기 쉬워요.</S.Desc>
+          <S.Textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="예: 신메뉴 출시 기념 전단지를 트렌디한 느낌으로 부탁드려요."
             required
           />
-        </FormGroup>
+        </S.FormGroup>
 
         {errMsg && <ErrorText>{errMsg}</ErrorText>}
 
-        <SubmitButton type="submit" disabled={!isValid || loading}>
+        <S.SubmitButton type="submit" disabled={!isValid || loading}>
           {loading ? "등록 중..." : "요청 등록하기"}
-        </SubmitButton>
-      </Form>
-    </Wrapper>
+        </S.SubmitButton>
+      </S.Form>
+    </S.Wrapper>
   );
 }

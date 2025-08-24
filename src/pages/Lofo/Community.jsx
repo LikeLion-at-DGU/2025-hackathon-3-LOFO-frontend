@@ -97,6 +97,7 @@ export default function Community() {
 
   // 좋아요(+1, 한번만)
   const onLike = async (card) => {
+    if (!isYouth) return;
     if (likedMap[card.id] || liking[card.id]) return;
     setLiking((m) => ({ ...m, [card.id]: true }));
     setItems((arr) =>
@@ -195,7 +196,6 @@ export default function Community() {
               >
                 최신순
               </SortItem>
-              <Divider />
               <SortItem
                 role="option"
                 aria-selected={sortKey === "likes"}
@@ -236,28 +236,29 @@ export default function Community() {
               <Content>
                 <TitleLine title={card.title}>{card.title}</TitleLine>
                 <StoreName>{card.storeName}</StoreName>
-
-                <LikeRow>
-                  <LikeButton
-                    onClick={() => onLike(card)}
-                    disabled={likedMap[card.id] || liking[card.id]}
-                    aria-label="좋아요"
-                    title={
-                      likedMap[card.id]
-                        ? "이미 좋아요를 눌렀어요"
-                        : liking[card.id]
-                        ? "처리 중…"
-                        : "좋아요"
-                    }
-                  >
-                    <Heart
-                      size={18}
-                      fill={likedMap[card.id] ? "#fff" : "transparent"}
-                      stroke="#fff"
-                    />
-                  </LikeButton>
-                  <LikeCount>{card.savedCount ?? 0}</LikeCount>
-                </LikeRow>
+                {isYouth && (
+                  <LikeRow>
+                    <LikeButton
+                      onClick={() => onLike(card)}
+                      disabled={likedMap[card.id] || liking[card.id]}
+                      aria-label="좋아요"
+                      title={
+                        likedMap[card.id]
+                          ? "이미 좋아요를 눌렀어요"
+                          : liking[card.id]
+                          ? "처리 중…"
+                          : "좋아요"
+                      }
+                    >
+                      <Heart
+                        size={18}
+                        fill={likedMap[card.id] ? "#fff" : "transparent"}
+                        stroke="#fff"
+                      />
+                    </LikeButton>
+                    <LikeCount>{card.savedCount ?? 0}</LikeCount>
+                  </LikeRow>
+                )}
               </Content>
             </Card>
           ))}
@@ -353,11 +354,6 @@ const SortItem = styled.button`
     background: ${({ $selected }) => ($selected ? "#5b3aa5" : "#f5f3ff")};
   }
 `;
-const Divider = styled.div`
-  height: 12px;
-  background: #fff;
-`;
-
 const CardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
