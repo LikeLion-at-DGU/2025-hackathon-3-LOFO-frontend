@@ -48,3 +48,29 @@ export async function createAiPlan({ request_id, goal, deadline, token }) {
 }
 
 
+//--------------- 포트폴리오를 Post 후 AI 피드백을 응답으로 받습니다. --------------//
+
+export async function postMissionFeedback({ missionId, stepNo, files, note }) {
+  const token = localStorage.getItem("accessToken");
+  const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+  const step = Number(stepNo);
+  if (!Number.isInteger(step)) {
+    throw new Error("step_no는 정수여야 합니다."); // 클라이언트에서 선제 차단
+  }
+
+  const form = new FormData();
+  form.append("mission_id", String(missionId));
+  form.append("step_no", String(step));
+  if (note) form.append("note", note);
+  files.forEach(f => form.append("files", f));
+
+  const { data } = await instance.post("/youth/mission/feedback", form, {
+    headers: {
+      ...headers,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data; // { mission_id, step_no, feedback: {...}, feedback_count }
+}
+

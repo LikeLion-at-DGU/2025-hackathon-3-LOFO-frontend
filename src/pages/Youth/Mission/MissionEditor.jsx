@@ -22,11 +22,21 @@ export default function MissionEditor({
   initialDueDate = "",      // "YYYY-MM-DD"
   serverShop = null,        // { id,name,imageUrl,naverUrl,request }
   forcePlanPhase = false,   // true면 즉시 plan 단계로
+  missionId: missionIdFromProps,
 }) {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { id: reqIdParam } = useParams(); // ← /youth/mission/:id
-  const reqId = reqIdParam ? Number(reqIdParam) : undefined;
+  const reqId = reqIdParam ? Number(reqIdParam) : undefined;//
+
+  // ✅ missionId 우선순위: props → URL(:id) → location.state → localStorage 백업
+  const missionId =
+    missionIdFromProps
+    ?? (reqIdParam ? Number(reqIdParam) : undefined)
+    ?? state?.missionId
+    ?? (typeof window !== "undefined"
+      ? Number(JSON.parse(localStorage.getItem("lastMission") || "{}")?.mission?.id)
+      : undefined);
 
   const [phase, setPhase] = useState(forcePlanPhase ? "plan" : "edit");  // "edit" | "plan"
   const [mode, setMode] = useState(getAiMode?.() ?? "local");
@@ -263,6 +273,7 @@ const noContext = !rawShop && !forcePlanPhase;
                   dueDate={s.dueDate}
                   cta={s.idx === 3 ? "추가 업로드" : "미션 업로드"}
                   onClick={() => console.log(`${s.idx}단계 업로드 클릭`)}
+                  missionId={missionId}
                 />
               </div>
             ))}

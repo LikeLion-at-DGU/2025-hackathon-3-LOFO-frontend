@@ -10,10 +10,12 @@ import UploadModal from "./UploadModal";
  * - dueDate: "YYYY-MM-DD"
  * - cta: string ("미션 업로드" | "추가 업로드" 등)
  * - onClick: () => void
+ * - missionId: number | string
  */
 export function PlanMissionCard({ 
-  idx, title, bullets = [], dueDate, 
-  cta = "미션 업로드", onClick, 
+  idx, title, bullets = [], dueDate,
+  cta = "미션 업로드", onClick,
+  missionId,  
 }) {
   const { open, handleClick, handleClose, handleSubmit } = useUploadModal({
     parentOnClick: onClick,
@@ -24,6 +26,7 @@ export function PlanMissionCard({
   });
   
   const isFinal = idx === 3;
+  const aiEnabled = idx === 1 || idx === 2;  // ✅ 1·2단계만 AI 피드백
 
   return (
     <>
@@ -69,20 +72,17 @@ export function PlanMissionCard({
 
      {/* 부모 onClick이 없을 때만 사실상 쓰이게 됨 */}
      
-
       <UploadModal
         open={open}
         onClose={handleClose}
         onSubmit={handleSubmit}
         title={isFinal ? "최종 미션 제출하기" : "미션 제출하기"}
         variant={isFinal ? "purple" : "blue"}
-        showFeedbackAction={isFinal}
-        onAskFeedback={async ({ file, currentText }) => {
-          // TODO: 여기에 AI 피드백 API 연결
-          // 예시) const txt = await getMissionFeedback({ file, stepNo: idx });
-          // 임시: 기존 텍스트 뒤에 샘플 피드백
-          return (currentText ? currentText + "\n" : "") + "샘플 피드백: 카드뉴스 톤이 일관적이에요 👍";
-        }}
+        
+        /* ✅ AI 피드백은 1·2단계에서만 자동 수행 */
+        missionId={missionId}                       // ✅ 반드시 전달
+        stepNo={idx === 1 || idx === 2 ? Number(idx) : undefined} // ✅ 숫자 보장, 3단계면 미전달
+        showFeedbackAction={false}                   // 자동요청이면 버튼 불필요
       />
     </>
   );

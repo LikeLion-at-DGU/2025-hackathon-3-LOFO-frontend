@@ -47,6 +47,7 @@ export default function YouthMission() {
           initialDueDate={init.dueDate}
           serverShop={init.shop}
           forcePlanPhase
+          missionId={data?.mission?.id}
         />
       </S.Shell>
     </S.PlanPage>
@@ -98,5 +99,6 @@ function mapServerToEditor(payload) {
     dueDate: toYMD(mission?.deadline),
     steps: mappedSteps,
     shop,
+    missionId: mission?.id,
   };
 }
