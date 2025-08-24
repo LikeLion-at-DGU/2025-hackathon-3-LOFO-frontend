@@ -36,7 +36,7 @@ export default function YouthMission() {
   const init = mapServerToEditor(data);
 
   return (
-    <S.Page>
+    <S.PlanPage>
       <S.Shell>
         <YouthTopnav />
         <MissionEditor
@@ -49,7 +49,7 @@ export default function YouthMission() {
           forcePlanPhase
         />
       </S.Shell>
-    </S.Page>
+    </S.PlanPage>
   );
 }
 

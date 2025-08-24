@@ -8,6 +8,13 @@ export const Page = styled.div`
   justify-content: center;
   margin-top: 100px;
 `;
+export const PlanPage = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  margin-top: -100px;
+`
 
 export const Shell = styled.div`
   width: 1100px;

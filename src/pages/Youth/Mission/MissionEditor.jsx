@@ -12,7 +12,7 @@ import { SubmitBar } from "./components/SubmitBar";
 
 import { PlanGoalBox } from "./components/PlanGoalBox";
 import { PlanMissionCard } from "./components/PlanMissionCard";
-import { getAiMode } from "../../../ai/generatePlan";
+import { getAiMode } from "../../../ai/generatePlan"; //제거 예정
 
 export default function MissionEditor({ 
   defaultGoal = "", defaultDueDate, onSubmit,
