@@ -82,36 +82,6 @@ const FileName = styled.div`
   font-size: 14px;
 `;
 
-/* ---------- 선택 버튼 공용 ---------- */
-const CategoryBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 800px;
-  height: 225px;
-  gap: 5px;
-`;
-const CategoryButton = styled.button`
-  width: 150px;
-  height: 99px;
-  border-radius: 16px;
-  padding: 16px 20px;
-  border: 1px solid rgba(186, 186, 186, 1);
-  font-size: 16px;
-  cursor: pointer;
-  background-color: ${({ $selected }) =>
-    $selected ? "rgba(225,149,67,1)" : "#fff"};
-  color: ${({ $selected }) => ($selected ? "#fff" : "#333")};
-  font-weight: ${({ $selected }) => ($selected ? 700 : 500)};
-  box-shadow: ${({ $selected }) =>
-    $selected ? "0 2px 8px rgba(0,0,0,.25)" : "none"};
-  transition: all 0.15s ease;
-  &:hover {
-    background-color: ${({ $selected }) =>
-      $selected ? "rgba(225,149,67,1)" : "#f5f5f5"};
-  }
-`;
-
 export default function ReceivedFeedback() {
   const [sp] = useSearchParams();
   const navigate = useNavigate();
@@ -301,21 +271,25 @@ export default function ReceivedFeedback() {
           작성해주시면 됩니다.
         </Subtitle>
       </HeadingContainer>
+      {/* ===== 설문 폼 ===== */}
+      <S.Form
+        onSubmit={handleSubmit}
+        // style={{ width: 800, marginTop: 40, opacity: loading ? 0.6 : 1 }}
+      >
+        <S.FormGroup>
+          <S.Label>닉네임님이 만들어주신 작업물이에요.</S.Label>
+          <S.Desc>
+            요청 목적 외의 용도나 무단 사용은 삼가주세요.
+            <br />
+            청년에게 고마운 마음을 후기로 남겨주세요. 진심 어린 피드백이 큰 힘이
+            됩니다.
+          </S.Desc>
+        </S.FormGroup>
 
-      <S.FormGroup>
-        <S.Label>닉네임님이 만들어주신 작업물이에요.</S.Label>
-        <S.Desc>
-          요청 목적 외의 용도나 무단 사용은 삼가주세요.
-          <br />
-          청년에게 고마운 마음을 후기로 남겨주세요. 진심 어린 피드백이 큰 힘이
-          됩니다.
-        </S.Desc>
-      </S.FormGroup>
-
-      {/* ===== 업로드 파일 뷰어 ===== */}
-      {files.length > 0 && (
-        <>
-          {/* <div style={{ width: 800, margin: "0 auto" }}>
+        {/* ===== 업로드 파일 뷰어 ===== */}
+        {files.length > 0 && (
+          <>
+            {/* <div style={{ width: 800, margin: "0 auto" }}>
             <h2 style={{ fontSize: 28, margin: "12px 0 8px" }}>
               닉네임님이 만들어주신 작업물이에요.
             </h2>
@@ -325,46 +299,40 @@ export default function ReceivedFeedback() {
             </p>
           </div> */}
 
-          <ViewerWrap>
-            <ViewerBox>
-              {files.length > 1 && (
-                <ArrowBtn $left onClick={onPrev} aria-label="이전">
-                  ‹
-                </ArrowBtn>
-              )}
-              {activeViewer}
-              {files.length > 1 && (
-                <ArrowBtn onClick={onNext} aria-label="다음">
-                  ›
-                </ArrowBtn>
-              )}
-              <Counter>
-                {idx + 1} / {files.length}
-              </Counter>
-            </ViewerBox>
-          </ViewerWrap>
+            <ViewerWrap>
+              <ViewerBox>
+                {files.length > 1 && (
+                  <ArrowBtn $left onClick={onPrev} aria-label="이전">
+                    ‹
+                  </ArrowBtn>
+                )}
+                {activeViewer}
+                {files.length > 1 && (
+                  <ArrowBtn onClick={onNext} aria-label="다음">
+                    ›
+                  </ArrowBtn>
+                )}
+                <Counter>
+                  {idx + 1} / {files.length}
+                </Counter>
+              </ViewerBox>
+            </ViewerWrap>
 
-          <div
-            style={{ width: 800, margin: "0 auto -8px", textAlign: "center" }}
-          >
-            <FileName>{(active?.name || "").split("/").pop()}</FileName>
-          </div>
-        </>
-      )}
-
-      {/* ===== 설문 폼 ===== */}
-      <S.Form
-        onSubmit={handleSubmit}
-        style={{ width: 800, marginTop: 40, opacity: loading ? 0.6 : 1 }}
-      >
+            <div
+              style={{ width: 800, margin: "0 auto -8px", textAlign: "center" }}
+            >
+              <FileName>{(active?.name || "").split("/").pop()}</FileName>
+            </div>
+          </>
+        )}
         {/* 1. 만족도 */}
         <S.FormGroup>
           <S.Label>
             작업물 전반적으로 만족하시나요?<S.Required>*</S.Required>
           </S.Label>
-          <CategoryBox>
+          <S.CategoryBox>
             {satisfactionOptions.map((option) => (
-              <CategoryButton
+              <S.CategoryButton
                 key={option}
                 type="button"
                 onClick={() => setSatisfaction(option)}
@@ -372,9 +340,9 @@ export default function ReceivedFeedback() {
                 disabled={loading || submitting}
               >
                 {option}
-              </CategoryButton>
+              </S.CategoryButton>
             ))}
-          </CategoryBox>
+          </S.CategoryBox>
         </S.FormGroup>
 
         {/* 2. 요청 반영도 */}
@@ -382,9 +350,9 @@ export default function ReceivedFeedback() {
           <S.Label>
             요청하신 내용이 잘 반영되었나요?<S.Required>*</S.Required>
           </S.Label>
-          <CategoryBox>
+          <S.CategoryBox>
             {reflectionOptions.map((option) => (
-              <CategoryButton
+              <S.CategoryButton
                 key={option}
                 type="button"
                 onClick={() => setReflection(option)}
@@ -392,9 +360,9 @@ export default function ReceivedFeedback() {
                 disabled={loading || submitting}
               >
                 {option}
-              </CategoryButton>
+              </S.CategoryButton>
             ))}
-          </CategoryBox>
+          </S.CategoryBox>
         </S.FormGroup>
 
         {/* 3. 활용 가능성 */}
@@ -402,9 +370,9 @@ export default function ReceivedFeedback() {
           <S.Label>
             결과물을 실제로 활용할 수 있을 것 같나요?<S.Required>*</S.Required>
           </S.Label>
-          <CategoryBox>
+          <S.CategoryBox>
             {usabilityOptions.map((option) => (
-              <CategoryButton
+              <S.CategoryButton
                 key={option}
                 type="button"
                 onClick={() => setUsability(option)}
@@ -412,9 +380,9 @@ export default function ReceivedFeedback() {
                 disabled={loading || submitting}
               >
                 {option}
-              </CategoryButton>
+              </S.CategoryButton>
             ))}
-          </CategoryBox>
+          </S.CategoryBox>
         </S.FormGroup>
 
         {/* 4. 자유 후기 */}

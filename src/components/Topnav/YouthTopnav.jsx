@@ -8,7 +8,9 @@ export function YouthTopnav() {
     <Header>
       <Logo src={logo_blue} alt="로고-blue" />
       <NavTabs>
-        <Tab to="/youth/home" end>홈</Tab>
+        <Tab to="/youth/home" end>
+          홈
+        </Tab>
         <Tab to="/youth/mission">미션</Tab>
         <Tab to="/lofo/community">발견</Tab>
         <Tab to="/youth/mypage">마이페이지</Tab>
@@ -47,7 +49,7 @@ const NavTabs = styled.nav`
   margin-left: 8px;
 
   /* 탭 밑줄이 헤더의 하단과 맞닿도록 */
-  align-self: stretch;          /* 헤더 높이만큼 세로로 늘리고 */
+  align-self: stretch; /* 헤더 높이만큼 세로로 늘리고 */
 `;
 const Tab = styled(NavLink).attrs({ end: false })`
   position: relative;
@@ -61,7 +63,7 @@ const Tab = styled(NavLink).attrs({ end: false })`
 
   /* 기본은 밑줄 투명 */
   border-bottom: 3px solid transparent;
-  padding-bottom: 9px;          /* 밑줄 공간 */
+  padding-bottom: 9px; /* 밑줄 공간 */
 
   &:hover {
     font-weight: 600;
@@ -70,7 +72,7 @@ const Tab = styled(NavLink).attrs({ end: false })`
   &.active {
     color: #111827;
     font-weight: 700;
-    border-bottom-color: #368FEF;  /* 파란 밑줄 */
+    border-bottom-color: #368fef; /* 파란 밑줄 */
   }
 `;
 const dTab = styled.button`

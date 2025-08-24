@@ -6,9 +6,11 @@ import Topnav from "../../../components/Topnav/Topnav";
 import InputField from "../../../components/SignUp/InputField";
 import SubmitButton from "../../../components/SignUp/SubmitButton";
 import { signupNopoByPhone } from "../../../apis/auth";
+import { useUserRole } from "../../../hooks/useUserRole";
 
 export default function NopoSignUp() {
   const navigate = useNavigate();
+  const { setRole } = useUserRole({ verifyOnMount: false });
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState("");
@@ -34,6 +36,7 @@ export default function NopoSignUp() {
       console.log("응답:", data);
 
       if (data?.redirect) {
+        setRole("MERCHANT");
         navigate(data.redirect);
       } else {
         navigate("/auth/login-nopo/nickname", { state: { phone } });

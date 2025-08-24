@@ -6,10 +6,10 @@ import Topnav from "../../../components/Topnav/Topnav";
 import InputField from "../../../components/SignUp/InputField";
 import SubmitButton from "../../../components/SignUp/SubmitButton";
 import { signupYouthByPhone } from "../../../apis/auth";
-
+import { useUserRole } from "../../../hooks/useUserRole";
 
 export default function YouthSignUp() {
-
+  const { setRole } = useUserRole({ verifyOnMount: false });
   const navigate = useNavigate();
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,8 @@ export default function YouthSignUp() {
 
   // 숫자만, 최대 11자리
   const onlyDigits = (v) => v.replace(/\D/g, "");
-  const onChangePhone = (e) => setPhone(onlyDigits(e.target.value).slice(0, 11));
+  const onChangePhone = (e) =>
+    setPhone(onlyDigits(e.target.value).slice(0, 11));
 
   // 010 포함 10~11자리
   const phoneValid = useMemo(() => /^0\d{9,10}$/.test(phone), [phone]);
@@ -35,6 +36,7 @@ export default function YouthSignUp() {
 
       // redirect가 오면 그대로 라우팅, 아니면 기본 경로로
       if (data?.redirect) {
+        setRole("YOUTH");
         navigate(data.redirect);
       } else {
         navigate("/auth/login-youth/nickname", { state: { phone } });
@@ -52,16 +54,21 @@ export default function YouthSignUp() {
     }
   };
 
-
   return (
     <>
-      <Topnav/>
+      <Topnav />
       <S.Div>
-        <S.Title>안녕하세요, LOFO와 함께<br/>포트폴리오를 쌓는 경험을 해봐요</S.Title>
+        <S.Title>
+          안녕하세요, LOFO와 함께
+          <br />
+          포트폴리오를 쌓는 경험을 해봐요
+        </S.Title>
         <S.InputContainer>
           <S.Info>
-          <S.InputTitle>전화번호 입력 </S.InputTitle>
-          <S.InputDescription>1분만에 가입하고 포트폴리오 미션을 시작하세요!</S.InputDescription>
+            <S.InputTitle>전화번호 입력 </S.InputTitle>
+            <S.InputDescription>
+              1분만에 가입하고 포트폴리오 미션을 시작하세요!
+            </S.InputDescription>
           </S.Info>
           {/* Enter 제출 가능하도록 form 사용 */}
           <form
@@ -91,11 +98,19 @@ export default function YouthSignUp() {
               )}
             </S.InputWrap>
           </form>
-          <S.SubDescription>이미 LOFO 사용자이신가요?<br/>가입하신 전화번호로 이용할 수 있어요.
-          <Link to="/auth/login-youth/nickname" style={{ cursor: "pointer", textDecoration: "none"}}>임시버튼</Link></S.SubDescription>
+          <S.SubDescription>
+            이미 LOFO 사용자이신가요?
+            <br />
+            가입하신 전화번호로 이용할 수 있어요.
+            <Link
+              to="/auth/login-youth/nickname"
+              style={{ cursor: "pointer", textDecoration: "none" }}
+            >
+              임시버튼
+            </Link>
+          </S.SubDescription>
         </S.InputContainer>
       </S.Div>
-      
     </>
   );
-};
+}
