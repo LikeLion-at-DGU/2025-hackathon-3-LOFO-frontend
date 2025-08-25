@@ -57,7 +57,7 @@ export default function SortDropdown({ value, onChange }) {
 const Wrap = styled.div`
   position: relative;
   display: inline-block;
-  margin-left: 60px;
+  margin-left: 200px;
 `;
 const Trigger = styled.button`
   height: 36px; padding: 0 12px; border-radius: 8px;

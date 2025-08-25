@@ -20,7 +20,7 @@ const Btn = styled.button`
   cursor: pointer;
 `;
 
-export default function Hero({ onClickAIMission }) {
+export default function AiHero({ onClickAIMission }) {
   return (
     <Wrap>
       <Row>
