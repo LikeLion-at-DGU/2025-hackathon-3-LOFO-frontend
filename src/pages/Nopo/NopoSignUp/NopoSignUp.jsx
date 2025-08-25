@@ -61,7 +61,7 @@ export default function NopoSignUp() {
         <S.Title>
           안녕하세요, LOFO와 함께
           <br />
-          포트폴리오를 쌓는 경험을 해봐요
+          가게 손님을 모으는 작업물을 받아보세요
         </S.Title>
         <S.InputContainer>
           <S.Info>

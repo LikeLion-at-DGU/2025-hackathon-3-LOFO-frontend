@@ -6,13 +6,20 @@ import { HeadingContainer, Title, Subtitle } from "../Nopo/components/Heading";
 import lofopick from "../../assets/lofopick.svg";
 import { Heart } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { getCommunityList, likeCommunity } from "../../apis/community";
+import {
+  getCommunityList,
+  likeCommunity,
+  unlikeCommunity,
+  // ✅ 미리보기용 파일 목록 가져오기
+  getOutcomeFilesForPreview,
+} from "../../apis/community";
 import { useUserRole } from "../../hooks/useUserRole";
+// ✅ 프리뷰 모달
+import Preview from "./Preview";
 
 /* ---- 카테고리 탭 ---- */
 const CATEGORY_TABS = [
   { key: "ALL", label: "전체" },
-  { key: "PROMOTION_VIDEO", label: "홍보영상" },
   { key: "POSTER_FLYER", label: "포스터·전단" },
   { key: "SNS_IMAGE", label: "SNS 이미지" },
   { key: "INTERIOR_PROPOSAL", label: "인테리어 제안" },
@@ -37,17 +44,35 @@ export default function Community() {
 
   const [liking, setLiking] = useState({});
 
+  // ✅ 프리뷰 모달 상태
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewFiles, setPreviewFiles] = useState([]);
+  const [previewMeta, setPreviewMeta] = useState({ title: "", storeName: "" });
+
   useEffect(() => {
     (async () => {
+      setListLoading(true);
       try {
-        setListLoading(true);
         const { items } = await getCommunityList();
+        console.log(
+          "[community] items.length =",
+          items.length,
+          items.slice(0, 2)
+        );
         setItems(items);
         const lm = {};
         items.forEach((it) => {
-          if (localStorage.getItem(likedKey(it.id)) === "1") lm[it.id] = true;
+          if (it.id && localStorage.getItem(likedKey(it.id)) === "1")
+            lm[it.id] = true;
         });
         setLikedMap(lm);
+      } catch (e) {
+        console.error(
+          "[community:list] error",
+          e?.response?.status,
+          e?.response?.data || e
+        );
+        setItems([]);
       } finally {
         setListLoading(false);
       }
@@ -95,18 +120,32 @@ export default function Community() {
     return arr;
   }, [filtered, sortKey]);
 
-  // 좋아요(+1, 한번만)
-  const onLike = async (card) => {
-    if (!isYouth) return;
-    if (likedMap[card.id] || liking[card.id]) return;
+  // 좋아요 토글
+  const onToggleLike = async (card) => {
+    if (!isYouth || !card?.id) return;
+    if (liking[card.id]) return;
+    const isLiked = !!likedMap[card.id];
     setLiking((m) => ({ ...m, [card.id]: true }));
+
+    // 1) 낙관적 업데이트 (토글)
+    setLikedMap((m) => ({ ...m, [card.id]: !isLiked }));
     setItems((arr) =>
       arr.map((x) =>
-        x.id === card.id ? { ...x, savedCount: (x.savedCount ?? 0) + 1 } : x
+        x.id === card.id
+          ? {
+              ...x,
+              savedCount: Math.max(
+                0,
+                (x.savedCount ?? 0) + (isLiked ? -1 : +1)
+              ),
+            }
+          : x
       )
     );
+
     try {
-      const res = await likeCommunity(card.id);
+      const api = isLiked ? unlikeCommunity : likeCommunity;
+      const res = await api(card.id);
       const serverCount = res?.saved_count ?? res?.likes;
       if (typeof serverCount === "number") {
         setItems((arr) =>
@@ -115,22 +154,72 @@ export default function Community() {
           )
         );
       }
-      localStorage.setItem(likedKey(card.id), "1");
-      setLikedMap((m) => ({ ...m, [card.id]: true }));
+      // 2) 로컬에 영구 저장 (새로고침 유지)
+      if (isLiked) {
+        localStorage.removeItem(likedKey(card.id));
+      } else {
+        localStorage.setItem(likedKey(card.id), "1");
+      }
     } catch (e) {
-      console.error("[community:like] 실패", e?.response?.data || e);
+      // 실패 시 롤백
+      console.error("[community:toggle-like] 실패", e?.response?.data || e);
+      setLikedMap((m) => ({ ...m, [card.id]: isLiked }));
       setItems((arr) =>
         arr.map((x) =>
           x.id === card.id
-            ? { ...x, savedCount: Math.max(0, (x.savedCount ?? 1) - 1) }
+            ? {
+                ...x,
+                savedCount: Math.max(
+                  0,
+                  (x.savedCount ?? 0) + (isLiked ? +1 : -1)
+                ),
+              }
             : x
         )
       );
-      alert("좋아요 처리에 실패했어요. 잠시 후 다시 시도해 주세요.");
+      alert(
+        isLiked
+          ? "좋아요 해제에 실패했어요. 잠시 후 다시 시도해 주세요."
+          : "좋아요에 실패했어요. 잠시 후 다시 시도해 주세요."
+      );
     } finally {
       setLiking((m) => ({ ...m, [card.id]: false }));
     }
   };
+
+  // ✅ 카드 클릭 → 미리보기 열기
+  const openPreview = async (card) => {
+    try {
+      // 카드에 files가 미리 붙어있다면 우선 사용
+      let files = Array.isArray(card.files)
+        ? card.files.map((f) => ({
+            url: f.url || f.download_url || f.name,
+            name: f.name,
+            type: f.type || "image/*",
+          }))
+        : [];
+
+      // 없으면 서버에서 outcome 파일들 조회(다중 폴백 포함)
+      if ((!files || files.length === 0) && card.id) {
+        const r = await getOutcomeFilesForPreview(card.id, card.imageUrl);
+        files = r.files;
+      }
+      // 그래도 없으면 썸네일로 폴백
+      if (!files || files.length === 0) {
+        if (card.imageUrl) {
+          files = [{ url: card.imageUrl, name: "thumbnail", type: "image/*" }];
+        }
+      }
+      if (!files || files.length === 0) return; // 보여줄 게 없으면 무시
+
+      setPreviewFiles(files);
+      setPreviewMeta({ title: card.title, storeName: card.storeName });
+      setPreviewOpen(true);
+    } catch (e) {
+      console.error("[preview] 파일 로드 실패", e?.response?.data || e);
+    }
+  };
+  const closePreview = () => setPreviewOpen(false);
 
   //로그인 role 분류
   const {
@@ -222,7 +311,11 @@ export default function Community() {
         )}
         {!listLoading &&
           filteredSorted.map((card) => (
-            <Card key={card.id}>
+            <Card
+              key={card.id}
+              onClick={() => openPreview(card)}
+              style={{ cursor: "zoom-in" }} // 확대 느낌
+            >
               <Image $src={card.imageUrl} />
               <Gradient />
 
@@ -236,17 +329,22 @@ export default function Community() {
               <Content>
                 <TitleLine title={card.title}>{card.title}</TitleLine>
                 <StoreName>{card.storeName}</StoreName>
+
                 {isYouth && (
                   <LikeRow>
                     <LikeButton
-                      onClick={() => onLike(card)}
-                      disabled={likedMap[card.id] || liking[card.id]}
+                      // ✅ 하트 클릭 시 모달이 뜨지 않도록 전파 막기
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleLike(card);
+                      }}
+                      disabled={liking[card.id]}
                       aria-label="좋아요"
                       title={
-                        likedMap[card.id]
-                          ? "이미 좋아요를 눌렀어요"
-                          : liking[card.id]
+                        liking[card.id]
                           ? "처리 중…"
+                          : likedMap[card.id]
+                          ? "좋아요 취소"
                           : "좋아요"
                       }
                     >
@@ -263,6 +361,15 @@ export default function Community() {
             </Card>
           ))}
       </CardGrid>
+
+      {/* ✅ 프리뷰 모달 */}
+      <Preview
+        isOpen={previewOpen}
+        onClose={closePreview}
+        files={previewFiles}
+        title={previewMeta.title}
+        storeName={previewMeta.storeName}
+      />
     </S.Wrapper>
   );
 }

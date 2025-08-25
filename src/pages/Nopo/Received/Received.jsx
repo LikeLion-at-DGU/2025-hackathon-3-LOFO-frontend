@@ -169,6 +169,7 @@ const WhiteBtn = styled.button`
 
 export default function Received() {
   const [items, setItems] = useState([]); // [{ outcomeId, title, storeName, thumbnailUrl }]
+  const [ongoingCount, setOngoingCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -176,9 +177,9 @@ export default function Received() {
     (async () => {
       try {
         setLoading(true);
-        const { items } = await getReceivedList();
-        setItems(items);
-        console.log("[Received:list]", items);
+        const res = await getReceivedList();
+        setItems(res.items);
+        setOngoingCount(res.ongoingCount);
       } finally {
         setLoading(false);
       }
@@ -204,7 +205,7 @@ export default function Received() {
     <S.Wrapper>
       <NopoTopnav />
       <HeadingContainer>
-        <Title>내 가게에 0명이 참여 중이에요</Title>
+        <Title>내 가게에 {ongoingCount}명이 참여 중이에요</Title>
         <Subtitle>조금만 기다리면 작업물이 도착할 거예요!</Subtitle>
       </HeadingContainer>
 
@@ -234,7 +235,7 @@ export default function Received() {
               const outcomeId = v.outcomeId ?? v.outcome_id ?? v.id;
               const title = v.title;
               const storeName = v.storeName ?? v.store_name;
-              const thumbnailUrl = v.thumbnailUrl;
+              const thumbnailUrl = v.thumbnailUrl; // nopo_received에서 절대경로로 변환됨
 
               return (
                 <Card key={outcomeId}>
