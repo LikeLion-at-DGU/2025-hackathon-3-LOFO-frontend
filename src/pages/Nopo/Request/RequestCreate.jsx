@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function RequestCreate() {
   const navigate = useNavigate();
+
+  // 기본 상태
   const [storeName, setStoreName] = useState("");
   const [title, setTitle] = useState("");
   const [storeLink, setStoreLink] = useState("");
@@ -18,6 +20,20 @@ export default function RequestCreate() {
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [urlError, setUrlError] = useState("");
+
+  // 제목 16자 제한
+  const TITLE_MAX = 16;
+  const [titleErr, setTitleErr] = useState("");
+  const onChangeTitle = (e) => {
+    const v = e.target.value;
+    if (v.length > TITLE_MAX) {
+      setTitle(v.slice(0, TITLE_MAX)); // 하드 컷
+      setTitleErr(`제목은 최대 ${TITLE_MAX}자까지 입력할 수 있어요.`);
+    } else {
+      setTitle(v);
+      setTitleErr("");
+    }
+  };
 
   const categories = [
     "포스터·전단",
@@ -45,9 +61,11 @@ export default function RequestCreate() {
       return false;
     }
   };
+
   const isValid =
     storeName &&
     title &&
+    !titleErr &&
     isUrl(storeLink) &&
     selectedCategory &&
     content &&
@@ -88,6 +106,7 @@ export default function RequestCreate() {
         content,
         file,
       });
+
       const createdId =
         data?.id ??
         data?.request?.id ??
@@ -151,10 +170,21 @@ export default function RequestCreate() {
           </S.Label>
           <S.Input
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={onChangeTitle}
             placeholder="예: 홍보기획"
             required
+            aria-invalid={!!titleErr}
           />
+          <div
+            style={{
+              marginTop: 6,
+              fontSize: 12,
+              lineHeight: 1.4,
+              color: titleErr ? "#dc2626" : "#6b7280",
+            }}
+          >
+            {titleErr || `${title.length}/${TITLE_MAX}자`}
+          </div>
         </S.FormGroup>
 
         <S.FormGroup>

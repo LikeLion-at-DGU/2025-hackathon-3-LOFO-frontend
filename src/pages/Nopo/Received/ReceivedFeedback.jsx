@@ -610,7 +610,6 @@
 //     </S.Wrapper>
 //   );
 // }
-
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import styled from "styled-components";
 import * as S from "../components/Styled";
@@ -632,21 +631,21 @@ const SAT_VALUE = {
   아쉬움: "BAD",
   "매우 아쉬움": "VERY_BAD",
 };
-// /** REFLECTION: SOMEWHAT_* 없음, VERY_INSUFFICIENT 없음 */
-// const REF_VALUE = {
-//   "매우 반영": "VERY_REFLECTED",
-//   "어느정도 반영": "REFLECTED",
-//   보통: "NORMAL",
-//   부족함: "INSUFFICIENT",
-//   "매우 부족함": "INSUFFICIENT",
-// };
 
+/** REFLECTION: 서버 환경별로 허용값이 다를 수 있어 기본값 + 후보 준비 */
 const REF_VALUE = {
   "매우 반영": "VERY_REFLECTED",
-  "어느정도 반영": "REFLECTED",
+  "어느정도 반영": "REFLECTED", // 1차 시도값
   보통: "NORMAL",
-  부족함: "INSUFFICIENT",
-  "매우 부족함": "INSUFFICIENT", // 서버에 VERY_INSUFFICIENT 없음 → 같은 값으로 보냄
+  부족함: "INSUFFICIENT", // 1차 시도값
+  "매우 부족함": "INSUFFICIENT", // VERY_* 없는 서버 대비
+};
+
+// 서버가 400으로 거부할 때 순차적으로 바꿔 시도할 후보들
+const REF_FALLBACKS = {
+  "어느정도 반영": ["SOMEWHAT_REFLECTED", "PARTLY_REFLECTED"],
+  부족함: ["SOMEWHAT_INSUFFICIENT"],
+  "매우 부족함": ["VERY_INSUFFICIENT"], // 어떤 서버는 이 값을 요구 가능
 };
 
 /** PRACTICAL_USE: SOMEWHAT_POSSIBLE 없음 */
@@ -979,13 +978,30 @@ export default function ReceivedFeedback() {
     e.preventDefault();
     if (!isValid) return;
 
-    const payload = {
+    // payload 빌더
+    const makePayload = (refOverride) => ({
       outcome_id: Number(outcomeId),
       overall_satisfaction: SAT_VALUE[satisfaction],
-      reflection_level: REF_VALUE[reflection],
+      reflection_level: refOverride ?? REF_VALUE[reflection],
       practical_use: USE_VALUE[usability],
       comment: (content || "").trim(),
-    };
+    });
+
+    let payload = makePayload(); // 1차 시도
+
+    // 전송 전 매핑 검증
+    for (const [k, v] of Object.entries({
+      overall_satisfaction: payload.overall_satisfaction,
+      reflection_level: payload.reflection_level,
+      practical_use: payload.practical_use,
+    })) {
+      if (!v) {
+        alert(
+          "선택값 매핑에 실패했어요. 옵션 또는 매핑 테이블을 확인해 주세요."
+        );
+        return;
+      }
+    }
 
     console.log("[Feedback:submit] payload", payload);
     try {
@@ -993,10 +1009,41 @@ export default function ReceivedFeedback() {
       await postReceivedFeedback(payload);
       alert("후기가 저장되었습니다.");
       navigate("/nopo/received");
-    } catch (err) {
-      const d = err?.response?.data || {};
-      console.error("[Feedback:submit] 실패:", d || err);
-      const pick = (k) => (Array.isArray(d[k]) ? d[k][0] : d[k]);
+    } catch (err1) {
+      // reflection_level 때문에 400이면 후보값으로 자동 재시도
+      const d1 = err1?.response?.data || {};
+      const msg = d1?.reflection_level?.[0] || d1?.detail || "";
+      const isInvalidReflection =
+        /reflection_level/i.test(JSON.stringify(d1)) &&
+        /유효하지 않은 선택|not a valid choice/i.test(String(msg));
+
+      if (isInvalidReflection) {
+        const candidates = REF_FALLBACKS[reflection] || [];
+        for (const cand of candidates) {
+          try {
+            const retryPayload = makePayload(cand);
+            console.log(
+              "[Feedback:retry] reflection_level →",
+              cand,
+              retryPayload
+            );
+            await postReceivedFeedback(retryPayload);
+            alert("후기가 저장되었습니다.");
+            navigate("/nopo/received");
+            return; // 성공
+          } catch (err2) {
+            console.warn(
+              "[Feedback:retry:fail]",
+              cand,
+              err2?.response?.data || err2
+            );
+          }
+        }
+      }
+
+      // 최종 실패 안내
+      console.error("[Feedback:submit] 실패:", d1 || err1);
+      const pick = (k) => (Array.isArray(d1[k]) ? d1[k][0] : d1[k]);
       alert(
         pick("detail") ||
           pick("outcome_id") ||
@@ -1200,10 +1247,6 @@ export default function ReceivedFeedback() {
         >
           {submitting ? "전송 중..." : "전송하기"}
         </S.SubmitButton>
-
-        <p style={{ marginTop: 12, color: "#6b7280", fontSize: 12 }}>
-          outcome_id: {outcomeId || "(없음)"} — 상세 응답은 콘솔을 확인하세요.
-        </p>
       </S.Form>
     </S.Wrapper>
   );
