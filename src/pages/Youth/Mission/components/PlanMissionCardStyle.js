@@ -5,7 +5,6 @@ export const Card = styled.article`
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 16px;
-
   padding: 18px 20px;
   border: 2px solid ${(p) => (p.$disabled ? "#e5e7eb" : "#cfe1ff")};           /* 파란 외곽선 */
   background: ${(p) => (p.$disabled ? "#f6f7fb" : "#ffffff")};

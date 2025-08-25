@@ -11,22 +11,27 @@ export function ShopCard({ name, imageUrl, naverUrl, request }) {
 
       <Divider />
 
+      <Field>
       <SectionTitle>상인의 요청</SectionTitle>
       <RequestBox>{request}</RequestBox>
+      </Field>
     </Card>
   );
 }
 
 const Card = styled.div`
     display: inline-flex;
-    height: 936px;
-    padding: 100px 41px 61px 41px;
+    height: auto;
+    width: 350px;
+    padding: 140px 50px 61px 50px;
     flex-direction: column;
     align-items: center;
-    gap: 60px;
+    position: sticky;
+    gap: 20px;
     flex-shrink: 0;
     background: var(--white, #FFF);
     box-shadow: 0 -9px 20px 0 rgba(0, 0, 0, 0.25);
+    margin: -80px 0 0 -30px;
 `;
 
 
@@ -39,10 +44,18 @@ const ShopImg = styled.img`
 
 const ShopName = styled.h3`
   margin: 12px 0 6px;
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 700;
+  text-align: center;
 `;
 
+const Field = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin-top: -30px;
+
+`;
 const NaverLink = styled.a`
   display: inline-block;
   font-size: 14px;
@@ -58,9 +71,14 @@ const Divider = styled.hr`
 `;
 
 const SectionTitle = styled.h4`
-  font-size: 14px;
-  color: #6b7280;
-  margin-bottom: 8px;
+color: var(--main-001, #368FEF);
+
+/* body/003 */
+font-family: "Pretendard Variable";
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
 `;
 
 const RequestBox = styled.p`

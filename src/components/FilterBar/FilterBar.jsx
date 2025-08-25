@@ -61,7 +61,7 @@ export default function FilterBar({
   );
 }
 
-/* ---- styles (기존 스타일 재사용/복붙) ---- */
+/* ---- styles ---- */
 const TopRow = styled.div`
   display: flex;
   align-items: center;
@@ -76,20 +76,13 @@ const Tab = styled.button`
   margin-right: 15px; 
   border-radius: 100px;
   border: 1px solid #ddd; 
-  color: ${({active})=>active?"#fff":"#4F4F4F"};
-  background: ${({active})=>active?"#59418F":"#ECECEC"};
+  color: ${({ $active }) => ($active ? "#fff" : "#4F4F4F")};
+  background: ${({ $active }) => ($active ? "#59418F" : "#ECECEC")};
   cursor: pointer;
-
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  text-align: center;
+  font-size: 13px; font-weight: 600;
 `;
-
 const SortWrap = styled.div`
-    position: relative;
-    margin-bottom: 15px;
+  position: relative; margin-bottom: 15px;
 `;
 const SortButton = styled.button`
   height: 36px; padding: 0 12px; border-radius: 8px;
@@ -97,13 +90,9 @@ const SortButton = styled.button`
   border: 1px solid #dbe2ea; background: #fff; cursor: pointer;
 `;
 const Chevron = styled.span`
-  width: 12px;
-  height: 12px;
-  display: inline-block;
-  border-right: 3px solid #6b7280;
-  border-bottom: 3px solid #6b7280;
-  transform: rotate(-45deg);
-  border-radius: 2px;
+  width: 12px; height: 12px; display: inline-block;
+  border-right: 3px solid #6b7280; border-bottom: 3px solid #6b7280;
+  transform: rotate(-45deg); border-radius: 2px;
 `;
 const SortMenu = styled.div`
   position: absolute; top: 44px; right: 0; width: 140px;
@@ -113,5 +102,5 @@ const SortMenu = styled.div`
 const SortItem = styled.button`
   width: 100%; text-align: left; padding: 10px 12px; cursor: pointer; background: #fff; border: 0;
   &:hover {opacity: 0.5;}
-  ${(p) => p.$selected && `background:#59418F; color: #fff; font-weight:600;`} /* 현재 선택 강조 */
+  ${(p) => p.$selected && `background:#59418F; color: #fff; font-weight:600;`}
 `;

@@ -6,14 +6,14 @@ export const Page = styled.div`
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  margin-top: 100px;
+  margin-top: 10px;
 `;
 export const PlanPage = styled.div`
   width: 100%;
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  margin-top: -100px;
+  margin-top: -10px;
 `
 
 export const Shell = styled.div`
@@ -75,4 +75,8 @@ export const ModePill = styled.span`
   background: ${({$mode}) => $mode==="local" ? "#dcfce7" : "#dbeafe"};
   color: ${({$mode}) => $mode==="local" ? "#166534" : "#1d4ed8"};
   font-weight:700;font-size:12px;
+`;
+
+const Card = styled.div`
+
 `;
