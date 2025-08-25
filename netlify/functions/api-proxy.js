@@ -1,89 +1,112 @@
+// netlify/functions/api-proxy.js
+const ORIGIN = "https://2025-hackathon-3-lofo.netlify.app";
+const BACKEND = process.env.BACKEND_ORIGIN;
+
+// 백엔드로 넘길 최소 헤더만
+function pickForwardHeaders(incoming = {}) {
+  const allow = new Set([
+    "accept",
+    "accept-language",
+    "content-type",    // ← multipart boundary 포함, 필수
+    "cookie",          // ← 세션 방식이면 필요
+    "x-csrftoken",     // ← Django CSRF
+    "origin",
+    "referer",         // ← Django CSRF(https)에서 중요
+    "authorization",   // ← JWT 쓰면
+    "x-requested-with" // ← 선택
+    // 필요하면 'user-agent'만 추가
+  ]);
+  const h = new Headers();
+  for (const [k, v] of Object.entries(incoming || {})) {
+    if (!v) continue;
+    const key = k.toLowerCase();
+    if (!allow.has(key)) continue;
+    if (key === "content-length" || key === "host") continue;
+    h.set(key, String(v));
+  }
+  return h;
+}
+
 export async function handler(event) {
-  
-  // 1) OPTIONS 프리플라이트 처리 (CORS)
-  // CORS 프리플라이트
-  if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 204,
-      headers: {
-        "access-control-allow-origin": event.headers?.origin ?? "*",
-        "access-control-allow-credentials": "true",
-        "access-control-allow-methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
-        "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With, X-CSRF-Token",
-        "access-control-max-age": "86400",
-      },
-      body: "",
-    };
-  }
-
-  // 2) 헬스체크: 함수가 살아있는지 확인용 (백엔드 불필요)
-  // 헬스체크 (함수 자체 확인)
-  if (event.path.endsWith("/.netlify/functions/api-proxy/ping") || event.path.endsWith("/api/ping")) {
-    return {
-      statusCode: 200,
-      headers: {
-        "content-type": "text/plain",
-        "access-control-allow-origin": event.headers?.origin ?? "*",
-        "access-control-allow-credentials": "true",
-      },
-      body: "pong",
-    };
-  }
-
-  const origin = process.env.BACKEND_ORIGIN;
-  if (!origin) return { statusCode: 500, body: "BACKEND_ORIGIN is not set" };
-
-  // 3) "/.netlify/functions/api-proxy" 제거하여 나머지 경로만 추출
-  const prefix = "/.netlify/functions/api-proxy";
-  
-  let rawPath = event.path.startsWith(prefix) ? event.path.slice(prefix.length) : event.path;
-  if (rawPath.startsWith("/api/")) rawPath = rawPath.slice(4);
-
-  const subpath = rawPath.startsWith("/") ? rawPath : `/${rawPath}`;
-
-  // 4) 최종 백엔드 URL 구성 (쿼리스트링은 rawQueryString)
-  const qs = event.rawQueryString ? `?${event.rawQueryString}` : "";
-  const url = `${origin}${subpath}${qs}`;
-
-  // 5) 금지/문제 헤더 제거
-  const { host, connection, "content-length": _cl, "accept-encoding": _ae, ...headers } = event.headers || {};
-
-  // 6) 백엔드로 전달
-  const init = {
-    method: event.httpMethod,
-    headers,
-    body: ["GET", "HEAD"].includes(event.httpMethod) ? undefined : event.body,
-  };
-
   try {
-    const resp = await fetch(url, init);
+    // 1) OPTIONS (CORS 프리플라이트)
+    if (event.httpMethod === "OPTIONS") {
+      return {
+        statusCode: 204,
+        headers: {
+          "access-control-allow-origin": event.headers?.origin ?? ORIGIN,
+          "access-control-allow-credentials": "true",
+          "access-control-allow-methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+          // ✅ 정확한 헤더명: X-CSRFToken
+          "access-control-allow-headers":
+            "Content-Type, Authorization, X-Requested-With, X-CSRFToken",
+          "access-control-max-age": "86400",
+        },
+        body: "",
+      };
+    }
 
-    // 응답 본문/헤더 전달 (Set-Cookie 포함)
-    const respHeaders = {};
-    resp.headers.forEach((v, k) => (respHeaders[k] = v));
+    if (!BACKEND) {
+      return {
+        statusCode: 500,
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ error: "BACKEND_ORIGIN is not set" }),
+      };
+    }
 
-    // 프런트에서 쿠키를 받게 하려면 CORS 보정이 필요할 수 있음
-    respHeaders["access-control-allow-origin"] = event.headers?.origin ?? respHeaders["access-control-allow-origin"] ?? "*";
-    respHeaders["access-control-allow-credentials"] = "true";
+    // 2) 경로 매핑 (/api 및 함수 prefix 제거)
+    const prefix = "/.netlify/functions/api-proxy";
+    let rawPath = event.path?.startsWith(prefix)
+      ? event.path.slice(prefix.length)
+      : event.path || "/";
+    if (rawPath.startsWith("/api/")) rawPath = rawPath.slice(4);
+    const subpath = rawPath.startsWith("/") ? rawPath : `/${rawPath}`;
+    const qs = event.rawQueryString ? `?${event.rawQueryString}` : "";
+    const url = `${BACKEND}${subpath}${qs}`;
 
-    // 바이너리/텍스트 대응
+    // 3) 헤더/바디 준비
+    const headers = pickForwardHeaders(event.headers);
+    const hasBody = !["GET", "HEAD"].includes(event.httpMethod);
+    const body = hasBody
+      ? (event.isBase64Encoded
+          ? Buffer.from(event.body || "", "base64")
+          : event.body ?? "")
+      : undefined;
+
+    // 4) 백엔드 호출
+    const resp = await fetch(url, {
+      method: event.httpMethod,
+      headers,
+      body,
+      redirect: "manual",
+    });
+
+    // 5) 응답 가공
     const buf = Buffer.from(await resp.arrayBuffer());
-    const isText = /^text\/|application\/(json|xml|javascript)/i.test(resp.headers.get("content-type") || "");
+    const out = {};
+    resp.headers.forEach((v, k) => (out[k] = String(v)));
+    delete out["content-length"]; // 재계산되도록
+
+    // CORS 보강
+    out["access-control-allow-origin"] = event.headers?.origin ?? ORIGIN;
+    out["access-control-allow-credentials"] = "true";
+
+    // 항상 base64로 반환(바이너리 안전)
     return {
       statusCode: resp.status,
-      headers: respHeaders,
-      body: isText ? buf.toString("utf8") : buf.toString("base64"),
-      isBase64Encoded: !isText,
+      headers: out,
+      body: buf.toString("base64"),
+      isBase64Encoded: true,
     };
   } catch (e) {
     return {
       statusCode: 502,
       headers: {
-        "content-type": "text/plain",
-        "access-control-allow-origin": event.headers?.origin ?? "*",
+        "content-type": "application/json",
+        "access-control-allow-origin": event.headers?.origin ?? ORIGIN,
         "access-control-allow-credentials": "true",
       },
-      body: `proxy_error: ${e.message}`,
+      body: JSON.stringify({ error: "proxy_failed", message: String(e?.message || e) }),
     };
   }
 }
