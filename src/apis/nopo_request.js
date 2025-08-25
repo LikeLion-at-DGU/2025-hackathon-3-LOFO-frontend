@@ -30,10 +30,10 @@ export async function createRequest({
       transformRequest: [(d) => d], // ✅ FormData 그대로
       // headers 지정하지 말 것 (boundary 자동)
     });
-    console.log("[createRequest] ✅ 요청 등록 성공:", data);
+    console.log("[createRequest]  요청 등록 성공:", data);
     return data;
   } catch (err) {
-    console.group("[createRequest] ❌ 요청 등록 실패");
+    console.group("[createRequest]  요청 등록 실패");
     console.log("→ endpoint:", endpoint);
     console.log("→ payload:", {
       store_name,
@@ -209,10 +209,10 @@ export async function updateRequest(
     const { data } = await instance.patch(endpoint, fd);
     const raw = data?.item ?? data?.result ?? data?.request ?? data;
     const normalized = normalize(raw || {});
-    console.log("[updateRequest] ✅ 수정 성공:", normalized);
+    console.log("[updateRequest]  수정 성공:", normalized);
     return normalized;
   } catch (err) {
-    console.group("[updateRequest] ❌ 수정 실패");
+    console.group("[updateRequest]  수정 실패");
     console.log("→ endpoint:", endpoint);
     console.log("→ payload(no file dump):", {
       store_name,
