@@ -1,5 +1,6 @@
 // src/apis/nopo_request.js
 import { instance } from "./instance";
+import Cookies from "js-cookie";
 
 export async function createRequest({
   store_name,
@@ -8,7 +9,10 @@ export async function createRequest({
   url,
   content,
   file,
+  
 }) {
+  const csrf = Cookies.get("csrftoken");
+
   const fd = new FormData();
   fd.append("store_name", store_name);
   fd.append("title", title);
@@ -22,7 +26,8 @@ export async function createRequest({
 
   try {
     const { data } = await instance.post(endpoint, fd, {
-      transformRequest: [(d) => d], //  FormData 그대로
+      headers: { "X-CSRFToken": csrf },
+      transformRequest: [(d) => d], // ✅ FormData 그대로
       // headers 지정하지 말 것 (boundary 자동)
     });
     console.log("[createRequest]  요청 등록 성공:", data);
