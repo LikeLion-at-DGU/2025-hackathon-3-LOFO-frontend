@@ -76,7 +76,7 @@ export function useAiFeedback({ missionId, stepNo }) {
 
         validateFiles(files);
         const data = await postMissionFeedback({
-          missionId,
+          missionId :Number(missionId), //확인 예정
           stepNo: step,
           files,
           note,
