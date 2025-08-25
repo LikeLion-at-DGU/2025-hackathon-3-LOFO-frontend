@@ -573,7 +573,12 @@ export default function Received() {
         {!loading && items.length === 0 && (
           <EmptyBox>
             <div
-              style={{ color: "#4b5563", textAlign: "center", lineHeight: 1.6 }}
+              style={{
+                color: "#333",
+                textAlign: "center",
+                lineHeight: 1.6,
+                fontSize: "24px",
+              }}
             >
               아직 받은 작업물이 없어요.
               <br />
