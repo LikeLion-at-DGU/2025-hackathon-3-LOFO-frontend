@@ -380,7 +380,7 @@ const EmptyBox = styled.div`
   width: 100%;
   min-height: 320px;
   border-radius: 16px;
-  background: #f7f7f9;
+  background: #f9fafb;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -388,22 +388,17 @@ const EmptyBox = styled.div`
   gap: 24px;
 `;
 const CTAButton = styled.button`
-  padding: 16px 28px;
-  border-radius: 999px;
-  border: none;
-  background: #7c3aed;
+  background: var(--main-003, #8b6fd4);
   color: #fff;
-  font-weight: 800;
-  font-size: 16px;
+  border: none;
+  border-radius: 100px;
+  box-shadow: 0 2px 48px -8px rgba(0, 0, 0, 0.2);
+  font-size: 23px;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
-  transition: transform 0.05s ease, opacity 0.15s ease, background 0.15s ease;
-  &:hover {
-    background: #6d28d9;
-  }
-  &:active {
-    transform: translateY(1px);
-  }
+  width: 230px;
+  height: 70px;
+  margin-top: 32px;
 `;
 
 /* ===== 카드 + 버튼 UI ===== */
