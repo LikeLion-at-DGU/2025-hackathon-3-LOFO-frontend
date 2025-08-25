@@ -49,31 +49,31 @@ const Wrapper = styled.section`
 const Title = styled.h1`
   font-family: Pretendard Variable;
   font-weight: 700;
-  font-size: 48px;
+  font-size: 40px;
   line-height: 120%; /* 가독성 ↑ */
   text-align: center;
 `;
 
 const Subtitle = styled.p`
-  font-family: Pretendard Variable;
-  font-weight: 400;
-  font-size: 24px; /* 36px → 24px (모바일 고려) */
+  font-family: "Pretendard Variable";
+  font-weight: 350;
+  font-size: 30px;
   line-height: 150%;
   text-align: center;
   margin-top: 16px;
 `;
 
 const Button = styled.button`
-  background-color: rgba(139, 111, 212, 1);
+  background: var(--main-003, #8b6fd4);
   color: #fff;
   border: none;
-  padding: 30px 100px;
   border-radius: 100px;
-  font-size: 28px;
+  box-shadow: 0 2px 48px -8px rgba(0, 0, 0, 0.2);
+  font-size: 23px;
   font-weight: 600;
   cursor: pointer;
-  width: 352px;
-  height: 93px;
+  width: 320px;
+  height: 80px;
   margin-top: 32px;
 `;
 
