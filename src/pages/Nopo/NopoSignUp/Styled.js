@@ -1,81 +1,3 @@
-// import styled from "styled-components";
-
-// //-----Div-----//
-// export const Div = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: space-between;
-//   gap: 40px;
-//   align-items: center;
-// `
-
-// //메인 카피//
-// export const Title = styled.div`
-//   color: var(--sub-003, #59418F);
-//   text-align: center;
-//   font-family: "Pretendard Variable";
-//   font-size: 43px;
-//   font-style: normal;
-//   font-weight: 700;
-//   line-height: normal;
-//   margin-top: 60px;/*임의*/
-// `
-
-// //Input 외부 레이아웃//
-// export const InputContainer = styled.div`
-//   display: flex;
-//   width: 600px;
-//   padding: 80px 60px;
-//   flex-direction: column;
-//   justify-content: center;
-//   gap: 3rem;
-//   align-self: stretch;
-//   border-radius: 60px;
-//   background: var(--white, #FFF);
-//   box-shadow: 0 2px 48px -8px rgba(0, 0, 0, 0.20);
-// `
-// //텍스트
-// export const Info = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   gap: 1rem;
-// `
-// export const InputTitle = styled.div`
-// color: var(--text-001, #333);
-// font-size: 32px;
-// font-style: normal;
-// font-weight: 600;
-// line-height: normal;
-// `
-// export const InputDescription = styled.span`
-//   color: var(--text-002, #4F4F4F);
-// font-size: 22px;
-// font-style: normal;
-// font-weight: 400;
-// line-height: normal;
-// `
-
-// //input칸
-// export const InputWrap = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: flex-start;
-//   gap: 1.8rem;
-//   align-self: stretch;
-// `
-
-// //하단 안내 문구
-// export const SubDescription = styled.span`
-//   color: var(--main-003, #8B6FD4);
-// text-align: center;
-// font-family: "Pretendard Variable";
-// font-size: 14px;
-// font-style: normal;
-// font-weight: 400;
-// line-height: normal;
-// `
-
 import styled from "styled-components";
 
 //-----Div-----//
@@ -113,12 +35,14 @@ export const InputContainer = styled.div`
   background: var(--white, #fff);
   box-shadow: 0 2px 48px -8px rgba(0, 0, 0, 0.2);
 `;
+
 //텍스트
 export const Info = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
 `;
+
 export const InputTitle = styled.div`
   color: var(--text-001, #333);
   font-size: 28px;
@@ -134,7 +58,6 @@ export const InputDescription = styled.span`
   line-height: normal;
 `;
 
-//input칸
 export const InputWrap = styled.div`
   display: flex;
   flex-direction: column;
@@ -143,7 +66,6 @@ export const InputWrap = styled.div`
   align-self: stretch;
 `;
 
-//하단 안내 문구
 export const SubDescription = styled.span`
   color: var(--main-003, #8b6fd4);
   text-align: center;

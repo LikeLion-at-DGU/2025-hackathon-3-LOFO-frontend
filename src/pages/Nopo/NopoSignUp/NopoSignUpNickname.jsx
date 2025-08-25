@@ -55,7 +55,7 @@ export default function NopoSignUpNickname() {
     <>
       <Topnav />
       <S.Div>
-        <S.Title>별명을 정하고 미션을 시작하세요!</S.Title>
+        <S.Title>별명을 정하고 작업물을 바로 받으세요!</S.Title>
         <S.InputContainer>
           <S.Info>
             <S.InputTitle>별명 입력</S.InputTitle>

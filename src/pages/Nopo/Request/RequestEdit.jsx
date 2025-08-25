@@ -21,6 +21,7 @@ const Banner = styled.div`
   border-radius: 10px;
   font-size: 14px;
 `;
+
 const Inline = styled.div`
   display: flex;
   gap: 12px;
@@ -300,7 +301,7 @@ export default function RequestEdit() {
       ...(imageDirty && file ? { file } : {}),
     };
     console.log("[Edit:submit] payload:", payload, {
-      changeImage,
+      imageDirty,
       hasFile: !!file,
     });
 
@@ -322,7 +323,7 @@ export default function RequestEdit() {
         state: { justUpdated: { id, thumb: previewUrl || null } },
       });
     } catch (err) {
-      console.error("[Edit:submit] ❌", err);
+      console.error("[Edit:submit] X ", err);
       setErrMsg(
         err?.response?.data?.message ||
           err?.message ||

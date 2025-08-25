@@ -295,7 +295,7 @@ export default function Request() {
 
         {!loading &&
           filtered.map((req) => {
-            const hoverSel = ".shade-hover"; // 내부 선택자 문자열
+            const hoverSel = ".shade-hover";
             return (
               <CardShell key={req.id}>
                 <StatusPill $v={req.status}>{req.status}</StatusPill>
@@ -323,7 +323,6 @@ export default function Request() {
                   </Meta>
                 )}
 
-                {/* 모집중 전용 액션 */}
                 {req.status === "모집중" && (
                   <ActionsRow>
                     <ActionButton onClick={() => handleEdit(req)}>
