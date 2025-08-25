@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Topnav from "../../../components/Topnav/Topnav";
 import InputField from "../../../components/SignUp/InputField";
-import SubmitButton from "../../../components/SignUp/SubmitButton";
+import SubmitButton from "./SubmitButton";
 import { signupNopoByPhone } from "../../../apis/auth";
 import { useUserRole } from "../../../hooks/useUserRole";
 
@@ -102,12 +102,6 @@ export default function NopoSignUp() {
             이미 LOFO 사용자이신가요?
             <br />
             가입하신 전화번호로 이용할 수 있어요.
-            <Link
-              to="/auth/login-nopo/nickname"
-              style={{ cursor: "pointer", textDecoration: "none" }}
-            >
-              임시버튼
-            </Link>
           </S.SubDescription>
         </S.InputContainer>
       </S.Div>

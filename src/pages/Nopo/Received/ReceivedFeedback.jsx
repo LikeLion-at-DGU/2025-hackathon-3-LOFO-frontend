@@ -632,14 +632,23 @@ const SAT_VALUE = {
   아쉬움: "BAD",
   "매우 아쉬움": "VERY_BAD",
 };
-/** REFLECTION: SOMEWHAT_* 없음, VERY_INSUFFICIENT 없음 */
+// /** REFLECTION: SOMEWHAT_* 없음, VERY_INSUFFICIENT 없음 */
+// const REF_VALUE = {
+//   "매우 반영": "VERY_REFLECTED",
+//   "어느정도 반영": "REFLECTED",
+//   보통: "NORMAL",
+//   부족함: "INSUFFICIENT",
+//   "매우 부족함": "INSUFFICIENT",
+// };
+
 const REF_VALUE = {
   "매우 반영": "VERY_REFLECTED",
-  "어느정도 반영": "REFLECTED",
+  "어느정도 반영": "SOMEWHAT_REFLECTED",
   보통: "NORMAL",
-  부족함: "INSUFFICIENT",
-  "매우 부족함": "INSUFFICIENT", // 서버에 없는 값 → 보정
+  부족함: "SOMEWHAT_INSUFFICIENT",
+  "매우 부족함": "VERY_INSUFFICIENT",
 };
+
 /** PRACTICAL_USE: SOMEWHAT_POSSIBLE 없음 */
 const USE_VALUE = {
   "매우 가능": "VERY_POSSIBLE",

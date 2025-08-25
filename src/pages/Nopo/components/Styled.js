@@ -130,13 +130,13 @@ export const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
   width: 800px;
-  gap: 35px;
+  gap: 10px;
 `;
 export const Label = styled.label`
   font-weight: 700;
   font-size: 30px;
   line-height: 100%;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
 `;
 export const Required = styled.span`
   color: #ef4444;
@@ -169,6 +169,7 @@ export const Input = styled.input`
   &::placeholder {
     color: #aaa;
   }
+  margin: 3px;
 `;
 
 export const FileUpload = styled.div`
