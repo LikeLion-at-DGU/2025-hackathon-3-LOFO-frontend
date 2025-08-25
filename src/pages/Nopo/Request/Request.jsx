@@ -586,7 +586,7 @@ const HeaderRow = styled.div`
 const HeadText = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 17px;
 `;
 
 const TabContainer = styled.div`

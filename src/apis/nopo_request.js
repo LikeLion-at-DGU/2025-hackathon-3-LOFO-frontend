@@ -1,11 +1,6 @@
 // src/apis/nopo_request.js
 import { instance } from "./instance";
 
-/**
- * 상인 요청 생성
- * - FormData로 전송 (image 포함)
- * - 실패 시 상세 콘솔 로그(상태/본문/보낸 페이로드) 출력
- */
 export async function createRequest({
   store_name,
   title,
@@ -14,46 +9,38 @@ export async function createRequest({
   content,
   file,
 }) {
-  const formData = new FormData();
-  formData.append("store_name", store_name);
-  formData.append("title", title);
-  formData.append("category", category);
-  formData.append("url", url);
-  formData.append("content", content);
-  if (file) formData.append("image", file);
+  const fd = new FormData();
+  fd.append("store_name", store_name);
+  fd.append("title", title);
+  fd.append("category", category);
+  fd.append("url", url);
+  fd.append("content", content);
+
+  if (file) fd.append("image", file, file.name);
 
   const endpoint = "/nopo/request/create";
 
   try {
-    const { data } = await instance.post(endpoint, formData);
+    const { data } = await instance.post(endpoint, fd, {
+      transformRequest: [(d) => d], // ✅ FormData 그대로
+      // headers 지정하지 말 것 (boundary 자동)
+    });
     console.log("[createRequest] ✅ 요청 등록 성공:", data);
     return data;
   } catch (err) {
-    // 🔎 무엇을 보냈는지 & 서버가 뭐라 했는지 보기 좋게 출력
     console.group("[createRequest] ❌ 요청 등록 실패");
     console.log("→ endpoint:", endpoint);
     console.log("→ payload:", {
       store_name,
       title,
-      category, // ← 백엔드 enum 미스매치 시 여기 값 확인
+      category,
       url,
       content,
       file: file ? { name: file.name, size: file.size, type: file.type } : null,
     });
     console.log("→ status:", err?.response?.status);
     console.log("→ response.data:", err?.response?.data);
-
-    // 필드 단위 메시지 힌트(특히 category)
-    const rd = err?.response?.data;
-    if (rd?.category) {
-      console.log("→ category error:", rd.category);
-    }
-    if (rd?.non_field_errors) {
-      console.log("→ non_field_errors:", rd.non_field_errors);
-    }
     console.groupEnd();
-
-    // 화면단에서 처리하도록 그대로 던짐 (RequestCreate.jsx의 catch에서 메시지 구성)
     throw err;
   }
 }
@@ -236,9 +223,3 @@ export async function updateRequest(
     throw err;
   }
 }
-
-//------------------------ 작성된 상인요청을 patch로 수정합니다. ------------------------//
-// "/nopo/request/<int:id>/edit"
-
-//------------------------ 작성된 상인요청을 post로 종료합니다. ------------------------//
-// "/nopo/request/<int:id>/end"
