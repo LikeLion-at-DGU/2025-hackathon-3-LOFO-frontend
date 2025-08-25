@@ -200,17 +200,33 @@ export default function UploadModal({
           )}
 
           {!fbLoading && !localError && !fbError && feedback?.summary ? (
-            <>
-              <p><b>{feedback.summary}</b></p>
-              <ul>{feedback.bullets?.map((b, i) => <li key={i}>{b}</li>)}</ul>
-            </>
-          ) : (!fbLoading && !localError && !fbError && (
-            <span className="placeholder">
-              {isAutoFeedbackStep
-                ? "파일을 업로드하면 자동 피드백이 표시됩니다."
-                : "이 단계는 자동 피드백이 없습니다."}
-            </span>
-          ))}
+  <>
+    {/* summary 줄글 → 문단 배열로 쪼갬 */}
+    {feedback.summary
+      .split(/\n+/)                 // 연속 줄바꿈 기준 분리
+      .filter(Boolean)              // 빈 문자열 제거
+      .map((para, idx) => (
+        <p key={idx} style={{ marginBottom: "6px" }}>
+          {para}
+        </p>
+      ))}
+
+    {/* bullets 리스트 */}
+    {feedback.bullets?.length > 0 && (
+      <ul>
+        {feedback.bullets.map((b, i) => (
+          <li key={i}>{b}</li>
+        ))}
+      </ul>
+    )}
+  </>
+) : (!fbLoading && !localError && !fbError && (
+  <span className="placeholder">
+    {isAutoFeedbackStep
+      ? "파일을 업로드하면 자동 피드백이 표시됩니다."
+      : "이 단계는 자동 피드백이 없습니다."}
+  </span>
+))}
         </FeedbackBox>
 
         <Footer>
