@@ -17,7 +17,7 @@ export const PlanPage = styled.div`
 `
 
 export const Shell = styled.div`
-  width: 1100px;
+  width: 100%;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
