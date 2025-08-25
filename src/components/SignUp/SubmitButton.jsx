@@ -4,7 +4,7 @@ const Button = styled.button`
 all: unset;
 cursor: pointer;
 display: flex;
-height: 66px;
+height: 55px;
 align-self: stretch;
 justify-content: center;
 align-items: center;
@@ -13,7 +13,7 @@ border-radius: 20px;
 background: var(--main-001, #368FEF);
 color: var(--white, #FFF);
 font-family: "Pretendard Variable";
-font-size: 22px;
+font-size: 17px;
 font-style: normal;
 font-weight: 600;
 line-height: normal;

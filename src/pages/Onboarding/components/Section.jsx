@@ -8,6 +8,8 @@ const Section = styled.section`
   justify-content: center;
   scroll-snap-align: start;
   font-size: 2rem;
+  overflow: hidden;
+/* 스크롤바 전체 영역 숨기기 */
   &::-webkit-scrollbar {
   width: 0px;
   background: transparent;

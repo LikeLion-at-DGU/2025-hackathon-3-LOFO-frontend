@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { postMissionFeedback } from "../apis/youth_Mission";
 
-const ALLOWED_EXTS = ["png", "jpg", "jpeg", "pdf", "mp4"];
+const ALLOWED_EXTS = ["png", "jpg", "jpeg", "txt"];
 const MAX_SIZE_MB = 6;
 
 function getExt(name = "") {
@@ -76,7 +76,7 @@ export function useAiFeedback({ missionId, stepNo }) {
 
         validateFiles(files);
         const data = await postMissionFeedback({
-          missionId,
+          missionId :Number(missionId), //확인 예정
           stepNo: step,
           files,
           note,

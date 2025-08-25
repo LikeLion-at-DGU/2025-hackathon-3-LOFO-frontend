@@ -18,11 +18,17 @@ export function ShopCard({ name, imageUrl, naverUrl, request }) {
 }
 
 const Card = styled.div`
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 16px;
+    display: inline-flex;
+    height: 936px;
+    padding: 100px 41px 61px 41px;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    flex-shrink: 0;
+    background: var(--white, #FFF);
+    box-shadow: 0 -9px 20px 0 rgba(0, 0, 0, 0.25);
 `;
+
 
 const ShopImg = styled.img`
   width: 100%;

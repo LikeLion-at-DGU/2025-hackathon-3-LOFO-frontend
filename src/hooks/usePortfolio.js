@@ -38,10 +38,13 @@ export function usePortfolio() {
         if (alive) setError(e?.response?.data?.message || e.message || "포트폴리오를 불러오지 못했어요.");
       } finally {
         if (alive) setLoading(false);
+        const outcome = await fetchMyPortfolio();
+        console.log("[portfolio raw]", outcome);
       }
     })();
     return () => { alive = false; };
   }, []);
 
+  
   return { items, loading, error };
 }

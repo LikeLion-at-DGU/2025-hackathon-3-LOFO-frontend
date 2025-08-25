@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { getMySaved } from "../apis/youthMypage";
+import { toggleSaveMission } from "../apis/saveMission";
 
 /**
  * 마이페이지 - 찜한 요청 / 좋아요 작품 불러오기 훅
@@ -64,6 +65,26 @@ export function useMySavedActivity({ withCta = true } = {}) {
     };
   }, []);
 
+    // ✅ 찜 해제 액션 (낙관적 제거)
+  async function unsaveRequest(item) {
+    const id = item?.id;
+    if (!id) return;
+
+    // 낙관적 제거 & 카운트 감소
+    setSavedRequests((prev) => prev.filter((p) => p.id !== id));
+    setCounts((c) => ({ ...c, saved: Math.max(0, (c.saved ?? 0) - 1) }));
+
+    try {
+      await toggleSaveMission({ id }); // 서버는 request_id=id 로 토글
+    } catch (e) {
+      // 실패 시 롤백
+      setSavedRequests((prev) => [item, ...prev]);
+      setCounts((c) => ({ ...c, saved: (c.saved ?? 0) + 1 }));
+      alert("찜 해제 중 오류가 발생했어요. 다시 시도해 주세요.");
+    }
+  }
+
+
   // 첫 카드에만 CTA 플래그
   const savedWithCta = useMemo(() => {
     if (!withCta || savedRequests.length === 0) return savedRequests;
@@ -78,5 +99,6 @@ export function useMySavedActivity({ withCta = true } = {}) {
     likedOutcomes,
     isEmptySaved: (counts.saved ?? 0) === 0,
     isEmptyLiked: (counts.liked ?? 0) === 0,
+    unsaveRequest,
   };
 }

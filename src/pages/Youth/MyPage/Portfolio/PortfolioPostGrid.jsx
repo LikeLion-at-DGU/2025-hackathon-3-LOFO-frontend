@@ -6,7 +6,7 @@ export default function PortfolioPostGrid({ items = [], onClickCard, onJoin, onT
   return (
     <S.Grid>
       {items.map(it => (
-        <PostCard
+        <PortfolioPostCard
           key={it.id}
           item={it}
           onClick={onClickCard}

@@ -5,13 +5,17 @@ body {
   height: 100vh;
   z-index: -10;
   background: var(--BG-001, #F9FAFB);
-  /*overflow: hidden;*/
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 * {
   box-sizing: border-box;
   font-family: "Pretendard Variable"
 }
-::-webkit-scrollbar {
+
+/* 스크롤바 전체 영역 숨기기 */
+  ::-webkit-scrollbar {
   width: 0px;
   background: transparent;
 }
+  
