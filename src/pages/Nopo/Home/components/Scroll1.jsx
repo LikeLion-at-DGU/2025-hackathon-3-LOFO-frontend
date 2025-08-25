@@ -72,7 +72,7 @@ const Button = styled.button`
   font-size: 23px;
   font-weight: 600;
   cursor: pointer;
-  width: 320px;
+  width: 250px;
   height: 80px;
   margin-top: 32px;
 `;

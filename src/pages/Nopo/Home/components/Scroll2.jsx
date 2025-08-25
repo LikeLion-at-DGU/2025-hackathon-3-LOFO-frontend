@@ -329,7 +329,7 @@ const StoreName = styled.p`
 const GlowButton = styled.button`
   color: #8b6fd4;
   display: block;
-  width: 320px;
+  width: 250px;
   height: 72px;
   border-radius: 100px;
   box-shadow: 0 22px 50px -12px rgba(139, 111, 212, 0.8);
