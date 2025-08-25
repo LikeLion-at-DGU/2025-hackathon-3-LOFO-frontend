@@ -14,8 +14,50 @@ import {
   getOutcomeFilesForPreview,
 } from "../../apis/community";
 import { useUserRole } from "../../hooks/useUserRole";
-// ✅ 프리뷰 모달
+
 import Preview from "./Preview";
+
+import logo_blue from "../../assets/logo_blue.svg";
+import logo_nopo from "../../assets/logo_nopo.svg";
+import logo from "../../assets/logo.svg";
+
+/* ---- helpers (cover 결정용) ---- */
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
+const addBase = (path = "") => {
+  const clean = `/${String(path).replace(/^\/+/, "")}`;
+  return API_BASE ? `${API_BASE}${clean}` : `/api${clean}`;
+};
+const isAbs = (u = "") =>
+  /^https?:\/\//i.test(u) || String(u).startsWith("data:");
+const isImageUrl = (u = "") => /\.(png|jpe?g|gif|webp|bmp|svg)(\?|$)/i.test(u);
+const logos = [logo_blue, logo_nopo, logo];
+const hashInt = (s = "") => {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+};
+/** 카드에서 썸네일 후보를 찾아 실제 표시 가능한 이미지 URL 반환 (없으면 "") */
+const resolveCover = (item = {}) => {
+  const fileUrls = Array.isArray(item.files)
+    ? item.files
+        .map((f) => f?.download_url || f?.url || f?.name)
+        .filter(Boolean)
+    : [];
+  const candidates = [
+    item.imageUrl,
+    item.thumbnailUrl,
+    item.thumbnail_url,
+    item.firstImageUrl,
+    ...fileUrls,
+  ].filter(Boolean);
+  let u = candidates.find((x) => isImageUrl(x));
+  if (!u) return ""; // 이미지 후보가 전혀 없으면 빈 문자열 → 로고 폴백
+  if (!isAbs(u)) {
+    const mediaish = String(u).replace(/^\/?media\/?/, "media/");
+    u = addBase(mediaish);
+  }
+  return u;
+};
 
 /* ---- 카테고리 탭 ---- */
 const CATEGORY_TABS = [
@@ -210,7 +252,12 @@ export default function Community() {
           files = [{ url: card.imageUrl, name: "thumbnail", type: "image/*" }];
         }
       }
-      if (!files || files.length === 0) return; // 보여줄 게 없으면 무시
+      if (!files || files.length === 0) {
+        const rawId = String(card.id ?? card.title ?? "");
+        const cover =
+          resolveCover(card) || logos[hashInt(rawId) % logos.length];
+        files = [{ url: cover, name: "cover", type: "image/*" }];
+      }
 
       setPreviewFiles(files);
       setPreviewMeta({ title: card.title, storeName: card.storeName });
@@ -316,7 +363,18 @@ export default function Community() {
               onClick={() => openPreview(card)}
               style={{ cursor: "zoom-in" }} // 확대 느낌
             >
-              <Image $src={card.imageUrl} />
+              {(() => {
+                const rawId = String(
+                  card.id ??
+                    card.outcomeId ??
+                    card.outcome_id ??
+                    card.title ??
+                    ""
+                );
+                const cover =
+                  resolveCover(card) || logos[hashInt(rawId) % logos.length];
+                return <Image $src={cover} />;
+              })()}
               <Gradient />
 
               {/* 호버 시만 노출되는 LOFO PICK (savedCount >= 10) */}

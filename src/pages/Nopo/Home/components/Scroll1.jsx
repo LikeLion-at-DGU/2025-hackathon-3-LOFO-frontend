@@ -1,40 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-
-// const Wrapper = styled.div`
-//   width: 1440px;
-//   height: 800px;
-//   padding-top: 88px;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-//   text-align: center;
-// `;
-
-// const Title = styled.h1`
-//   font-family: Pretendard Variable;
-//   font-weight: 700;
-//   font-size: 48px;
-//   line-height: 100%;
-//   text-align: center;
-// `;
-
-// const Subtitle = styled.p`
-//   font-family: Pretendard Variable;
-//   font-weight: 400;
-//   font-size: 36px;
-//   line-height: 100%;
-//   text-align: center;
-// `;
+import DiscoverCard from "./DiscoverCard";
 
 const Wrapper = styled.section`
   width: 100%;
   max-width: 1440px;
-  height: 100%; /* 컨테이너(=한 화면) 높이를 그대로 차지 */
+  min-height: 100vh;
   margin: 0 auto;
-  padding: 40px 24px; /* 내용 여백만 */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -60,7 +33,8 @@ const Subtitle = styled.p`
   font-size: 30px;
   line-height: 150%;
   text-align: center;
-  margin-top: 16px;
+  margin-top: 0px;
+  color: #4f4f4f;
 `;
 
 const Button = styled.button`
@@ -72,8 +46,8 @@ const Button = styled.button`
   font-size: 23px;
   font-weight: 600;
   cursor: pointer;
-  width: 250px;
-  height: 80px;
+  width: 230px;
+  height: 70px;
   margin-top: 32px;
 `;
 
@@ -87,6 +61,9 @@ export default function Scroll1() {
         청년들의 작업물을 선택해보세요
       </Title>
       <Subtitle>내 가게에 대한 요청을 입력하고 도움을 얻을 수 있어요</Subtitle>
+
+      <DiscoverCard />
+
       <Button onClick={() => navigate("/nopo/request/create")}>
         요청 쓰러가기
       </Button>

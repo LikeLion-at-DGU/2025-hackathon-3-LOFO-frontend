@@ -1,10 +1,11 @@
 import * as S from "./Styled";
+import styled from "styled-components";
+import SubmitButton from "./SubmitButton";
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import Topnav from "../../../components/Topnav/Topnav";
 import InputField from "../../../components/SignUp/InputField";
-import SubmitButton from "../../../components/SignUp/SubmitButton";
 import { signupNopoByNickname } from "../../../apis/auth";
 import { useUserRole } from "../../../hooks/useUserRole";
 
@@ -54,12 +55,12 @@ export default function NopoSignUpNickname() {
     <>
       <Topnav />
       <S.Div>
-        <S.Title>닉네임을 정하고 미션을 시작하세요!</S.Title>
+        <S.Title>별명을 정하고 작업물을 바로 받으세요!</S.Title>
         <S.InputContainer>
           <S.Info>
-            <S.InputTitle>닉네임 입력</S.InputTitle>
+            <S.InputTitle>별명 입력</S.InputTitle>
             <S.InputDescription>
-              LOFO에서 사용할 닉네임을 설정해주세요
+              LOFO에서 사용할 별명을 설정해주세요
             </S.InputDescription>
           </S.Info>
           {/* Enter 제출 가능하도록 form 사용 */}
@@ -93,12 +94,6 @@ export default function NopoSignUpNickname() {
             이미 LOFO 사용자이신가요?
             <br />
             가입하신 전화번호로 이용할 수 있어요.
-            <Link
-              to="/nopo/home"
-              style={{ cursor: "pointer", textDecoration: "none" }}
-            >
-              임시버튼
-            </Link>
           </S.SubDescription>
         </S.InputContainer>
       </S.Div>

@@ -1,27 +1,3 @@
-// import React from "react";
-// import styled from "styled-components";
-// import Scroll1 from "./components/Scroll1";
-// import Scroll2 from "./components/Scroll2";
-// import NopoTopnav from "../../../components/Topnav/NopoTopnav";
-
-// const Container = styled.div`
-//   scroll-snap-type: y mandatory;
-//   overflow-y: auto;
-//   &::-webkit-scrollbar {
-//     width: 0;
-//   }
-// `;
-
-// export default function NopoHome() {
-//   return (
-//     <Container>
-//       <NopoTopnav />
-//       <Scroll1 />
-//       <Scroll2 />
-//     </Container>
-//   );
-// }
-
 import React from "react";
 import styled from "styled-components";
 import Scroll1 from "./components/Scroll1";
