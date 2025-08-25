@@ -54,6 +54,6 @@ const Underline = styled.i`
   width: 33%;
   background: #2563eb;
   border-radius: 99px;
-  transform: translateX(${({ $index }) => $index * 365}px);
+  transform: translateX(${({ $index }) => $index * 475}px);
   transition: transform 200ms ease;
 `;

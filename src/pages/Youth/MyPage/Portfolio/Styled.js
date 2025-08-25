@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Card = styled.article`
   position: relative;
-  height: 180px;
+  height: 200px;
   border-radius: 20px;
   overflow: hidden;
   background: #000;
@@ -19,7 +19,7 @@ export const Card = styled.article`
 
 export const Thumb = styled.img`
   width: 100%;
-  height: 180px;
+  height: 200px;
   object-fit: cover;
   display: block;
   opacity: .85;

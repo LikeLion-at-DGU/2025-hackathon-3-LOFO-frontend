@@ -56,4 +56,5 @@ const CTA = styled.button`
   color: #6f4afe;
   font-weight: 700;
   box-shadow: 0 2px 10px rgba(111, 74, 254, 0.15);
+  cursor: pointer;
 `;
