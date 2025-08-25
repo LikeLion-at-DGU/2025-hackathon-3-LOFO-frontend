@@ -1,3 +1,5 @@
+//---------------폐기예정-------------------//
+
 import styled from "styled-components";
 
 const Bar = styled.div`

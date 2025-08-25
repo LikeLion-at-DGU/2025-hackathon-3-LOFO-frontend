@@ -1,3 +1,5 @@
+//---------------폐기예정-------------------//
+
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { SORT_OPTIONS } from "../../../../../apis/filters"; // ← 단일 소스 사용
