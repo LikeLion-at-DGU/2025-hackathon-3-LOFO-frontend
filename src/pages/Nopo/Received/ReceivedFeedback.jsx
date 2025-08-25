@@ -643,10 +643,10 @@ const SAT_VALUE = {
 
 const REF_VALUE = {
   "매우 반영": "VERY_REFLECTED",
-  "어느정도 반영": "SOMEWHAT_REFLECTED",
+  "어느정도 반영": "REFLECTED",
   보통: "NORMAL",
-  부족함: "SOMEWHAT_INSUFFICIENT",
-  "매우 부족함": "VERY_INSUFFICIENT",
+  부족함: "INSUFFICIENT",
+  "매우 부족함": "INSUFFICIENT", // 서버에 VERY_INSUFFICIENT 없음 → 같은 값으로 보냄
 };
 
 /** PRACTICAL_USE: SOMEWHAT_POSSIBLE 없음 */

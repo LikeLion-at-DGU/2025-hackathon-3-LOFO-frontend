@@ -310,7 +310,7 @@ export default function Request() {
                   </TextOverlay>
                 </CardFrame>
 
-                {/* 진행률: 카드 밖으로 분리 */}
+                {/* 진행률: 카드 밖으로 분리
                 {req.status === "진행중" && (
                   <Meta>
                     <MetaRow>
@@ -321,7 +321,7 @@ export default function Request() {
                     </ProgressBar>
                     <DueText>마감까지 D-00</DueText>
                   </Meta>
-                )}
+                )} */}
 
                 {req.status === "모집중" && (
                   <ActionsRow>
