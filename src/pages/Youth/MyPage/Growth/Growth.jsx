@@ -1,4 +1,6 @@
 import * as S from "../Styled.js";
+import { useNavigate } from "react-router-dom";
+
 import { ProfileCard } from "./components/ProfileCard.jsx";
 import { FeedbackList } from "./components/FeedbackList.jsx";
 import { LofoPickSection } from "./components/LofoPickSection.jsx";
@@ -8,6 +10,8 @@ import { useGrowthInsights } from "../../../../hooks/useGrowthInsights.js";
 
 export default function Growth() {
   const { loading, error, profile, feedbacks, picks, counts } = useGrowthInsights();
+  const navigate = useNavigate();
+
 
   return (
     <S.GrowthWrap>
@@ -40,7 +44,7 @@ export default function Growth() {
                 title="아직 받은 피드백이 없어요!"
                 description="첫 미션에 도전해보세요"
                 actionLabel="미션 하러가기"
-                onAction={() => console.log("미션 페이지로 이동")}
+                onAction={() => navigate("/youth/home")}
                 align="right"
               />
             )}
@@ -63,7 +67,7 @@ export default function Growth() {
                 title="아직 PICK된 작품이 없어요!"
                 description="첫 미션을 완료하고 작품을 올려보세요"
                 actionLabel="미션 하러가기"
-                onAction={() => console.log("미션 페이지로 이동")}
+                onAction={() => navigate("/youth/home")}
                 align="right"
               />
             )}
