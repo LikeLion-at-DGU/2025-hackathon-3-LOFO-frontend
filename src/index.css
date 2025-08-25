@@ -1,0 +1,22 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1440px;
+  margin: auto;
+  height: 100vh;
+  z-index: -10;
+  background: var(--BG-001, #F9FAFB);
+  overflow-y: scroll;
+}
+* {
+  box-sizing: border-box;
+  font-family: "Pretendard Variable"
+}
+
+/* 스크롤바 전체 영역 숨기기 */
+  ::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+  
