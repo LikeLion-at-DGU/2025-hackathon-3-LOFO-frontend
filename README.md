@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/LikeLion-at-DGU/2025-hackathon-3-LOFO-frontend">
-    <img src="assets/logo/lofo-logo.png" alt="LOFO Logo" width="200">
+    <img src="src/assets/posters/lofo-logo.png" alt="LOFO Logo" width="200">
   </a>
 </p>
 
@@ -15,9 +15,9 @@
 ## 📌 About LOFO
 
 <p align="center">
-  <img src="/Users/HongYounKim/2025-hackathon-3-LOFO-frontend/src/assets/posters/lofo-poster-1.png" alt="LOFO Poster 1" height="350">
+  <img src="src/assets/posters/lofo-poster-1.png" alt="LOFO Poster 1" height="350">
   &nbsp;&nbsp;
-  <img src="/Users/HongYounKim/2025-hackathon-3-LOFO-frontend/src/assets/posters/lofo-poster-2.png" alt="LOFO Poster 2" height="350">
+  <img src="src/assets/posters/lofo-poster-2.png" alt="LOFO Poster 2" height="350">
 </p>
 
 노포는 **홍보 역량 부족**으로, 청년은 **기회 부족**으로 어려움을 겪고 있습니다.  
