@@ -333,7 +333,6 @@ export default function Community() {
                 {isYouth && (
                   <LikeRow>
                     <LikeButton
-                      // ✅ 하트 클릭 시 모달이 뜨지 않도록 전파 막기
                       onClick={(e) => {
                         e.stopPropagation();
                         onToggleLike(card);
@@ -400,10 +399,10 @@ const Tab = styled.button`
   cursor: pointer;
   font-weight: 700;
   font-size: 14px;
-  background: ${({ $active }) => ($active ? "#111827" : "#f3f4f6")};
+  background: ${({ $active }) => ($active ? "#59418F" : "#f3f4f6")};
   color: ${({ $active }) => ($active ? "#fff" : "#374151")};
   &:hover {
-    background: ${({ $active }) => ($active ? "#0b1220" : "#e5e7eb")};
+    background: ${({ $active }) => ($active ? "#59418F" : "#e5e7eb")};
   }
 `;
 

@@ -67,7 +67,7 @@ export default function NopoSignUp() {
           <S.Info>
             <S.InputTitle>전화번호 입력 </S.InputTitle>
             <S.InputDescription>
-              1분만에 가입하고 포트폴리오 미션을 시작하세요!
+              1분만에 가입하고 가게 요청을 만들어보세요!
             </S.InputDescription>
           </S.Info>
           {/* Enter 제출 가능하도록 form 사용 */}
