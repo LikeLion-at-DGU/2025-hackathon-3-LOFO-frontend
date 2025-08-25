@@ -72,6 +72,6 @@ const List = styled.div`
 `;
 const Item = styled.button`
   width: 100%; text-align: left; padding: 10px 12px; cursor: pointer; background: #fff; border: 0;
-  &:hover { background: #f4f2ff; }
-  ${(p) => p.$selected && `background:#f4f2ff; font-weight:600;`} /* 현재 선택 강조 */
+  &:hover {opacity: 0.5;}
+  ${(p) => p.$selected && `background:#59418F; color: #fff; font-weight:600;`} /* 현재 선택 강조 */
 `;
