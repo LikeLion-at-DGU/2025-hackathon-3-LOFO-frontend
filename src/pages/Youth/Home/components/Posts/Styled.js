@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Card = styled.article`
   position: relative;
-  height: 180px;
+  height: 200px;
   border-radius: 20px;
   overflow: hidden;
   background: #000;
@@ -19,7 +19,7 @@ export const Card = styled.article`
 
 export const Thumb = styled.img`
   width: 100%;
-  height: 180px;
+  height: 200px;
   object-fit: cover;
   display: block;
   opacity: .85;
@@ -78,7 +78,7 @@ export const DivRow = styled.div`
   justify-content: space-between;
 `
 export const HeartBtn = styled.button`
-  position: absolute; top: 140px; right: 40px; z-index: 3;
+  position: absolute; top: 160px; right: 40px; z-index: 3;
   width: 36px; height: 36px; border-radius: 999px;
   display: grid; place-items: center;
   color: white;
