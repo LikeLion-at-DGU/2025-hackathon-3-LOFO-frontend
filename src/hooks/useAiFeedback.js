@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { postMissionFeedback } from "../apis/youth_Mission";
 
-const ALLOWED_EXTS = ["png", "jpg", "jpeg", "pdf", "mp4"];
+const ALLOWED_EXTS = ["png", "jpg", "jpeg", "txt"];
 const MAX_SIZE_MB = 6;
 
 function getExt(name = "") {

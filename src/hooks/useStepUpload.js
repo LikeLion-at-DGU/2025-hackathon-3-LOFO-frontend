@@ -2,13 +2,13 @@ import { useCallback, useMemo, useState } from "react";
 import { postMissionDone, postMissionSubmit } from "../apis/youth_Mission";
 
 // 버튼 라벨/비활성화 계산 (필요 시 공용 utils/steps로 이동)
-export function getStepButtonState({ status, deadline }) {
+export function getStepButtonState({ status, deadline, missionDone }) {
   const now = new Date();
   const due = deadline ? new Date(deadline) : null;
   const isClosed = due && now > due;
 
  // 최종 제출 후(상태가 DONE)엔 전부 잠금
- //if (status === "DONE") return { label: "업로드 완료", disabled: true, variant: "ghost" };
+ if (status === "DONE") return { label: "업로드 완료", disabled: true, variant: "ghost" };
 
   //if (isClosed) return { label: "업로드 완료", disabled: true,  variant: "ghost" };
   if (status === "DONE") return { label: "추가 업로드", disabled: false, variant: "secondary" };
@@ -27,12 +27,13 @@ export function useStepUpload({
   deadline,       // "YYYY-MM-DD"
   onStepsChange,  // (all_steps) => void
   onMissionSubmitted, // ✅ 3단계 완료 후 호출 (완료 모달/라벨 잠금)
+  missionDone
 }) {
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const numericStep = useMemo(() => Number(stepNo), [stepNo]);
 
-  const btnState = getStepButtonState({ status, deadline });
+  const btnState = getStepButtonState({ status, deadline, missionDone });
 
   // 업로드 버튼
   const onClick = useCallback(() => setOpen(true), []);
@@ -76,7 +77,8 @@ export function useStepUpload({
     title: numericStep === 3 ? "최종 미션 제출하기" : "미션 제출하기",
     variant: numericStep === 3 ? "purple" : "blue",
     missionId,
-    stepNo: numericStep <= 2 ? numericStep : undefined, // 1·2 자동 피드백
+    //stepNo: numericStep <= 2 ? numericStep : undefined, // 1·2 자동 피드백
+    stepNo: numericStep === 3 ? 3 : numericStep,        // 3단계도 stepNo 전달 (수동 피드백)
     manualFeedback: numericStep === 3,                  // 3단계 수동 피드백
     allowMultiple: numericStep === 3,                   // 3단계 다중 업로드
   };
@@ -84,8 +86,8 @@ export function useStepUpload({
   // 업로드 버튼에 줄 props
   const buttonProps = {
     onClick,
-    disabled: btnState.disabled || submitting,
-    label: submitting ? "완료 중…" : btnState.label,
+    disabled: missionDone || btnState.disabled || submitting,   // ✅ 전체 잠금
+    label: submitting ? "완료 중…" : (missionDone ? "업로드 완료" : btnState.label), // ✅ 라벨 고정
     variant: btnState.variant,
   };
 

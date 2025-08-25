@@ -42,6 +42,7 @@ export default function MissionEditor({
   const [phase, setPhase] = useState(forcePlanPhase ? "plan" : "edit");  // "edit" | "plan"
   const [mode, setMode] = useState(getAiMode?.() ?? "local");
   const [steps, setSteps] = useState(initialSteps);
+  const [missionDone, setMissionDone] = useState(false); // ✅ 최종 제출 여부
   const [basicModalOpen, setBasicModalOpen] = useState(false);
 
   // ✅ 추가: 로딩/에러 상태 (API 대기 중 표시용)
@@ -285,8 +286,10 @@ const noContext = !rawShop && !forcePlanPhase;
                   missionId={missionId}
                   status={s.status}
                   onStepsChange={(all) => setSteps((prev) => mergeStatuses(prev, all))}
+                  missionDone={missionDone}                      // ✅ 내려줌
                   onMissionSubmitted={(res) => {
                   setSteps(prev => mergeStatuses(prev, res.steps || []));
+                  setMissionDone(true);                        // ✅ 최종 제출 후 전체 잠금
                   setBasicModalOpen(true);     // ✅ 완료 모달 열기
                 }}
                 />
