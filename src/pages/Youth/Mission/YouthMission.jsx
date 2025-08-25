@@ -58,7 +58,7 @@ function EmptyMission() {
   return (
     <div style={{
       minHeight: 360, display:"grid", placeItems:"center",
-      border:"1px dashed #dbeafe", borderRadius:12, marginTop:24
+      borderRadius:12,
     }}>
       <div style={{textAlign:"center", color:"#475569"}}>
         <div style={{fontSize:18, fontWeight:700, marginBottom:8}}>진행 중인 미션이 없어요!</div>

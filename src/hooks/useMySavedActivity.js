@@ -95,7 +95,7 @@ export function useMySavedActivity({ withCta = true } = {}) {
     loading,
     error,
     counts,
-    savedRequests: savedWithCta,
+    savedRequests,
     likedOutcomes,
     isEmptySaved: (counts.saved ?? 0) === 0,
     isEmptyLiked: (counts.liked ?? 0) === 0,
