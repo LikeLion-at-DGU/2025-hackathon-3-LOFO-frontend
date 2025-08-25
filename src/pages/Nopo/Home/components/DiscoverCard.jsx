@@ -106,7 +106,7 @@ const Card = styled.div`
   border-radius: 22px;
   overflow: hidden;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
-  cursor: pointer;
+  pointer-events: none;
 `;
 
 const Img = styled.img`
@@ -200,7 +200,7 @@ export default function Discover() {
         <Chevron $dir="left" />
       </ArrowBtn>
 
-      <Card onClick={() => navigate("/community")} title="발견탭으로 이동">
+      <Card title="발견탭으로 이동">
         <Img
           src={cover}
           alt={cur.title || "작업물"}
