@@ -12,6 +12,7 @@ export default function Activity() {
     likedOutcomes,
     isEmptySaved,
     isEmptyLiked,
+    unsaveRequest,  
   } = useMySavedActivity({ withCta: true });
 
   if (loading) return <S.Wrap>불러오는 중…</S.Wrap>;
@@ -32,10 +33,14 @@ export default function Activity() {
           <S.CardPanel>
             <PostGrid
               items={savedRequests}
-              renderItem={(item) => (
+              onToggleSave={unsaveRequest}      // ✅ 핵심: 토글 전달
+              renderItem={(item, helpers) => (  // helpers.onToggleSave도 제공됨
                 <S.OverlayWrap key={item.id}>
                   {/* ✅ PostCard는 item prop을 기대 */}
-                  <PostCard item={item} />
+                  <PostCard 
+                    item={item}
+                    onToggleSave={() => unsaveRequest(item)} // ✅ 클릭 적용
+                   />
                   {item.__cta && (
                     <S.CTAOverlay>
                       <S.CTAButton
@@ -66,7 +71,9 @@ export default function Activity() {
           <S.CardPanel>
             <PostGrid
               items={likedOutcomes}
-              renderItem={(item) => <PostCard key={item.id} item={item} />}
+              renderItem={(item) => 
+                <PostCard key={item.id} item={item} />
+              }
             />
           </S.CardPanel>
         )}
