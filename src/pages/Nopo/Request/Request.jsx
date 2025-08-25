@@ -21,7 +21,7 @@ const WriteButton = styled(Link)`
   padding: 10px 20px;
   border-radius: 30px;
   background: #fff;
-  color: #7c3aed;
+  color: #8b6fd4;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;

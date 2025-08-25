@@ -56,8 +56,8 @@ export default function RequestCreate() {
   const onSelectFile = (e) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    if (f.size > 5 * 1024 * 1024) {
-      setErrMsg("이미지는 5MB 이하만 업로드할 수 있어요.");
+    if (f.size > 20 * 1024 * 1024) {
+      setErrMsg("이미지는 20MB 이하만 업로드할 수 있어요.");
       return;
     }
     setErrMsg("");
