@@ -1,5 +1,4 @@
 import * as S from "./Styled";
-
 import { YouthTopnav } from "../../../components/Topnav/YouthTopnav";
 import Hero from "./components/Hero/Hero";
 import PostGrid from "./components/Posts/PostGrid";
@@ -11,60 +10,62 @@ import { usePosts } from "../../../hooks/usePosts";
 import { useNavigate } from "react-router-dom";
 import { getMyMission } from "../../../apis/youth_Mission";
 import { toggleSaveMission } from "../../../apis/saveMission";
-import { UI_CATEGORIES } from "../../../apis/filters";
-import { useFilter } from "../../../hooks/useFilter";
+import { DEFAULT_CATEGORY_TABS, useCommunityFilter } from "../../../hooks/useCommunityFilter";
+
+//import { UI_CATEGORIES } from "../../../apis/filters";
+//import { useFilter } from "../../../hooks/useFilter";
+
+const SORT_MAP_SERVER = {
+  latest: "latest",   // 서버가 latest를 받도록 구현되어 있다면
+  likes:  "popular",  // 서버는 popular로 받음
+};
 
 export default function YouthHome() {
   const navigate = useNavigate();
   const [activeModal, setActiveModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  // 탭 데이터: UI_CATEGORIES가 ["전체","SNS 이미지",...] 형태라고 가정
+    // ✅ 탭을 “코드 기반”으로 고정 (DEFAULT_CATEGORY_TABS 사용)
   const TABS = useMemo(() => {
-    const arr = (UI_CATEGORIES || []).map((label) => ({
-      key: label === "전체" ? "ALL" : label, // 키는 자유, 라벨은 서버 매핑에 사용
-      label,
-    }));
-    // 혹시 "전체"가 없다면 강제로 앞에 추가
-    if (!arr.find((t) => t.label === "전체")) {
-      arr.unshift({ key: "ALL", label: "전체" });
-    }
-    return arr;
+    // 필요시 서버/UX에 따라 탭 구성 커스터마이징
+    return DEFAULT_CATEGORY_TABS;
   }, []);
 
-  // 커스텀 훅: UI 상태 + 서버 정렬키 매핑 제공
-  const {
-    activeTab,
-    onChangeTab,
-    sortKey,          // "latest" | "likes" (UI)
-    onChangeSort,
-    sortOpen,
-    setSortOpen,
-    sortRef,
 
-    serverSort,       // "latest" | "popular" (서버)
-    activeTabLabel,   // "전체" | "SNS 이미지" ...
-  } = useFilter({
+   // ✅ 커스텀 훅을 UI 상태 관리용으로만 사용
+  const {
+    activeTab,          // "ALL" | "SNS_IMAGE" | ...
+    setActiveTab,
+    sortKey,            // "latest" | "likes"
+    setSortKey,
+  } = useCommunityFilter({
     tabs: TABS,
-    initialTabKey: "ALL",
+    initialTab: "ALL",
     initialSort: "latest",
+    items: [],          // 서버 필터 방식을 쓸 것이므로 여기선 의미 없음
   });
 
-  // 서버에서 받은 원본 리스트
+
+  // 서버 파라미터 계산
+  const selectedCategoryCode = activeTab === "ALL" ? undefined : activeTab; // key가 코드
+  const serverSort = SORT_MAP_SERVER[sortKey] ?? "latest";
+  
+
+  // 🔁 서버에서 필터/정렬/페이지네이션 처리
   const {
     items: rawItems,
     total,
     loading,
     error,
   } = usePosts({
-    category: activeTabLabel,      // 한국어 라벨 → 내부에서 enum으로 매핑
-    sort: serverSort,              // likes→popular 변환된 값
+    category: selectedCategoryCode, // 코드(없으면 파라미터 누락)
+    sort: serverSort,               // "latest" | "popular" 등 서버 규격
     page: 1,
     pageSize: 12,
     refreshKey,
   });
 
-  // 내가 방금 누른 하트(아이디) 기억
+  // ❤️ 낙관적 토글 상태
   const [likedSet, setLikedSet] = useState(() => {
     try { return new Set(JSON.parse(sessionStorage.getItem("likedIds") || "[]")); }
     catch { return new Set(); }
@@ -144,17 +145,17 @@ export default function YouthHome() {
         <S.HeroWrapper>
           <Hero onClickAIMission={() => {}} />
 
-          {/* ✅ FilterBar로 교체 */}
+          {/* FilterBar 연결 */}
           <div style={{ padding: "0 20px", width: "100%" }}>
             <FilterBar
               tabs={TABS}
               activeTab={activeTab}
-              onChangeTab={onChangeTab}
-              sortKey={sortKey}                // "latest" | "likes" (UI)
-              onChangeSort={onChangeSort}
-              sortOpen={sortOpen}
-              setSortOpen={setSortOpen}
-              sortRef={sortRef}
+              onChangeTab={setActiveTab}
+              sortKey={sortKey}
+              onChangeSort={setSortKey}
+              sortOpen={false}
+              setSortOpen={() => {}}
+              sortRef={null}
             />
           </div>
         </S.HeroWrapper>

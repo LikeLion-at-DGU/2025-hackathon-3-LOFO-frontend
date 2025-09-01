@@ -29,6 +29,7 @@ export function PlanGoalBox({ goal, dueDate, mode }) {
       <S.ModePill $mode={resolvedMode}>{label}</S.ModePill>
       --> 제거 예정 */}
     </S.GoalBox>
+
   );
 }
 
