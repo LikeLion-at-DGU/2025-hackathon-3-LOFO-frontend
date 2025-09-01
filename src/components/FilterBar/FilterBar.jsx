@@ -25,7 +25,7 @@ export default function FilterBar({
       </Tabs>
 
       <SortWrap ref={sortRef}>
-        <SortButton onClick={() => setSortOpen((v) => !v)}>
+        <SortButton type="button" onClick={() => setSortOpen((v) => !v)}>
           <span>{sortKey === "likes" ? "찜많은순" : "최신순"}</span>
           <Chevron />
         </SortButton>

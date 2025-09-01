@@ -38,6 +38,7 @@ export default function YouthHome() {
     setActiveTab,
     sortKey,            // "latest" | "likes"
     setSortKey,
+    sortOpen, setSortOpen, sortRef,
   } = useCommunityFilter({
     tabs: TABS,
     initialTab: "ALL",
@@ -153,9 +154,11 @@ export default function YouthHome() {
               onChangeTab={setActiveTab}
               sortKey={sortKey}
               onChangeSort={setSortKey}
-              sortOpen={false}
-              setSortOpen={() => {}}
-              sortRef={null}
+              sortOpen={sortOpen}
+              //setSortOpen={() => {}}
+              setSortOpen={setSortOpen}
+              //sortRef={null}
+              sortRef={sortRef}
             />
           </div>
         </S.HeroWrapper>
