@@ -18,18 +18,17 @@ export const PlanPage = styled.div`
 
 export const Shell = styled.div`
   width: 100%;
-  background: #fff;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
   overflow: hidden;
-  margin: 24px 0;
+  overflow: scroll;
 `;
 
 export const Main = styled.div`
   display: grid;
   grid-template-columns: 320px 1fr;
-  gap: 24px;
-  padding: 24px;
+  gap: 50px;
+  padding: 0 24px;
   @media (max-width: 960px) {
     grid-template-columns: 1fr;
   }

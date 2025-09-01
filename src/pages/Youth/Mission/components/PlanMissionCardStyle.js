@@ -3,18 +3,25 @@ import styled from "styled-components";
 export const Card = styled.article`
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 16px;
-  padding: 18px 20px;
-  border: 2px solid ${(p) => (p.$disabled ? "#e5e7eb" : "#cfe1ff")};           /* 파란 외곽선 */
+  padding: 30px 40px 40px 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 140px 50px -70px 20px;
+  align-self: stretch;
+  border-radius: 0 0 20px 20px;
+  border: 1px solid ${(p) => (p.$disabled ? "#e5e7eb" : "#1787FF")} ;
   background: ${(p) => (p.$disabled ? "#f6f7fb" : "#ffffff")};
-  border-radius: 16px;
-  box-shadow: ${(p) => (p.$disabled ? "none" : "0 6px 20px rgba(60,104,255,.08)")}; /* 은은한 파란 그림자 */
+  box-shadow: ${(p) => (p.$disabled ? "none" : "0 2px 48px -8px rgba(54, 143, 239, 0.20)")}; /* 은은한 파란 그림자 */
+
+
+  position: relative;
 
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
     align-items: flex-start;
   }
+  //* {border: 1px solid;}
 `;
 
 export const Left = styled.div`
@@ -26,14 +33,21 @@ export const Left = styled.div`
 export const IdxBadge = styled.div`
   width: 28px;
   height: 28px;
-  border-radius: 8px;
-  background: linear-gradient(180deg, #5ea8ff 0%, #2f6bff 100%);
   color: #fff;
-  font-weight: 800;
-  font-size: 14px;
-  display: grid;
-  place-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  padding: 8px 22px;
   flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px 10px 0 0;
+  background: #1787FF;
+
+  position: absolute;
+  top: -29px;
+  left: 0;
 `;
 
 export const Content = styled.div`
@@ -51,24 +65,21 @@ export const HeaderRow = styled.div`
 `;
 
 export const Badge = styled.span`
-  flex: 0 0 auto;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 700;
-  color: #2563eb;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  padding: 2px 8px;
-  border-radius: 999px;
+  color: #999;
 `;
 
-export const Title = styled.a`
-  color: ${(p) => (p.$disabled ? "#9aa3b2" : "#1d4ed8")};
+export const Title = styled.span`
+  color: ${(p) => (p.$disabled ? "#9aa3b2" : "#1787FF")};
   font-weight: 800;
-  line-height: 1.2;
   min-width: 0;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  font-size: 22px;
+  margin-bottom: 5px;
+  
 
   &:hover {
     text-decoration: underline;
@@ -76,6 +87,7 @@ export const Title = styled.a`
 `;
 
 export const Bullets = styled.ul`
+  font-size: 18px;
   margin: 0;
   padding-left: 18px;
   color: ${(p) => (p.$disabled ? "#a3a3a3" : "#374151")};
@@ -88,6 +100,7 @@ export const Bullets = styled.ul`
 
 export const Right = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
@@ -97,41 +110,44 @@ export const Right = styled.div`
 export const DuePill = styled.div`
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   padding: 8px 10px;
   border-radius: 999px;
-  border: 1px solid #93c5fd;
-  background: #ebf5ff;
   color: #1d4ed8;
   font-weight: 700;
 
   span {
-    font-size: 12px;
-    color: #3b82f6;
-    font-weight: 600;
+    font-size: 14px;
+    color: #1787FF;
+    font-weight: 400;
   }
   strong {
-    font-weight: 800;
-    color: #1e40af;
+    font-size: 17px;
+    font-weight: 400;
+    color: #000000ff;
   }
 `;
 
 export const CalendarIcon = styled.svg`
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
+  color: #1787FF;
 `;
 
 export const UploadBtn = styled.button`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid #93c5fd;
-  background: #dbeafe;
-  color: #1d4ed8;
-  font-weight: 800;
-  cursor: pointer;
+display: flex;
+padding: 10px 20px;
+align-items: center;
+gap: 10px;
+border-radius: 100px;
+border: 1px solid #ADD5FF;
+background: #FFF;
+box-shadow: 0 4px 12px 0 rgba(54, 143, 239, 0.50);
+
+color: #368FEF;
+font-weight: 600;
+font-size: 17px;
+cursor: pointer;
 
   &:hover {
     filter: brightness(0.98);
@@ -142,6 +158,6 @@ export const UploadBtn = styled.button`
 `;
 
 export const UploadIcon = styled.svg`
-  width: 18px;
-  height: 18px;
+  width: 23px;
+  height: 23px;
 `;

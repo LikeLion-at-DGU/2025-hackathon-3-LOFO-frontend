@@ -21,7 +21,7 @@ export function ShopCard({ name, imageUrl, naverUrl, request }) {
 
 const Card = styled.div`
     display: inline-flex;
-    height: auto;
+    height: 100vh;
     width: 350px;
     padding: 140px 50px 61px 50px;
     flex-direction: column;
@@ -31,7 +31,7 @@ const Card = styled.div`
     flex-shrink: 0;
     background: var(--white, #FFF);
     box-shadow: 0 -9px 20px 0 rgba(0, 0, 0, 0.25);
-    margin: -80px 0 0 -30px;
+    margin-left: -30px;
 `;
 
 
