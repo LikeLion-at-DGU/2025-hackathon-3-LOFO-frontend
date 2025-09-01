@@ -55,6 +55,41 @@ export const GlobalError = styled.div`
   font-size: 14px;
 `;
 
+export const InlineTitle = styled.div`
+  color: #368fef;
+  font-weight: 700;
+  margin-bottom: 8px;
+`;
+
+export const MiniGoalPanel = styled.div`
+  border: 1px solid #cfe1ff;
+  background: #f8fbff;
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+`;
+
+export const GoalRow = styled.div`
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 10px;
+  align-items: start;
+`;
+
+export const Label = styled.div`
+  font-size: 12px;
+  color: #64748b;
+`;
+
+export const Value = styled.div`
+  font-size: 14px;
+  color: #111827;
+  line-height: 1.45;
+  word-break: break-word;
+`;
+
+
 /*PlanGoalBox*/
 export const GoalBox = styled.div`
   border:1px solid #e5e7eb;border-radius:12px;padding:16px;background:#fafafa;

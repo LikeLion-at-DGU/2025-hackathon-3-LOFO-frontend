@@ -6,7 +6,7 @@ export function DueDateField({ value, onChange, minDate, error }) {
       <BlockTitle>마감기간</BlockTitle>
       <Help>
         최종 콘텐츠 마감일을 선택해주세요. 입력한 기한을 바탕으로 AI가 3단계
-        미션을 생성합니다. 각 미션 기한을 넘기면 자동으로 완료되니 유의하세요.
+        미션을 생성합니다.<br/> 각 미션 기한을 넘기면 자동으로 완료되니 유의하세요.
       </Help>
 
       <DateRow>
