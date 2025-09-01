@@ -25,7 +25,7 @@ export default function FilterBar({
       </Tabs>
 
       <SortWrap ref={sortRef}>
-        <SortButton onClick={() => setSortOpen((v) => !v)}>
+        <SortButton type="button" onClick={() => setSortOpen((v) => !v)}>
           <span>{sortKey === "likes" ? "찜많은순" : "최신순"}</span>
           <Chevron />
         </SortButton>
@@ -69,11 +69,9 @@ const TopRow = styled.div`
 `;
 const Tabs = styled.div`
   display: flex; gap: 20px; flex-wrap: wrap; padding: 12px 0 24px;
-  display: inline-block;
 `;
 const Tab = styled.button`
   padding: 6px 24px;
-  margin-right: 15px; 
   border-radius: 100px;
   border: 1px solid #ddd; 
   color: ${({ $active }) => ($active ? "#fff" : "#4F4F4F")};

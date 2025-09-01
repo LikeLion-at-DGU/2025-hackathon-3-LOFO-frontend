@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export const DEFAULT_CATEGORY_TABS = [
   { key: "ALL", label: "전체" },
@@ -15,9 +15,32 @@ export function useCommunityFilter({
   tabs = DEFAULT_CATEGORY_TABS,
   initialTab = "ALL",
   initialSort = "latest", // 'latest' | 'likes'
+  // (선택) 아이템에서 카테고리 읽는 방법을 커스터마이즈하고 싶을 때
+  getItemCategory = (x) => x?.category ?? x?.categoryLabel,
 } = {}) {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [sortKey, setSortKey] = useState(initialSort);
+
+  // ▼ 드롭다운: 열림 상태 + ref + 바깥 클릭 닫기
+  const [sortOpen, setSortOpen] = useState(false);
+  const sortRef = useRef(null);
+  useEffect(() => {
+    if (!sortOpen) return;
+    const onPointerDown = (e) => {
+      const el = sortRef.current;
+      if (el && !el.contains(e.target)) setSortOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown, { capture: true });
+    return () =>
+      document.removeEventListener("pointerdown", onPointerDown, { capture: true });
+  }, [sortOpen]);
+  // ESC로 닫기 (선택)
+  useEffect(() => {
+    if (!sortOpen) return;
+    const onKey = (e) => e.key === "Escape" && setSortOpen(false);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [sortOpen]);
 
   // 카테고리 필터링
   const filtered = useMemo(() => {
@@ -26,23 +49,27 @@ export function useCommunityFilter({
     // key 또는 label 둘 다 대응
     const activeLabel = tabs.find((t) => t.key === activeTab)?.label;
     return items.filter((x) => {
-      const catKey = String(x.category || "").toUpperCase();
-      const catLabel = x.categoryLabel;
+      const catKey = String(getItemCategory(x) || "").toUpperCase();
+      const catLabel = x.categoryLabel ?? x.category_display;
       return catKey === activeTab || catLabel === activeLabel;
     });
-  }, [items, activeTab, tabs]);
+  }, [items, activeTab, tabs, getItemCategory]);
 
   // 정렬
   const filteredSorted = useMemo(() => {
     const arr = [...filtered];
     if (sortKey === "likes") {
-      arr.sort((a, b) => (b.savedCount ?? 0) - (a.savedCount ?? 0));
+      arr.sort(
+        (a, b) =>
+          (b.savedCount ?? b.saved_count ?? 0) -
+          (a.savedCount ?? a.saved_count ?? 0)
+      );
       return arr;
     }
 
     // latest: createdAt desc → fallback id desc
     const time = (x) => {
-      const t = Date.parse(x.createdAt || "");
+      const t = Date.parse(x.createdAt || x.created_at || "");
       return Number.isFinite(t) ? t : 0;
     };
     arr.sort((a, b) => {
@@ -58,6 +85,10 @@ export function useCommunityFilter({
     setActiveTab,
     sortKey,
     setSortKey,
+    // ▼ 드롭다운 제어자를 외부(UI)에 노출
+    sortOpen,
+    setSortOpen,
+    sortRef,
     filtered,
     filteredSorted,
     tabs,
