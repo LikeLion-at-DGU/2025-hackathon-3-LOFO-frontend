@@ -6,7 +6,7 @@ export function DueDateField({ value, onChange, minDate, error }) {
       <BlockTitle>마감기간</BlockTitle>
       <Help>
         최종 콘텐츠 마감일을 선택해주세요. 입력한 기한을 바탕으로 AI가 3단계
-        미션을 생성합니다. 각 미션 기한을 넘기면 자동으로 완료되니 유의하세요.
+        미션을 생성합니다.<br/> 각 미션 기한을 넘기면 자동으로 완료되니 유의하세요.
       </Help>
 
       <DateRow>
@@ -27,23 +27,21 @@ export function DueDateField({ value, onChange, minDate, error }) {
 }
 
 const Block = styled.div`
-  background: #fff;
-  border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 16px;
 `;
 
 const BlockTitle = styled.h2`
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 35px;
+  font-weight: 600;
   margin-bottom: 6px;
+  color: #368FEF;
 `;
 
 const Help = styled.p`
-  font-size: 13px;
-  color: #6b7280;
-  line-height: 1.5;
-  margin-bottom: 12px;
+  font-size: 18px;
+  color: #333;
+  margin: 12px 0 25px 0;
 `;
 
 const DateRow = styled.div`
@@ -57,7 +55,7 @@ const DateLabel = styled.label`
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 18px;
 
   &::before {
     content: "📅";
@@ -69,7 +67,7 @@ const DateInput = styled.input`
   padding: 10px 12px;
   border: 1px solid #d1d5db;
   border-radius: 10px;
-  font-size: 15px;
+  font-size: 18px;
 
   &:focus {
     outline: none;

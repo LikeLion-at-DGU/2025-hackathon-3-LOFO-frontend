@@ -35,12 +35,11 @@ export function PlanMissionCard({
 
         <S.Content>
           <S.HeaderRow>
-            <S.Badge>미션</S.Badge>
             <S.Title href="#" onClick={(e) => e.preventDefault()}>
               {title}
             </S.Title>
           </S.HeaderRow>
-
+          <S.Badge>미션</S.Badge>
           <S.Bullets>
             {bullets.map((b, i) => (
               <li key={i}>{b}</li>

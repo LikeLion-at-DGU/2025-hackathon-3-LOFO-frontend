@@ -224,12 +224,25 @@ const noContext = !rawShop && !forcePlanPhase;
               imageUrl={shop.imageUrl}
               naverUrl={shop.naverUrl}
               request={shop.request}
-            />
+            >
 
-            {/* 결과 단계에서 목표/기한/모드 박스 */}
+            {/* ✅ 여기서부터 ShopCard 내부에 삽입될 섹션 */}
             {phase === "plan" && (
-              <PlanGoalBox goal={goal} dueDate={dueDate} mode={mode} />
+              <div>
+                <S.InlineTitle>내 목표</S.InlineTitle>
+                <S.MiniGoalPanel>
+                  <S.GoalRow>
+                    <S.Label>목표</S.Label>
+                    <S.Value>{goal}</S.Value>
+                  </S.GoalRow>
+                  <S.GoalRow>
+                    <S.Label>마감기한</S.Label>
+                    <S.Value>{dueDate}</S.Value>
+                  </S.GoalRow>
+                </S.MiniGoalPanel>
+              </div>
             )}
+          </ShopCard>
           </S.LeftCol>
 
           {/* ---------------- Right ---------------- */}

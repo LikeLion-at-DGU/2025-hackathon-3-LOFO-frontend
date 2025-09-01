@@ -5,7 +5,7 @@ export function GoalField({ value, onChange, error }) {
     <Block>
       <BlockTitle>목표</BlockTitle>
       <Help>
-        상인의 요청을 확인하고, 제작할 최종 콘텐츠의 목표를 입력하세요.
+        상인의 요청을 확인하고, 제작할 최종 콘텐츠의 목표를 입력하세요.<br/>
         구체적으로 작성할수록 AI가 더 정확한 미션을 만듭니다.
       </Help>
       <Textarea
@@ -20,34 +20,33 @@ export function GoalField({ value, onChange, error }) {
 }
 
 const Block = styled.div`
-  background: #fff;
-  border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 16px;
+  margin-top: 80px;
 `;
 
 const BlockTitle = styled.h2`
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 35px;
+  font-weight: 600;
   margin-bottom: 6px;
+  color: #368FEF;
 `;
 
 const Help = styled.p`
-  font-size: 13px;
-  color: #6b7280;
-  line-height: 1.5;
-  margin-bottom: 12px;
+  font-size: 18px;
+  color: #333;
+  margin: 12px 0 25px 0;
 `;
 
 
 const Textarea = styled.textarea`
   width: 100%;
-  min-height: 120px;
-  padding: 12px;
+  min-height: 20px;
+  padding: 10px;
   border: 1px solid #d1d5db;
   border-radius: 10px;
-  font-size: 15px;
-  resize: vertical;
+  font-size: 16px;
+  resize: none;
 
   &:focus {
     outline: none;

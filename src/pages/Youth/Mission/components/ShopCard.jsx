@@ -1,6 +1,7 @@
+// ShopCard.jsx
 import styled from "styled-components";
 
-export function ShopCard({ name, imageUrl, naverUrl, request }) {
+export function ShopCard({ name, imageUrl, naverUrl, request, children }) {
   return (
     <Card>
       <ShopImg src={imageUrl} alt={`${name} 사진`} />
@@ -12,28 +13,41 @@ export function ShopCard({ name, imageUrl, naverUrl, request }) {
       <Divider />
 
       <Field>
-      <SectionTitle>상인의 요청</SectionTitle>
-      <RequestBox>{request}</RequestBox>
+        <SectionTitle>상인의 요청</SectionTitle>
+        <RequestBox>{request}</RequestBox>
       </Field>
+
+      {/* ✅ children 이 오면 내부 섹션으로 붙이기 */}
+      {children && (
+        <>
+          <Divider />
+          <Field>
+            {children}
+          </Field>
+        </>
+      )}
     </Card>
   );
 }
 
 const Card = styled.div`
-    display: inline-flex;
-    height: auto;
-    width: 350px;
-    padding: 140px 50px 61px 50px;
-    flex-direction: column;
-    align-items: center;
-    position: sticky;
-    gap: 20px;
-    flex-shrink: 0;
-    background: var(--white, #FFF);
-    box-shadow: 0 -9px 20px 0 rgba(0, 0, 0, 0.25);
-    margin: -80px 0 0 -30px;
-`;
+  display: inline-flex;
+  height: 100vh;
+  width: 350px;
+  padding: 140px 50px 61px 50px;
+  flex-direction: column;
+  align-items: center;
+  position: sticky;
+  top: 0;                 /* 스티키 올바르게 고정 */
+  gap: 20px;
+  flex-shrink: 0;
+  background: #fff;
+  box-shadow: 0 -9px 20px 0 rgba(0,0,0,0.25);
+  margin-left: -30px;
 
+  /* ✅ 콘텐츠가 길어질 때 스크롤 가능 */
+  overflow-y: auto;
+`;
 
 const ShopImg = styled.img`
   width: 100%;
@@ -54,8 +68,8 @@ const Field = styled.div`
   width: 100%;
   flex-direction: column;
   margin-top: -30px;
-
 `;
+
 const NaverLink = styled.a`
   display: inline-block;
   font-size: 14px;
@@ -71,14 +85,10 @@ const Divider = styled.hr`
 `;
 
 const SectionTitle = styled.h4`
-color: var(--main-001, #368FEF);
-
-/* body/003 */
-font-family: "Pretendard Variable";
-font-size: 18px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
+  color: var(--main-001, #368FEF);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: normal;
 `;
 
 const RequestBox = styled.p`
