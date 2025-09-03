@@ -59,8 +59,11 @@ const HeadText = styled.div`
 
 const TabContainer = styled.div`
   display: flex;
-  gap: 12px;
-  margin: 32px 0;
+  width: 100%;
+  gap: 16px;
+  padding: 20px 60px;
+  background: #fff;
+  border-bottom: #e5e7eb;
 `;
 const Tab = styled.button`
   padding: 8px 16px;
@@ -82,6 +85,7 @@ const CardGrid = styled.div`
   max-width: 1200px;
   width: 100%;
   padding-bottom: 50px;
+  margin-top: 32px;
 `;
 
 /* === 카드 === */

@@ -10,14 +10,17 @@ import { usePosts } from "../../../hooks/usePosts";
 import { useNavigate } from "react-router-dom";
 import { getMyMission } from "../../../apis/youth_Mission";
 import { toggleSaveMission } from "../../../apis/saveMission";
-import { DEFAULT_CATEGORY_TABS, useCommunityFilter } from "../../../hooks/useCommunityFilter";
+import {
+  DEFAULT_CATEGORY_TABS,
+  useCommunityFilter,
+} from "../../../hooks/useCommunityFilter";
 
 //import { UI_CATEGORIES } from "../../../apis/filters";
 //import { useFilter } from "../../../hooks/useFilter";
 
 const SORT_MAP_SERVER = {
-  latest: "latest",   // 서버가 latest를 받도록 구현되어 있다면
-  likes:  "popular",  // 서버는 popular로 받음
+  latest: "latest", // 서버가 latest를 받도록 구현되어 있다면
+  likes: "popular", // 서버는 popular로 받음
 };
 
 export default function YouthHome() {
@@ -25,32 +28,31 @@ export default function YouthHome() {
   const [activeModal, setActiveModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
-    // ✅ 탭을 “코드 기반”으로 고정 (DEFAULT_CATEGORY_TABS 사용)
+  // ✅ 탭을 “코드 기반”으로 고정 (DEFAULT_CATEGORY_TABS 사용)
   const TABS = useMemo(() => {
     // 필요시 서버/UX에 따라 탭 구성 커스터마이징
     return DEFAULT_CATEGORY_TABS;
   }, []);
 
-
-   // ✅ 커스텀 훅을 UI 상태 관리용으로만 사용
+  // ✅ 커스텀 훅을 UI 상태 관리용으로만 사용
   const {
-    activeTab,          // "ALL" | "SNS_IMAGE" | ...
+    activeTab, // "ALL" | "SNS_IMAGE" | ...
     setActiveTab,
-    sortKey,            // "latest" | "likes"
+    sortKey, // "latest" | "likes"
     setSortKey,
-    sortOpen, setSortOpen, sortRef,
+    sortOpen,
+    setSortOpen,
+    sortRef,
   } = useCommunityFilter({
     tabs: TABS,
     initialTab: "ALL",
     initialSort: "latest",
-    items: [],          // 서버 필터 방식을 쓸 것이므로 여기선 의미 없음
+    items: [], // 서버 필터 방식을 쓸 것이므로 여기선 의미 없음
   });
-
 
   // 서버 파라미터 계산
   const selectedCategoryCode = activeTab === "ALL" ? undefined : activeTab; // key가 코드
   const serverSort = SORT_MAP_SERVER[sortKey] ?? "latest";
-  
 
   // 🔁 서버에서 필터/정렬/페이지네이션 처리
   const {
@@ -60,7 +62,7 @@ export default function YouthHome() {
     error,
   } = usePosts({
     category: selectedCategoryCode, // 코드(없으면 파라미터 누락)
-    sort: serverSort,               // "latest" | "popular" 등 서버 규격
+    sort: serverSort, // "latest" | "popular" 등 서버 규격
     page: 1,
     pageSize: 12,
     refreshKey,
@@ -68,8 +70,11 @@ export default function YouthHome() {
 
   // ❤️ 낙관적 토글 상태
   const [likedSet, setLikedSet] = useState(() => {
-    try { return new Set(JSON.parse(sessionStorage.getItem("likedIds") || "[]")); }
-    catch { return new Set(); }
+    try {
+      return new Set(JSON.parse(sessionStorage.getItem("likedIds") || "[]"));
+    } catch {
+      return new Set();
+    }
   });
 
   // 서버 is_saved + 클라 토글 상태 병합
@@ -80,12 +85,18 @@ export default function YouthHome() {
       const mergedLiked = serverLiked || clientLiked;
 
       const serverCnt =
-        typeof it.savedCount === "number" ? it.savedCount :
-        typeof it.saved_count === "number" ? it.saved_count : 0;
+        typeof it.savedCount === "number"
+          ? it.savedCount
+          : typeof it.saved_count === "number"
+          ? it.saved_count
+          : 0;
 
       const adjustedCnt =
-        mergedLiked && !serverLiked ? serverCnt + 1 :
-        (!mergedLiked && serverLiked ? Math.max(0, serverCnt - 1) : serverCnt);
+        mergedLiked && !serverLiked
+          ? serverCnt + 1
+          : !mergedLiked && serverLiked
+          ? Math.max(0, serverCnt - 1)
+          : serverCnt;
 
       return {
         ...it,
@@ -168,7 +179,8 @@ export default function YouthHome() {
 
         {!loading && !error && items.length === 0 && (
           <S.ErrMsg>
-            아직 상인의 요청이 없습니다. <br />AI가 추천하는 미션은 어떤가요?
+            아직 상인의 요청이 없습니다. <br />
+            AI가 추천하는 미션은 어떤가요?
           </S.ErrMsg>
         )}
 
