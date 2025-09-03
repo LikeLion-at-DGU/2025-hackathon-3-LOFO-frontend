@@ -3,11 +3,11 @@ import styled from "styled-components";
 export const Card = styled.article`
   display: grid;
   grid-template-columns: 1fr auto;
-  padding: 30px 40px 40px 40px;
+  padding: 25px 35px 35px 35px;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
-  margin: 140px 50px -70px 20px;
+  margin: 130px 60px -60px 40px;
   align-self: stretch;
   border-radius: 0 0 20px 20px;
   border: 1px solid ${(p) => (p.$disabled ? "#e5e7eb" : "#1787FF")} ;
@@ -77,8 +77,8 @@ export const Title = styled.span`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  font-size: 22px;
-  margin-bottom: 5px;
+  font-size: 20px;
+  margin-bottom: 3px;
   
 
   &:hover {
@@ -87,7 +87,7 @@ export const Title = styled.span`
 `;
 
 export const Bullets = styled.ul`
-  font-size: 18px;
+  font-size: 15px;
   margin: 0;
   padding-left: 18px;
   color: ${(p) => (p.$disabled ? "#a3a3a3" : "#374151")};
@@ -117,12 +117,12 @@ export const DuePill = styled.div`
   font-weight: 700;
 
   span {
-    font-size: 14px;
+    font-size: 12px;
     color: #1787FF;
     font-weight: 400;
   }
   strong {
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 400;
     color: #000000ff;
   }
@@ -146,7 +146,7 @@ box-shadow: 0 4px 12px 0 rgba(54, 143, 239, 0.50);
 
 color: #368FEF;
 font-weight: 600;
-font-size: 17px;
+font-size: 15px;
 cursor: pointer;
 
   &:hover {

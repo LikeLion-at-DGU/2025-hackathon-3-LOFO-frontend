@@ -21,7 +21,7 @@ export const Shell = styled.div`
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
   overflow: hidden;
-  overflow: scroll;
+  //overflow: scroll;
 `;
 
 export const Main = styled.div`
