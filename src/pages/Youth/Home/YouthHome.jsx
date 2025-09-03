@@ -48,6 +48,7 @@ export default function YouthHome() {
 
 
   // 서버 파라미터 계산
+  const SORT_MAP_SERVER = { latest: "latest", likes: "popular" };
   const selectedCategoryCode = activeTab === "ALL" ? undefined : activeTab; // key가 코드
   const serverSort = SORT_MAP_SERVER[sortKey] ?? "latest";
   

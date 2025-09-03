@@ -89,7 +89,10 @@ export const SecondaryBtn = styled.button`
   box-shadow: 0 4px 12px 0 rgba(139, 111, 212, 0.50);
   margin: 10px auto;
 
-  
+  &:disabled {
+    /* 비활성화에도 옅은 그림자 유지하고 싶으면 */
+    box-shadow: 0 4px 12px 0 ${(p)=>p.$t.disabledShadow};
+  }
 `;
 export const FeedbackBox = styled.div`
     display: flex;
