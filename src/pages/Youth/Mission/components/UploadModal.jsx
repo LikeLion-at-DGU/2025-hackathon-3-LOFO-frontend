@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import * as S from "./UploadModalStyle";
+import UploadIcon from '../../../../assets/Upload.svg?react';
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useAiFeedback } from "../../../../hooks/useAiFeedback";
 
@@ -114,20 +115,20 @@ export default function UploadModal({
 
   // 테마
   const THEME = variant === "purple"
-    ? { accent: "#8B6FD4", bg: "#F2ECFF", border: "#C7B5F3", chip: "#EAE2FF" }
+    ? { accent: "#8B6FD4", bg: "#F0EAFF", border: "#8B6FD4", chip: "#8B6FD4" }
     : { accent: "#2D5CF6", bg: "#F3F7FF", border: "#9DB7FF", chip: "#E3EEFF" };
 
   const handleBgClick = (e) => { if (e.target === e.currentTarget) onClose?.(); };
 
   return (
-    <ModalBackdrop onClick={handleBgClick}>
-      <ModalCard role="dialog" aria-modal="true" aria-labelledby="upload-title">
-        <ModalHeader>
+    <S.ModalBackdrop onClick={handleBgClick}>
+      <S.ModalCard role="dialog" aria-modal="true" aria-labelledby="upload-title">
+        <S.ModalHeader>
           <h3 id="upload-title">{title}</h3>
-          <CloseBtn aria-label="닫기" onClick={() => { clearAll(); onClose?.(); }}>×</CloseBtn>
-        </ModalHeader>
+          <S.CloseBtn aria-label="닫기" onClick={() => { clearAll(); onClose?.(); }}>×</S.CloseBtn>
+        </S.ModalHeader>
 
-        <Dropzone
+        <S.Dropzone
           $t={THEME}
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
@@ -137,61 +138,58 @@ export default function UploadModal({
           }}
         >
           {preview.length ? (
-            <PreviewWrapGrid>
+            <S.PreviewWrapGrid>
               {preview.map((p, i) => (
-                <PreviewItem key={i}>
-                  <RemoveBtn onClick={() => removeAt(i)} $t={THEME}>×</RemoveBtn>
-                  {p.isImage ? <PreviewImg src={p.url} alt={p.name} /> : <FileInfo>📄 {p.name}</FileInfo>}
-                </PreviewItem>
+                <S.PreviewItem key={i}>
+                  <S.RemoveBtn onClick={() => removeAt(i)} $t={THEME}>×</S.RemoveBtn>
+                  {p.isImage ? <S.PreviewImg src={p.url} alt={p.name} /> : <S.FileInfo>📄 {p.name}</S.FileInfo>}
+                </S.PreviewItem>
               ))}
               <label>
-                <HiddenInput
+                <S.HiddenInput
                   ref={fileInputRef}
                   type="file"
                   multiple={allowMultiple}
                   accept={ACCEPT_STR}                // ✅ accept 추가
                   onChange={(e) => handlePick(e.target.files)}
                 />
-                <UploadChip $t={THEME}>파일 추가</UploadChip>
+                <S.UploadChip $t={THEME}>파일 추가</S.UploadChip>
               </label>
-            </PreviewWrapGrid>
+            </S.PreviewWrapGrid>
           ) : (
             <>
-              <CloudIcon viewBox="0 0 24 24" aria-hidden style={{ color: THEME.accent }}>
-                <path d="M6 16a4 4 0 0 1 .9-7.9A5 5 0 0 1 19 9a3 3 0 0 1-.2 6H6z"
-                  fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M12 14V8m0 0l-3 3m3-3l3 3"
-                  fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-              </CloudIcon>
+
+              <S.CloudIcon as={UploadIcon} style={{ color: THEME.accent }} />
+
               <p>작업한 파일을 업로드해 주세요</p>
               <label>
-                <HiddenInput
+                <S.HiddenInput
                   ref={fileInputRef}
                   type="file"
                   multiple={allowMultiple}
                   accept={ACCEPT_STR}                // ✅ accept 추가
                   onChange={(e) => handlePick(e.target.files)}
                 />
-                <UploadChip $t={THEME}>Upload</UploadChip>
+                <S.UploadChip $t={THEME}>Upload</S.UploadChip>
               </label>
             </>
           )}
-        </Dropzone>
+        </S.Dropzone>
 
         {manualFeedback && (
-          <Actions>
-            <SecondaryBtn
+          <S.Actions>
+            <S.SecondaryBtn
               $t={THEME}
               disabled={!files.length || fbLoading}
               onClick={handleAskFeedbackManually}
             >
               {fbLoading ? "분석 중…" : "피드백 받기"}
-            </SecondaryBtn>
-          </Actions>
+            </S.SecondaryBtn>
+          </S.Actions>
         )}
 
-        <FieldLabel>AI 피드백</FieldLabel>
-        <FeedbackBox>
+        <S.FieldLabel>AI 피드백</S.FieldLabel>
+        <S.FeedbackBox>
           {fbLoading && <span className="placeholder">분석 중…</span>}
 
           {/* 로컬 확장자 에러 또는 서버 에러 */}
@@ -224,105 +222,22 @@ export default function UploadModal({
   <span className="placeholder">
     {isAutoFeedbackStep
       ? "파일을 업로드하면 자동 피드백이 표시됩니다."
-      : "이 단계는 자동 피드백이 없습니다."}
+      : "최종 작업물을 업로드 한 후 피드백 받기를 눌러주세요!"}
   </span>
 ))}
-        </FeedbackBox>
+        </S.FeedbackBox>
 
-        <Footer>
-          <PrimaryBtn
+        <S.Footer>
+          <S.PrimaryBtn
             $t={THEME}
             disabled={!files.length}
             onClick={() => { onSubmit?.({ files, feedback }); clearAll(); onClose?.(); }}
           >
             {manualFeedback ? "상인에게 전달하기" : "완료"}
-          </PrimaryBtn>
-        </Footer>
-      </ModalCard>
-    </ModalBackdrop>
+          </S.PrimaryBtn>
+        </S.Footer>
+      </S.ModalCard>
+    </S.ModalBackdrop>
   );
 }
 
-/* --------- styles --------- */
-const ModalBackdrop = styled.div`
-  position: fixed; inset: 0; background: rgba(0,0,0,.38);
-  display: grid; place-items: center; z-index: 1000;
-`;
-const ModalCard = styled.div`
-  max-height: 550px; width: 380px; max-width: calc(100vw - 32px);
-  background: #fff; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.18);
-  padding: 18px; overflow: scroll;
-  ::-webkit-scrollbar { width: 1px; background: gray; }
-`;
-const ModalHeader = styled.div`
-  display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px;
-  h3 { font-size:16px; font-weight:800; }
-`;
-const CloseBtn = styled.button`
-  border:0; background:transparent; font-size:20px; cursor:pointer; color:#6b7280;
-`;
-
-const Dropzone = styled.div`
-  margin: 6px 0 10px;
-  border: 1.5px dashed ${(p) => p.$t.border};
-  border-radius: 12px;
-  background: ${(p) => p.$t.bg};
-  height: 160px;
-  display:grid; place-items:center; text-align:center; gap:10px; padding: 10px;
-  position: relative;
-  p { font-size:12px; color:#6b7280; }
-`;
-const CloudIcon = styled.svg`width: 48px; height: 48px;`;
-const HiddenInput = styled.input`
-  position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);
-`;
-const UploadChip = styled.span`
-  display:inline-block; padding:6px 14px; border-radius:999px;
-  background:${(p) => p.$t.chip}; color:${(p) => p.$t.accent}; font-weight:800; border:1px solid ${(p) => p.$t.border};
-  cursor:pointer;
-`;
-const FileInfo = styled.div`
-  font-size: 14px; color: #374151; word-break: break-all; padding: 10px; text-align: center;
-`;
-const PreviewImg = styled.img`
-  max-width: 100%; max-height: 100%; object-fit: contain;
-`;
-const RemoveBtn = styled.button`
-  position: absolute; top: 8px; right: 8px;
-  width: 22px; height: 22px; line-height: 20px; text-align: center;
-  border-radius: 999px; border: 1px solid ${(p)=>p.$t.border};
-  background: #fff; color: ${(p)=>p.$t.accent};
-  font-weight: 800; cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,.06);
-`;
-
-const FieldLabel = styled.div`
-  font-size:12px; font-weight:700; margin: 10px 0 6px; color:#374151;
-`;
-const Footer = styled.div`display:flex; justify-content:center; margin-top: 14px;`;
-const Actions = styled.div`display:flex; justify-content:flex-start; margin: 6px 0 8px;`;
-const PrimaryBtn = styled.button`
-  min-width: 140px; height: 36px; border-radius: 18px; font-weight:800; cursor:pointer;
-  background:${(p)=>p.$t.chip}; color:${(p)=>p.$t.accent}; border:1px solid ${(p)=>p.$t.border};
-  opacity:${p=>p.disabled?0.6:1};
-`;
-const SecondaryBtn = styled.button`
-  margin: 30px auto;
-  height: 30px; border-radius: 999px; padding: 0 12px; font-weight:800; cursor:pointer;
-  background:#fff; color:${(p)=>p.$t.accent}; border:1px solid ${(p)=>p.$t.border};
-  box-shadow: 0 2px 0 rgba(0,0,0,.03);
-`;
-const FeedbackBox = styled.div`
-  border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px; min-height: 80px;
-  font-size: 14px; background: #fafafa;
-  .placeholder { color: #9ca3af; }
-  ul { margin-top: 4px; padding-left: 18px; list-style: disc; }
-`;
-const PreviewWrapGrid = styled.div`
-  width: 100%; display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 8px; align-items: stretch;
-`;
-const PreviewItem = styled.div`
-  position: relative; height: 90px; border-radius: 10px; overflow: hidden;
-  display: grid; place-items: center; background: #fff; border: 1px solid #e5e7eb;
-`;
