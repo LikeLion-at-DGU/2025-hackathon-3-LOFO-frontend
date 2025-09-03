@@ -116,7 +116,7 @@ export default function UploadModal({
   // 테마
   const THEME = variant === "purple"
     ? { accent: "#8B6FD4", bg: "#F0EAFF", border: "#8B6FD4", chip: "#8B6FD4" }
-    : { accent: "#2D5CF6", bg: "#F3F7FF", border: "#9DB7FF", chip: "#E3EEFF" };
+    : { accent: "#2D5CF6", bg: "#EAF3FD", border: "#368FEF", chip: "#368FEF" };
 
   const handleBgClick = (e) => { if (e.target === e.currentTarget) onClose?.(); };
 
@@ -159,7 +159,9 @@ export default function UploadModal({
           ) : (
             <>
 
-              <S.CloudIcon as={UploadIcon} style={{ color: THEME.accent }} />
+              <S.CloudIcon 
+              $t={THEME}
+              as={UploadIcon} style={{ color: THEME.accent }} />
 
               <p>작업한 파일을 업로드해 주세요</p>
               <label>
@@ -189,7 +191,8 @@ export default function UploadModal({
         )}
 
         <S.FieldLabel>AI 피드백</S.FieldLabel>
-        <S.FeedbackBox>
+        <S.FeedbackBox
+        $t={THEME}>
           {fbLoading && <span className="placeholder">분석 중…</span>}
 
           {/* 로컬 확장자 에러 또는 서버 에러 */}

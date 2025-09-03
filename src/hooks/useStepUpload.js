@@ -8,8 +8,8 @@ export function getStepButtonState({ status, deadline, missionDone }) {
   const isClosed = due && now > due;
 
  // 최종 제출 후(상태가 DONE)엔 전부 잠금
- if (status === "DONE") return { label: "업로드 완료", disabled: true, variant: "ghost" };
-
+ 
+  //if (status === "DONE") return { label: "업로드 완료", disabled: true, variant: "ghost" };
   //if (isClosed) return { label: "업로드 완료", disabled: true,  variant: "ghost" };
   if (status === "DONE") return { label: "추가 업로드", disabled: false, variant: "secondary" };
   return { label: "미션 업로드",   disabled: false, variant: "primary" };

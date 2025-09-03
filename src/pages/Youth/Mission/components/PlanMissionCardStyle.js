@@ -43,7 +43,7 @@ export const IdxBadge = styled.div`
   align-items: center;
   gap: 10px;
   border-radius: 10px 10px 0 0;
-  background: #1787FF;
+  background: ${(p) => (p.$disabled ? "#999" : "#1787FF")};
 
   position: absolute;
   top: -29px;
