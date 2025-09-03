@@ -1,5 +1,5 @@
 import * as S from "./UploadModalStyle";
-import UploadIcon from '../../../../assets/Upload.svg?react';
+import UploadIcon from '../../../../assets/UploadModal.svg?react';
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useAiFeedback } from "../../../../hooks/useAiFeedback";
 
