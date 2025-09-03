@@ -92,16 +92,25 @@ export const Value = styled.div`
 
 /*PlanGoalBox*/
 export const GoalBox = styled.div`
-  border:1px solid #e5e7eb;border-radius:12px;padding:16px;background:#fafafa;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  padding:16px;
+  background:#fafafa;
 `;
 export const GoalTitle = styled.h4`
-    margin:0 0 8px;font-weight:700;
+  color: #368FEF;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: normal;
 `
 export const GoalText = styled.p`
-    margin:0 0 8px;white-space:pre-wrap;
+  white-space: pre-wrap;
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.55;
 `
 export const Row = styled.div`
-    display:flex;justify-content:space-between;color:#374151;
+    display:flex;justify-content:space-between;color:"#374151";
 `
 export const ModePill = styled.span`
   display:inline-block;margin-top:10px;padding:6px 10px;border-radius:999px;
@@ -109,8 +118,4 @@ export const ModePill = styled.span`
   background: ${({$mode}) => $mode==="local" ? "#dcfce7" : "#dbeafe"};
   color: ${({$mode}) => $mode==="local" ? "#166534" : "#1d4ed8"};
   font-weight:700;font-size:12px;
-`;
-
-const Card = styled.div`
-
 `;

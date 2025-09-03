@@ -6,10 +6,13 @@ export function ShopCard({ name, imageUrl, naverUrl, request, children }) {
     <Card>
       <ShopImg src={imageUrl} alt={`${name} 사진`} />
       <ShopName>{name}</ShopName>
+      <LinkDiv>
+      <N>N</N>
       <NaverLink href={naverUrl} target="_blank" rel="noreferrer">
         네이버 링크 바로가기
       </NaverLink>
-
+      </LinkDiv>
+      
       <Divider />
 
       <Field>
@@ -53,7 +56,7 @@ const ShopImg = styled.img`
   width: 100%;
   height: 180px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 20px;
 `;
 
 const ShopName = styled.h3`
@@ -70,12 +73,26 @@ const Field = styled.div`
   margin-top: -30px;
 `;
 
+const LinkDiv = styled.div`
+  display:flex;
+  gap: 5px;
+`
 const NaverLink = styled.a`
   display: inline-block;
   font-size: 14px;
-  color: #10b981;
+  color: #636363;
   text-decoration: underline;
 `;
+const N = styled.div`
+ font-size: 12px;
+ color: white;
+ text-align: center;
+ padding: 1px;
+ width: 20px;
+ border-radius: 100%;
+ background-color: #4CAF50;
+ font-weight: 600;
+`
 
 const Divider = styled.hr`
   border: 0;
@@ -84,7 +101,7 @@ const Divider = styled.hr`
   margin: 14px 0;
 `;
 
-const SectionTitle = styled.h4`
+const SectionTitle = styled.span`
   color: var(--main-001, #368FEF);
   font-size: 18px;
   font-weight: 400;
