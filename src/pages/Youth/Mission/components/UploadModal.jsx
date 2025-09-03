@@ -115,9 +115,9 @@ export default function UploadModal({
 
   // 테마
   const THEME = variant === "purple"
-    ? { accent: "#8B6FD4", bg: "#F0EAFF", border: "#8B6FD4", chip: "#8B6FD4" }
-    : { accent: "#2D5CF6", bg: "#EAF3FD", border: "#368FEF", chip: "#368FEF" };
-
+    ? { accent: "#8B6FD4", bg: "#F0EAFF", border: "#8B6FD4", chip: "#8B6FD4", disabledShadow: "#d8bfff"}
+    : { accent: "#368FEF", bg: "#EAF3FD", border: "#368FEF", chip: "#368FEF", disabledShadow: "#bfdeff" };
+    
   const handleBgClick = (e) => { if (e.target === e.currentTarget) onClose?.(); };
 
   return (
