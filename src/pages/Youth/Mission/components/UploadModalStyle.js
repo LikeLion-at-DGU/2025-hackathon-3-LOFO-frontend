@@ -34,7 +34,9 @@ export const Dropzone = styled.div`
     position: relative;
     p { font-size:12px; color:#8B6FD4; line-height: 0;}
 `;
-export const CloudIcon = styled.svg`width: 100px; height: 100px;`;
+export const CloudIcon = styled.svg`
+  width: 100px; height: 100px;
+`
 export const HiddenInput = styled.input`
   position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);
 `;
@@ -90,7 +92,7 @@ export const FeedbackBox = styled.div`
     gap: 10px;
     align-self: stretch;
     border-radius: 15px;
-    border: 1px solid var(--main-003, #8B6FD4);
+    border: 1px solid ${(p) => p.$t.border};
     background: #FFF;
     font-size: 12px;
     .placeholder { color: #9ca3af; }

@@ -12,9 +12,10 @@ export const Card = styled.article`
   border-radius: 0 0 20px 20px;
   border: 1px solid ${(p) => (p.$disabled ? "#e5e7eb" : "#1787FF")} ;
   background: ${(p) => (p.$disabled ? "#f6f7fb" : "#ffffff")};
-  box-shadow: ${(p) => (p.$disabled ? "none" : "0 2px 48px -8px rgba(54, 143, 239, 0.20)")}; /* 은은한 파란 그림자 */
-
-
+  box-shadow: ${(p) =>
+   p.$disabled
+     ? "0 2px 48px -8px rgba(54, 143, 239, 0.12)"  /* 은은한 파란 그림자 */
+     : "0 2px 48px -8px rgba(54, 143, 239, 0.20)"};
   position: relative;
 
   @media (max-width: 640px) {
@@ -43,7 +44,7 @@ export const IdxBadge = styled.div`
   align-items: center;
   gap: 10px;
   border-radius: 10px 10px 0 0;
-  background: #1787FF;
+  background: ${(p) => (p.$disabled ? "#999" : "#1787FF")};
 
   position: absolute;
   top: -29px;
@@ -67,7 +68,7 @@ export const HeaderRow = styled.div`
 export const Badge = styled.span`
   font-size: 18px;
   font-weight: 700;
-  color: #999;
+  color: ${(p) => (p.$disabled ? "#b0b8c3" : "#999")};
 `;
 
 export const Title = styled.span`
@@ -79,11 +80,7 @@ export const Title = styled.span`
   overflow: hidden;
   font-size: 20px;
   margin-bottom: 3px;
-  
-
-  &:hover {
-    text-decoration: underline;
-  }
+  //pointer-events: ${(p) => (p.$disabled ? "none" : "auto")};
 `;
 
 export const Bullets = styled.ul`
@@ -113,25 +110,25 @@ export const DuePill = styled.div`
   gap: 8px;
   padding: 8px 10px;
   border-radius: 999px;
-  color: #1d4ed8;
   font-weight: 700;
+  color: ${(p) => (p.$disabled ? "#9ca3af" : "#1d4ed8")};
 
   span {
     font-size: 12px;
-    color: #1787FF;
+    color: ${(p) => (p.$disabled ? "#b0b8c3" : "#1787FF")};
     font-weight: 400;
   }
   strong {
     font-size: 15px;
     font-weight: 400;
-    color: #000000ff;
+    color: ${(p) => (p.$disabled ? "#9aa3b2" : "#000")};
   }
 `;
 
 export const CalendarIcon = styled.svg`
   width: 20px;
   height: 20px;
-  color: #1787FF;
+  color: ${(p) => (p.$disabled ? "#b0b8c3" : "#1787FF")};
 `;
 
 export const UploadBtn = styled.button`
@@ -154,6 +151,15 @@ cursor: pointer;
   }
   &:active {
     transform: translateY(1px);
+  }
+  &:disabled {
+    background: #f6f7fb;
+    border-color: #e5e7eb;
+    box-shadow: none;
+    color: #9aa3b2;
+    cursor: not-allowed;
+    filter: none;
+    transform: none;
   }
 `;
 

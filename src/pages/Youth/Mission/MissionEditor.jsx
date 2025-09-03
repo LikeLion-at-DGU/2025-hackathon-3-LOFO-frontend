@@ -30,14 +30,14 @@ export default function MissionEditor({
   const { id: reqIdParam } = useParams(); // ← /youth/mission/:id
   const reqId = reqIdParam ? Number(reqIdParam) : undefined;//
 
-  // ✅ missionId 우선순위: props → URL(:id) → location.state → localStorage 백업
-  const missionId =
-    missionIdFromProps
-    ?? (reqIdParam ? Number(reqIdParam) : undefined)
-    ?? state?.missionId
-    ?? (typeof window !== "undefined"
+  const initialMissionId =
+    missionIdFromProps ??
+    state?.missionId ??
+    (typeof window !== "undefined"
       ? Number(JSON.parse(localStorage.getItem("lastMission") || "{}")?.mission?.id)
       : undefined);
+
+  const [missionId, setMissionId] = useState(initialMissionId);
 
   const [phase, setPhase] = useState(forcePlanPhase ? "plan" : "edit");  // "edit" | "plan"
   const [mode, setMode] = useState(getAiMode?.() ?? "local");
@@ -117,6 +117,24 @@ const noContext = !rawShop && !forcePlanPhase;
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
 
+ useEffect(() => {
+  const finalDone = steps?.find?.(s => s.idx === 3)?.status === "DONE";
+  const allDone = Array.isArray(steps) && steps.every(s => s.status === "DONE");
+  if (finalDone || allDone) setMissionDone(true);
+}, [steps]);
+
+useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (document.getElementById("spin-keyframes")) return;
+    const style = document.createElement("style");
+    style.id = "spin-keyframes";
+    style.innerHTML = `@keyframes spin { to { transform: rotate(360deg) } }`;
+    document.head.appendChild(style);
+    return () => {
+      style.parentNode && style.parentNode.removeChild(style);
+    };
+  }, []);
+
   // ✅ 클라이언트에서 “오늘 이후” 날짜 유효성
   const goalError =
     goal.trim().length === 0 ? "목표를 입력해주세요."
@@ -194,6 +212,23 @@ const noContext = !rawShop && !forcePlanPhase;
       const token = localStorage.getItem("accessToken"); // 프로젝트에 맞게 조정
       const res = await createAiPlan({ ...payload, token });
       // res: { mission: {...}, steps: [...] }
+
+      // ✅ 서버가 주는 mission id 반영
+      const newMissionId = res?.mission?.id ?? res?.mission_id;
+      if (newMissionId) {
+        setMissionId(newMissionId); // ← useState로 선언되어 있어야 함
+        // 새로고침 대비 로컬 저장 갱신
+        const last = JSON.parse(localStorage.getItem("lastMission") || "{}");
+        localStorage.setItem(
+          "lastMission",
+          JSON.stringify({
+            ...last,
+            mission: { id: newMissionId },
+            goal: payload.goal,
+            dueDate: payload.deadline,
+          })
+        );
+      }
 
       // ✅ 응답 steps → 화면용 데이터로 변환
       const mapped = mapStepsToCards(res?.steps || [], payload.goal, payload.deadline);
@@ -301,7 +336,7 @@ const noContext = !rawShop && !forcePlanPhase;
                   onStepsChange={(all) => setSteps((prev) => mergeStatuses(prev, all))}
                   missionDone={missionDone}                      // ✅ 내려줌
                   onMissionSubmitted={(res) => {
-                  setSteps(prev => mergeStatuses(prev, res.steps || []));
+                  setSteps(prev => mergeStatuses(prev, res?.steps || res?.all_steps || []));
                   setMissionDone(true);                        // ✅ 최종 제출 후 전체 잠금
                   setBasicModalOpen(true);     // ✅ 완료 모달 열기
                 }}
@@ -351,10 +386,4 @@ function Spinner() {
       animation: "spin 0.8s linear infinite"
     }}/>
   );
-}
-// 전역 CSS 없으면 인라인 keyframes 대체:
-const style = document?.createElement?.("style");
-if (style) {
-  style.innerHTML = `@keyframes spin { to { transform: rotate(360deg) } }`;
-  document.head.appendChild(style);
 }

@@ -21,26 +21,31 @@ export function PlanMissionCard({
     missionId,
     stepNo: idx,
     status,
-    deadline: dueDate,
+    //deadline: dueDate,
     onStepsChange,
     onMissionSubmitted,
     missionDone,
   });
 
+  const cardDisabled =
+  missionDone || (idx === 3 && status === "DONE");
+
   return (
     <>
-    <S.Card $disabled={missionDone}>   {/* ✅ 회색 처리 */}
+    <S.Card $disabled={cardDisabled}>   {/* ✅ 회색 처리 */}
       <S.Left>
-        <S.IdxBadge>{idx}</S.IdxBadge>
+        <S.IdxBadge $disabled={cardDisabled}>{idx}</S.IdxBadge>
 
         <S.Content>
           <S.HeaderRow>
-            <S.Title href="#" onClick={(e) => e.preventDefault()}>
+            <S.Title 
+            $disabled={cardDisabled}
+            href="#" onClick={(e) => e.preventDefault()}>
               {title}
             </S.Title>
           </S.HeaderRow>
-          <S.Badge>미션</S.Badge>
-          <S.Bullets>
+          <S.Badge $disabled={cardDisabled}>미션</S.Badge>
+          <S.Bullets $disabled={cardDisabled}>
             {bullets.map((b, i) => (
               <li key={i}>{b}</li>
             ))}
@@ -49,8 +54,8 @@ export function PlanMissionCard({
       </S.Left>
 
       <S.Right>
-        <S.DuePill>
-          <S.CalendarIcon viewBox="0 0 24 24" aria-hidden>
+        <S.DuePill $disabled={cardDisabled}>
+          <S.CalendarIcon $disabled={cardDisabled} viewBox="0 0 24 24" aria-hidden>
             <path d="M7 2v2M17 2v2M4 7h16M6 12h4M6 16h4M12 12h6M12 16h6M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z" 
             fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
           </S.CalendarIcon>
