@@ -11,10 +11,10 @@ export function GoalField({ value, onChange, error }) {
       <Textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="목표를 구체적으로 적어주세요. (예: 젊은 고객층 유입을 위한 가게 소개 카드뉴스를 만들고 싶어.)"
+        placeholder="목표를 8자 이상 구체적으로 적어주세요. (예: 젊은 고객층 유입을 위한 가게 소개 카드뉴스를 만들고 싶어.)"
         aria-invalid={!!error}
       />
-      {error && <FieldError>{error}</FieldError>}
+      {/*error && <FieldError>{error}</FieldError>*/}
     </Block>
   );
 }
@@ -22,7 +22,7 @@ export function GoalField({ value, onChange, error }) {
 const Block = styled.div`
   border-radius: 12px;
   padding: 16px;
-  margin-top: 80px;
+  margin: 80px 60px 0 20px ;
 `;
 
 const BlockTitle = styled.h2`
@@ -41,22 +41,23 @@ const Help = styled.p`
 
 const Textarea = styled.textarea`
   width: 100%;
-  min-height: 20px;
-  padding: 10px;
+  height: 80px;
+  padding: 10px 22px;
   border: 1px solid #d1d5db;
-  border-radius: 10px;
+  border-radius: 20px;
   font-size: 16px;
   resize: none;
+  line-height: 60px;
 
   &:focus {
     outline: none;
     border-color: #5c98ff;
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
   }
 `;
 
 const FieldError = styled.p`
-  color: #dc2626;
+  color: #268ddc;
   font-size: 12px;
   margin-top: 8px;
 `;

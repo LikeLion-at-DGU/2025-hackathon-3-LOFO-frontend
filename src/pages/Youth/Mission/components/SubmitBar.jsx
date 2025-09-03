@@ -11,16 +11,14 @@ export function SubmitBar({ disabled, loading, onClick }) {
 const SubmitBtn = styled.button`
 
 display: flex;
-//width: 520px;
-width: 100%;
+width: 520px;
 padding: 20px;
+margin: 50px 260px;
 justify-content: center;
 align-items: center;
 gap: 10px;
-border-radius: 20px;
+border-radius: 15px;
 background: var(--main-001, #368FEF);
-
-  margin-top: 30px;
   height: 52px;
   border: none;
   color: white;

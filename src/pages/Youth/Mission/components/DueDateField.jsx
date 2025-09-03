@@ -29,6 +29,7 @@ export function DueDateField({ value, onChange, minDate, error }) {
 const Block = styled.div`
   border-radius: 12px;
   padding: 16px;
+  margin: 0 60px 0 20px;
 `;
 
 const BlockTitle = styled.h2`
@@ -46,33 +47,36 @@ const Help = styled.p`
 
 const DateRow = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 12px;
 `;
 
 const DateLabel = styled.label`
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 600;
+  margin: 0 8px;
+  font-weight: 400;
   font-size: 18px;
+  color: #368FEF;
 
   &::before {
-    content: "📅";
+    //content: "📅";
     font-size: 16px;
   }
 `;
 
 const DateInput = styled.input`
-  padding: 10px 12px;
+  padding: 10px 22px;
+  width: 100%;
+  height: 80px;
   border: 1px solid #d1d5db;
-  border-radius: 10px;
+  border-radius: 20px;
   font-size: 18px;
 
   &:focus {
     outline: none;
-    border-color: #7c3aed;
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    border-color: #368FEF;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
   }
 `;
 
