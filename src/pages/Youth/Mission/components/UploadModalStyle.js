@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-/* --------- styles --------- */
+
 export const ModalBackdrop = styled.div`
   position: fixed; inset: 0; background: rgba(0,0,0,.38);
   display: grid; place-items: center; z-index: 1000;
@@ -9,7 +9,6 @@ export const ModalCard = styled.div`
   max-height: 615px; width: 400px; max-width: calc(100vw - 32px);
   background: #fff; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.18);
   padding: 18px; overflow: scroll;
-  //::-webkit-scrollbar { width: 1px; background: gray; }
   display: flex;
   padding: 40px 40px 50px 40px;
   flex-direction: column;
@@ -32,11 +31,14 @@ export const Dropzone = styled.div`
     margin: 6px 0; 
     background: ${(p) => p.$t.bg};
     position: relative;
-    p { font-size:12px; color:#8B6FD4; line-height: 0;}
+    p { font-size:12px; color: ${(p) => p.$t.hint}; line-height: 0; }
 `;
 export const CloudIcon = styled.svg`
   width: 100px; height: 100px;
-`
+  color: ${(p) => p.$t.accent};
+  /* 혹시 SVG가 자체 색을 고정해놨다면 아래로 덮어쓰기 */
+  & * { stroke: currentColor !important; fill: none; }
+`;
 export const HiddenInput = styled.input`
   position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);
 `;
@@ -71,10 +73,14 @@ export const PrimaryBtn = styled.button`
   min-width: 140px; height: 36px; font-weight:550; cursor:pointer;
   background:#fff; color:${(p)=>p.$t.accent}; border:1px solid ${(p)=>p.$t.border};
   opacity:${p=>p.disabled?0.6:1};
-  box-shadow: 0 4px 12px 0 rgba(139, 111, 212, 0.50);
+  box-shadow: 0 4px 12px 0 ${(p)=>p.$t.shadow};
   border-radius: 100px;
   margin-top: 5px;
 
+  &:disabled {
+    /* 비활성화에도 옅은 그림자 유지하고 싶으면 */
+    box-shadow: 0 4px 12px 0 ${(p)=>p.$t.disabledShadow};
+  }
 `;
 export const SecondaryBtn = styled.button`
   margin: auto;
@@ -82,6 +88,8 @@ export const SecondaryBtn = styled.button`
   background:#fff; color:${(p)=>p.$t.accent}; border:1px solid ${(p)=>p.$t.border};
   box-shadow: 0 4px 12px 0 rgba(139, 111, 212, 0.50);
   margin: 10px auto;
+
+  
 `;
 export const FeedbackBox = styled.div`
     display: flex;
